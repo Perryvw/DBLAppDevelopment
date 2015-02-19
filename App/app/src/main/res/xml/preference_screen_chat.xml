@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/chat_preference_title">
+
+        <CheckBoxPreference
+                android:key="notification_preference"
+                android:title="@string/title_notification_preference"
+                android:summary="@string/summary_notification_preference"
+                android:defaultValue="true"/>
+
+        <!-- The visual style of a child is defined by this styled theme attribute. -->
+        <CheckBoxPreference
+                android:key="sound_preference"
+                android:dependency="notification_preference"
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:title="@string/title_sound_preference"
+                android:summary="@string/summary_sound_preference"
+                android:defaultValue="false"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

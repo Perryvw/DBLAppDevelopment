@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header android:fragment="com.dblappdev.hitch.app.SettingsActivity$GeneralFragment"
+            android:title="General preferences"
+            android:summary="Choose the cache size and other default behaviours.">
+    </header>
+
+    <header android:fragment="com.dblappdev.hitch.app.SettingsActivity$UserFragment"
+            android:title="User preferences"
+            android:summary="Choose a username and which kind of user you are, driver or hitch hiker." />
+
+    <header android:fragment="com.dblappdev.hitch.app.SettingsActivity$ChatFragment"
+            android:title="Chat preferences"
+            android:summary="Some chat preferences you can see.">
+    </header>
+
+    <header
+            android:title="Visit our web page"
+            android:summary="Learn more about us by checking us out on the web.">
+        <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.tue.nl" />
+    </header>
+
+</preference-headers>

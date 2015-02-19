@@ -4,5 +4,47 @@
     <string name="app_name">Hitch</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="inline_preferences">Preferences</string>
+    <string name="title_checkbox_preference">Check a box</string>
+    <string name="summary_checkbox_preference">checkbox</string>
+    <string name="dialog_based_preferences">dialog based</string>
+    <string name="title_edittext_preference">edit text</string>
+    <string name="summary_edittext_preference">edit text</string>
+    <string name="dialog_title_edittext_preference">Edit text dialog</string>
+    <string name="title_list_preference">list title</string>
+    <string name="summary_list_preference">its a list</string>
+    <string name="dialog_title_list_preference">dialog title</string>
+    <string name="defaultvalue_list_preference">default</string>
+    <string name="launch_preferences">launch preferences</string>
+    <string name="title_fragment_preference">Fragment preference title</string>
+    <string name="summary_fragment_preference">fragment</string>
+    <string name="title_intent_preference">intent preference</string>
+    <string name="summary_intent_preference">intent</string>
+    <string name="preference_attributes">preference attributes</string>
+    <string name="title_parent_preference">Title parent</string>
+    <string name="summary_parent_preference">parent preference</string>
+    <string name="summary_child_preference">child preference</string>
+    <string name="title_child_preference">Title child</string>
+
+    <string name="user_fragment_preference">User settings</string>
+    <string name="user_preferences_title">User account</string>
+    <string name="title_username_preference">Name</string>
+    <string name="summary_username_preference">Enter a unique user name</string>
+    <string name="dialog_title_username_preference">Fill in name</string>
+    <string name="title_usertype_preference">Type of user</string>
+    <string name="summary_usertype_preference">Choose the type of user that fits your description best</string>
+    <string name="dialog_title_usertype_preference">Choose your type</string>
+    <string name="defaultvalue_usertype_preference">HITCH</string>
+    <string name="title_cachelimit_preference">Cache size</string>
+    <string name="summary_cachelimit_preference">Specifies the amount of data in MB which can be stored in the cache.
+    </string>
+    <string name="dialog_title_cachelimit_preference">Cache limit</string>
+    <string name="general_preferences_title">General preferences</string>
+    <string name="chat_preference_title">Chat preferences</string>
+    <string name="title_notification_preference">Allow notification</string>
+    <string name="summary_notification_preference">Turn in app-notifications on and off</string>
+    <string name="title_sound_preference">Sounds</string>
+    <string name="summary_sound_preference">Mute and un-mute notifications by disabling the sound</string>
+    <string name="emergency_title">Emergency</string>
 
 </resources>

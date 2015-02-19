@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="@string/general_preferences_title">
+
+        <EditTextPreference
+                android:key="cachelimit_preference"
+                android:inputType="number"
+                android:title="@string/title_cachelimit_preference"
+                android:summary="@string/summary_cachelimit_preference"
+                android:dialogTitle="@string/dialog_title_cachelimit_preference"
+                android:defaultValue="512"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
