@@ -30,37 +30,12 @@ public class SettingsActivity extends PreferenceActivity {
     /**
      * This fragment shows the preferences for the general prefs.
      */
-    public static class GeneralFragment extends PreferenceFragment {
+    public static class DriverFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            addPreferencesFromResource(R.xml.preference_screen_general);
-        }
-    }
-
-    /**
-     * This fragment shows the preferences for the user prefs.
-     */
-    public static class UserFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            addPreferencesFromResource(R.xml.preference_screen_user);
-        }
-    }
-
-    /**
-     * This fragment shows the preferences for the second header.
-     */
-    public static class ChatFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            // Load the preferences from an XML resource
-            addPreferencesFromResource(R.xml.preference_screen_chat);
+            addPreferencesFromResource(R.xml.preference_screen_driver);
         }
     }
 
