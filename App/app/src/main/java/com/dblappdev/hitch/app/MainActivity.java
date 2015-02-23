@@ -1,6 +1,5 @@
 package com.dblappdev.hitch.app;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -16,7 +15,6 @@ import android.widget.Button;
 
 public class MainActivity extends ActionBarActivity {
     Location currentLocation;
-    TextView tv;
     Button button;
 
     protected boolean updateLocation(Location location) {
@@ -24,10 +22,15 @@ public class MainActivity extends ActionBarActivity {
             return false;
         currentLocation = location;
         TextView l1 = (TextView) findViewById(R.id.l1);
-        l1.setText("Location:" + location.getLongitude());
+        l1.setText("Location:");
         TextView l2 = (TextView) findViewById(R.id.l2);
         l2.setText(location.getLongitude() + " " + location.getLatitude());
         return true;
+    }
+
+    public void startHitch() {
+        Intent intent = new Intent(this, HitchActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -35,11 +38,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tv = (TextView) findViewById(R.id.text);
-        button = (Button) findViewById(R.id.push);
+        button = (Button) findViewById(R.id.hitchbutton);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                startHitch();
             }
         });
         // Acquire a reference to the system Location Manager
@@ -81,9 +83,7 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         if (id == R.id.emergency) {
-            ProgressDialog dialog = ProgressDialog.show(getBaseContext(), "Loading", "Please wait...", true);
 
-            dialog.dismiss();
             return true;
         }
 

@@ -18,7 +18,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/push"
-            android:layout_below="@+id/text" />
+            android:layout_below="@+id/text"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +31,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/l2"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

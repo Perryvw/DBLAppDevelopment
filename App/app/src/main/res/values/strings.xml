@@ -46,5 +46,6 @@
     <string name="title_sound_preference">Sounds</string>
     <string name="summary_sound_preference">Mute and un-mute notifications by disabling the sound</string>
     <string name="emergency_title">Emergency</string>
+    <string name="driver_preferences_title">Driver Preferences</string>
 
 </resources>
