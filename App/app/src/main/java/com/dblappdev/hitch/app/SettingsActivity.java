@@ -4,6 +4,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.os.Bundle;
 import android.widget.Button;
+
 import java.util.List;
 
 public class SettingsActivity extends PreferenceActivity {
