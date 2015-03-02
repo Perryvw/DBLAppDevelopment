@@ -1,3 +1,5 @@
 Requirements document: https://docs.google.com/document/d/1yvxQh1cI3lXZyTOYteDkKvXlMqcmTcBLq9Nghmks6t4/edit
 Minutes overleaf link: https://www.overleaf.com/2241059rwrytm#/5735656/
 Overleaf requirements: https://www.overleaf.com/2287053mdzkrw#/5874023/
+
+Design document high-level gDocs: https://docs.google.com/document/d/1JVkOjupKbzvNnQeGSWV3kmQ2IHPl0dswP8jo7haQ50Q/edit
