@@ -2,6 +2,11 @@
 <resources>
 
     <string name="app_name">Hitch</string>
+    <string name="app_birth">Choose if you want to be a hitchhiker or a driver\n(this can always be changed later)</string>
+    <string name="hiker">Hiker</string>
+    <string name="driver">Driver</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="login">Login</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 

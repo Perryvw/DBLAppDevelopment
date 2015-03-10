@@ -13,9 +13,10 @@ public class MainActivity extends Activity {
 
     public static final String SHARED_PREF = "com.dblappdev.hitch";
     public static final String BIRTH_KEY = "com.dblappdev.hitch.birth";
+    public static final String DRIVER_MODE_KEY = "com.dblappdev.hitch.mode";
 
     /**
-     * When the app is giving birth the intent BirthActivity will be started.
+     * When the app is giving birth the intent BirthActivity will be started. Otherwise we will start TabViewActivity.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +27,11 @@ public class MainActivity extends Activity {
         if (! birthControl) {
             Intent intent = new Intent(this, BirthActivity.class);
             startActivity(intent);
+            return;
         }
 
-
-        setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, TabViewActivity.class);
+        startActivity(intent);
     }
 
 

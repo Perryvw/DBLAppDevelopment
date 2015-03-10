@@ -9,8 +9,39 @@
                 tools:context=".BirthActivity">
 
     <TextView
-            android:text="@string/hello_world"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/app_birth"
+            android:id="@+id/textView2" android:layout_alignParentStart="true"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="giveBirthHiker"
+            android:text="@string/hiker"
+            android:id="@+id/button"
+            android:layout_below="@+id/textView2" android:layout_alignParentStart="true"
+            android:layout_marginTop="69dp" android:layout_alignEnd="@+id/textView2"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="giveBirthDriver"
+            android:text="@string/driver"
+            android:id="@+id/button2" android:layout_centerVertical="true" android:layout_alignParentStart="true"
+            android:layout_alignEnd="@+id/button"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/already_registered"
+            android:id="@+id/textView3"
+            android:layout_marginTop="54dp" android:layout_below="@+id/button2" android:layout_centerHorizontal="true"/>
+    <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:id="@+id/button3" android:layout_below="@+id/textView3" android:layout_centerHorizontal="true"/>
+
 
 </RelativeLayout>
