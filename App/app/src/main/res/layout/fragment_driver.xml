@@ -11,6 +11,12 @@
               android:text="DRIVER AREA"
               android:textSize="20dp"
               android:layout_centerInParent="true"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HitchActivity"
+            android:id="@+id/toHitchActivity" android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="65dp"/>
 
 
 </RelativeLayout>
