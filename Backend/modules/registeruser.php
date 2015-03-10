@@ -31,12 +31,14 @@
 	//Input parameters
 	$name = $_GET['name'];
 	$state = $_GET['state'];
-	$hitchikes = $_GET['hitchhikes'];
+	$hitchhikes = $_GET['hitchhikes'];
 	$birthdate = $_GET['birthdate'];
 	$joinedDate = $_GET['joinedDate'];
 	$avatarURL = $_GET['avatarURL'];
 		
-	//DO SOMETHING
+	//Insert data and get the ID back
+	$user_id = $db->insertRow('hitch_users', array(NULL, 0, $state, $name, $birthdate, $joinedDate, $hitchhikes, $avatarURL));
 
-	//RETURN OUTPUT DATA AS JSON	
+	//RETURN OUTPUT DATA AS JSON
+	echo '{ "userID" : '.$user_id.' }';
 ?>

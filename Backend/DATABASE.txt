@@ -23,4 +23,4 @@ hitch_userroutes:
 	userrouteID, userID, timestamp, startPoint, endPoint
 
 hitch_users:
-	userID, phoneNumber, state, name, birthdate, joinedDate, hitchhikes
+	userID, phoneNumber, state, name, birthdate, joinedDate, hitchhikes, avatarURL

@@ -1,8 +1,8 @@
 <?php	
 	class DatabaseObject {
 		//database connection data
-		private $db_ip = "185.13.226.226:3306"; // REMOTE DB ACCESS
-		//private $db_ip = "localhost";
+		//private $db_ip = "185.13.226.226:3306"; // REMOTE DB ACCESS
+		private $db_ip = "localhost";
 		private $db_name = "perryof119_hitch";
 		private $db_user = "perryof119_huser";
 		private $db_password = "hitch";
@@ -21,10 +21,10 @@
 		*/
 		function executeQuery($query, $params) {
 			//Prepare
-			$stmt = $this->dbCon->prepare($query) or die(print_r($this->dbCon->errorInfo()));
+			$stmt = $this->dbCon->prepare($query);
 			
 			//Execute
-			$stmt->execute($params);
+			$stmt->execute($params) or die(print_r($stmt->errorInfo()));
 			
 			//return statement
 			return $stmt;
@@ -49,7 +49,7 @@
 				params - A list of variables sorted in location
 		*/
 		function getResult($query, $params = array()){
-			$stmt = $this->executeQuery($query, $params);
+			$stmt = $this->executeQuery($query, $params) or die(print_r($this->dbCon->errorInfo()));
 			
 			//build return object
 			$rows = array();
@@ -84,7 +84,7 @@
 			//Execute and close
 			
 			//Return id of the row we inserted
-			return $this->dbCon->insert_id;
+			return $this->dbCon->lastInsertId();
 		}
 		
 		//Close the database connection
