@@ -32,7 +32,6 @@ public class BirthActivity extends Activity {
      */
     public void giveBirthHiker(View view) {
         SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(MainActivity.BIRTH_KEY, true);
         prefs.edit().putBoolean(MainActivity.DRIVER_MODE_KEY, false);
         register();
     }
@@ -42,7 +41,6 @@ public class BirthActivity extends Activity {
      */
     public void giveBirthDriver(View view) {
         SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(MainActivity.BIRTH_KEY, true);
         prefs.edit().putBoolean(MainActivity.DRIVER_MODE_KEY, true);
         register();
     }

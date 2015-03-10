@@ -1,6 +1,8 @@
 package com.dblappdev.hitch.app;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 /**
@@ -13,5 +15,10 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_register);
+    }
+
+    private void giveBirth() {
+        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(MainActivity.BIRTH_KEY, true);
     }
 }
