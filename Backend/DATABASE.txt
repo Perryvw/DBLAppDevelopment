@@ -1,0 +1,26 @@
+hitch_chatboxes:
+	chatID, dateCreated, routeStartPoint, routeEndPoint
+
+hitch_chatmessages:
+	chatID, userID, timestamp, message
+
+hitch_chatusers:
+	chatID, userID
+
+hitch_hitchhikestatus:
+	userID, timestamp, location, destination
+
+hitch_matches:
+	driverID, hitchhikerID, timestamp
+
+hitch_ratings:
+	byUserID, toUserID, rating, comment
+
+hitch_routes:
+	startPoint, endPoint
+
+hitch_userroutes:
+	userrouteID, userID, timestamp, startPoint, endPoint
+
+hitch_users:
+	userID, phoneNumber, state, name, birthdate, joinedDate, hitchhikes
