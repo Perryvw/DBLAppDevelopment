@@ -1,0 +1,31 @@
+<?php
+	/*
+		Hitch back-end module.
+		
+		Throw an error throwError ( message, errorCode0 );
+		
+		Database object:
+			$db
+		
+		Module: GetUserRoutes
+		Input parameters:
+			userID: The ID of the user giving the rating.
+			
+		Output parameters:
+			routes: An array of objects representing routes, each containing the following fields:
+				routeID: The unique ID for this route.
+				startpoint: The startpoint of the route.
+				endpoint: The endpoint of the route.
+				timestamp: The time of departure for this route.
+
+	*/
+	
+	//Check if required parameters are set
+	
+	
+	//Input parameters
+	
+	
+	//Get data from database
+	
+?>
