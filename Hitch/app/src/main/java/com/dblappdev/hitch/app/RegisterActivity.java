@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import com.facebook.android;
 
 /**
  * Created by s128232 on 10-3-2015.
