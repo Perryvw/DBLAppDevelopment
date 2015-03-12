@@ -27,5 +27,7 @@
 	$user_id = $_GET['userID'];
 	
 	//Get data from database
-	$result = $db->getResult("SELECT user_rating FROM hitch WHERE user_id=?",array($user_id));
+	$result = json_encode($db->getRow("SELECT AVG(rating) as rating FROM hitch_ratings WHERE toUserId=?", array($user_id)));
+	
+	echo $result;
 ?>

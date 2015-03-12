@@ -20,11 +20,20 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID']) || !isset($_GET['startpoint']) || !isset($_GET['endpoint']) || !isset($_GET['timestamp'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['userID'];
+	$start_point = $_GET['startpoint'];
+	$end_point = $_GET['endpoint'];
+	$timestamp = $_GET['timestamp'];
 	
 	//Get data from database
 	
+	//WHAT TO DO WITH AUTO INCREMENTED ROUTE ID????!!?!?!?!
+	
+	
+	$db->insertRow('hitch_userroutes', array(null, $user_id, $startpoint, $endpoint, $timestamp));
 ?>

@@ -9,6 +9,7 @@
 		
 		Module: GetHitchhikeData
 		Input parameters:
+			userID: The ID of an user for whom the hitchhike data is requested.
 			limit: The maximum number of results to be returned (Optional, default is 20).
 			destination: The destination of the hitchhikers (Optional).
 			location: The location of the user requesting the data (Optional).
@@ -25,16 +26,51 @@
 				location: The location of the hitchhiker.
 				destination: The destination of the hitchhikers.
 				timestamp: The time the hitchhike data was updated.
-
-			
+	
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
+	$user_id = $_GET['userID'];
 	
+	if(isset($_GET['limit'])){
+		$limit = $_GET['limit'];
+	}
+	else {
+		$limit = 20;
+	}
+	
+	if(isset($_GET['destination'])){
+		$destination = $_GET['destination'];
+	}
+	
+	if(isset($_GET['location'])){
+		$location = $_GET['location'];
+	}
+	
+	if(isset($_GET['order'])){
+		if($_GET['order'] == "ta"){
+			$order = $_GET['ASC'];
+		}
+		elseif ($_GET['order'] == "td") {
+			$order = $_GET['DESC'];
+		}
+	}
+	else {
+		$order = "ASC";
+	}
 	
 	//Get data from database
+	if($location) {
+		//$result = json_encode($db->getResult("SELECT * FROM hitch_hitchhikestatus WHERE userID=? ORDER BY LIMIT ".$limit, array($user_id)));
+	}
+	else {
+		$result = json_encode($db->getResult("SELECT * FROM hitch_hitchhikestatus WHERE userID=? ORDER BY timestamp ".$order." LIMIT ".$limit, array($user_id)));
+	}
+	
 	
 ?>

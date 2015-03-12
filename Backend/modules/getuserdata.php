@@ -30,7 +30,8 @@
 	//Input parameters
 	$user_id = $_GET['userID'];
 		
-	//DO SOMETHING
-
 	//RETURN OUTPUT DATA AS JSON	
+	$result = json_encode($db->getRow("SELECT * FROM hitch_users WHERE userId=?", array($user_id)));
+	
+	echo $result;
 ?>

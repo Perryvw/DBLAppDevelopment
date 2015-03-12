@@ -9,7 +9,7 @@
 		
 		Module: GetUserRoutes
 		Input parameters:
-			userID: The ID of the user giving the rating.
+			userID: The ID of the queried user.
 			
 		Output parameters:
 			routes: An array of objects representing routes, each containing the following fields:
@@ -21,11 +21,15 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['userID'];
 	
 	//Get data from database
+	$result = json_encode($db->getResult("SELECT userrouteID, timestamp, startPoint, endPoint FROM hitch_routes WHERE userID=?", array($user_id)));
 	
+	echo $result;
 ?>
