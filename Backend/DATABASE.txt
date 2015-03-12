@@ -11,7 +11,7 @@ hitch_hitchhikestatus:
 	userID, timestamp, location, destination
 
 hitch_matches:
-	driverID, hitchhikerID, timestamp
+	routeID, hitchhikerID, timestamp, relevance
 
 hitch_ratings:
 	byUserID, toUserID, rating, comment
