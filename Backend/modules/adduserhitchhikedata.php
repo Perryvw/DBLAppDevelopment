@@ -14,18 +14,22 @@
 			destination: The destination of the hitchhiker.
 			timestamp: The time this data was placed on the server.
 
-
 		Output parameters:
 			-
 			
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID']) || !isset($_GET['location']) || !isset($_GET['destination']) || !isset($_GET['timestamp'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['userID'];
+	$location = $_GET['location'];
+	$destination = $_GET['destination'];
+	$timestamp = $_GET['timestamp'];
 	
 	//Get data from database
-	
+	$db->insertRow('hitch_hitchhikestatus', array($user_id, $timestamp, $location, $destination));
 ?>

@@ -18,11 +18,16 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID']) || !isset($_GET['subjectID'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['userID'];
+	$subject_id = $_GET['subjectID'];
 	
 	//Get data from database
+	$result = json_encode($db->getRow("SELECT rating FROM hitch_ratings WHERE byUserId=? AND toUserId=?", array($user_id, $subject_id)));
 	
+	echo $result;
 ?>
