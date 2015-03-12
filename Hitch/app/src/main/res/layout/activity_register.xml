@@ -15,29 +15,47 @@
             android:text="@string/app_register"
             android:id="@+id/textView2" />
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:hint="@string/name"
             android:ems="10"
-            android:id="@+id/editText"
-            android:layout_above="@+id/editText2" android:layout_alignParentLeft="true"
+            android:id="@+id/userName"
+            android:layout_above="@+id/userAge" android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             android:hint="@string/age"
             android:ems="10"
-            android:id="@+id/editText2"
-            android:layout_above="@+id/button4" android:layout_alignParentLeft="true"
+            android:id="@+id/userAge"
+            android:layout_above="@+id/btn_register" android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register"
-            android:id="@+id/button4"
+            android:id="@+id/btn_register"
+            android:onClick="registerUser"
             android:layout_centerVertical="true" android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:tools="http://schemas.android.com/tools"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:layout_below="@+id/btn_register">
+
+        <com.facebook.widget.LoginButton
+                android:id="@+id/authButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                />
+
+    </LinearLayout>
 
 </RelativeLayout>

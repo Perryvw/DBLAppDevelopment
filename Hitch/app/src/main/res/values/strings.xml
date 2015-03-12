@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="facebook_app_id">1470915723163838</string>
     <string name="app_name">Hitch</string>
     <string name="app_birth">Choose if you want to be a hitchhiker or a driver\n(this can always be changed later)</string>
     <string name="app_register">Choose to fill in, or login with facebook</string>

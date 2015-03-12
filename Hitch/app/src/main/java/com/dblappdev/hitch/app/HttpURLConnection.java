@@ -1,14 +1,16 @@
 package com.dblappdev.hitch.app;
 
 import java.io.BufferedReader;
+
+import android.util.Log;
 import org.json.*;
 import java.io.InputStreamReader;
 import java.net.URL;
 
 public class HttpURLConnection {
 
-    private final String USER_AGENT = "Mozilla/5.0";
-    private static final String GET_PREFIX = "http://www.yrrep.me/hitch/?";
+    private static final String USER_AGENT = "Mozilla/5.0";
+    private static final String GET_PREFIX = "http://www.yrrep.me/hitch/index.php?";
 
     /**
      * Retrieves the response to a get request.
@@ -17,10 +19,10 @@ public class HttpURLConnection {
      * @return JSONObject made by the response.
      * @throws Exception
      */
-    public JSONObject sendGet(String get) throws Exception {
+    public static JSONObject sendGet(String get) throws Exception {
 
         String url = GET_PREFIX + get;
-
+        Log.e("url", url);
         URL obj = new URL(url);
         java.net.HttpURLConnection con = (java.net.HttpURLConnection) obj.openConnection();
 
