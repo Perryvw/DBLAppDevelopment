@@ -2,8 +2,17 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/FriendPickerSample/FriendPickerSample.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/FriendPickerSample/FriendPickerSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/HelloFacebookSample/HelloFacebookSample.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/HelloFacebookSample/HelloFacebookSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/Hitch.iml" filepath="$PROJECT_DIR$/Hitch.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/PlacePickerSample/PlacePickerSample.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/PlacePickerSample/PlacePickerSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/RPSSample/RPSSample.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/RPSSample/RPSSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/Scrumptious/Scrumptious.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/Scrumptious/Scrumptious.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/SwitchUserSample/SwitchUserSample.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/samples/SwitchUserSample/SwitchUserSample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook/TestApp/TestApp.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook/TestApp/TestApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook/facebook.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook/facebook.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook-android-sdk-3.23.0.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook-android-sdk-3.23.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook/tests/tests.iml" filepath="$PROJECT_DIR$/../facebook-android-sdk-3.23.0/facebook/tests/tests.iml" />
     </modules>
   </component>
 </project>
