@@ -49,11 +49,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
             actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
         }
 
-        //if (state == 1) { //hitcher
-            //TODO: show driver fragment
-        //} else { //driver
-            //TODO: show hiker fragment
-        //}
+        mAdapter.getItem(state);
 
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
