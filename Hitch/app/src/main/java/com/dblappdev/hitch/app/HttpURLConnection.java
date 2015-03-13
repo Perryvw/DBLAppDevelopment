@@ -6,7 +6,7 @@ import android.util.Log;
 import org.json.*;
 import java.io.InputStreamReader;
 import java.net.URL;
-
+//TODO: extend android service
 public class HttpURLConnection {
 
     private static final String USER_AGENT = "Mozilla/5.0";

@@ -22,10 +22,10 @@ public class TabViewActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        boolean driverMode = prefs.getBoolean(MainActivity.DRIVER_MODE_KEY, false);
-        if (driverMode) { //driver
+        int state = prefs.getInt(MainActivity.STATE_KEY, 0);
+        if (state == 1) { //hitcher
             //TODO: show driver fragment
-        } else { //hiker
+        } else { //driver
             //TODO: show hiker fragment
         }
 
