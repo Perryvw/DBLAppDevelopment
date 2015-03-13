@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 import com.dblappdev.hitch.adapter.TabsPageAdapter;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 
 public class MainActivity extends FragmentActivity implements TabListener {
     /*Location currentLocation;
@@ -46,6 +48,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
 
       /*  button = (Button) findViewById(R.id.push);

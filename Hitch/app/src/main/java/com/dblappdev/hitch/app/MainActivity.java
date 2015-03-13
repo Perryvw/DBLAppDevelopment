@@ -13,9 +13,7 @@ public class MainActivity extends Activity {
 
     public static final String SHARED_PREF = "com.dblappdev.hitch";
     public static final String BIRTH_KEY = "com.dblappdev.hitch.birth";
-    public static final String STATE_KEY = "com.dblappdev.hitch.state";
-
-    private SharedPreferences prefs;
+    public static final String DRIVER_MODE_KEY = "com.dblappdev.hitch.mode";
 
     /**
      * When the app is giving birth the intent BirthActivity will be started. Otherwise we will start TabViewActivity.
@@ -24,11 +22,9 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-
-        undoBirth();
-        boolean born = prefs.getBoolean(BIRTH_KEY, false);
-        if (! born) {
+        SharedPreferences prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+        boolean birthControl = prefs.getBoolean(BIRTH_KEY, false);
+        if (! birthControl) {
             Intent intent = new Intent(this, BirthActivity.class);
             startActivity(intent);
             return;
@@ -38,12 +34,8 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    /**
-     * Sets the shared preference boolean birth to false.
-     */
-    protected void undoBirth() {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(MainActivity.BIRTH_KEY, false);
-        editor.commit();
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }
