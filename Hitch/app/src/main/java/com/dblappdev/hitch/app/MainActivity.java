@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
 
         prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
 
-        undoBirth();
+        //undoBirth();
         boolean hadBirth = prefs.getBoolean(BIRTH_KEY, false);
         if (! hadBirth) {
             Intent intent = new Intent(this, BirthActivity.class);
