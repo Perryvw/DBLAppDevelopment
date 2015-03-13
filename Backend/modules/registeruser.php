@@ -23,17 +23,17 @@
 	*/
 
 	//Check if all required input paramters are set
-	if (!isset($_GET['name']) || !isset($_GET['state']) || !isset($_GET['hitchhikes']) ||
-	   !isset($_GET['birthdate']) || !isset($_GET['joinedDate']) || !isset($_GET['avatarURL'])) {
+	if (!isset($_GET['name']) || !isset($_GET['state']) || 
+		!isset($_GET['avatarURL'])) {
 		throwError('Missing required parameters');	
 	}
 
 	//Input parameters
 	$name = $_GET['name'];
 	$state = $_GET['state'];
-	$hitchhikes = $_GET['hitchhikes'];
-	$birthdate = $_GET['birthdate'];
-	$joinedDate = $_GET['joinedDate'];
+	$hitchhikes = 0;
+	$birthdate = isset($_GET['birthdate']) ? $_GET['birthdate'] : '1900-1-1';
+	$joinedDate = isset($_GET['joinedDate']) ? $_GET['joinedDate'] : date('Y-m-d');
 	$avatarURL = $_GET['avatarURL'];
 		
 	//Insert data and get the ID back
