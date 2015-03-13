@@ -26,7 +26,6 @@ public class MainActivity extends Activity {
 
         prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
 
-        //undoBirth();
         boolean hadBirth = prefs.getBoolean(BIRTH_KEY, false);
         if (! hadBirth) {
             Intent intent = new Intent(this, BirthActivity.class);
@@ -36,11 +35,5 @@ public class MainActivity extends Activity {
 
         Intent intent = new Intent(this, TabViewActivity.class);
         startActivity(intent);
-    }
-
-    private void undoBirth() {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(BIRTH_KEY, false);
-        editor.commit();
     }
 }

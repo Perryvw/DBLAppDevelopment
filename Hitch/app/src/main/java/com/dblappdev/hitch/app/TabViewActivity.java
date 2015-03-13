@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.TabListener;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,8 @@ import com.dblappdev.hitch.adapter.TabsPageAdapter;
  * Created by guusleijsten on 10/03/15.
  */
 public class TabViewActivity extends FragmentActivity implements TabListener {
+
+    private SharedPreferences prefs;
 
     private ViewPager viewPager;
     private TabsPageAdapter mAdapter;
@@ -30,6 +33,8 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
         setContentView(R.layout.activity_main);
 
@@ -84,8 +89,13 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_signout) {
+            undoBirth();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -105,5 +115,14 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    }
+
+    /**
+     * Sets the shared preference boolean birth to false.
+     */
+    private void undoBirth() {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(MainActivity.BIRTH_KEY, false);
+        editor.commit();
     }
 }
