@@ -21,11 +21,16 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['startpoint']) || !isset($_GET['endpoint'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$startpoint = $_GET['startpoint'];
+	$endpoint = $_GET['endpoint'];
 	
 	//Get data from database
+	$result = json_encode($db->getResult("SELECT chatID, dateCreated FROM hitch_chatboxes WHERE startpoint=? AND endpoint=?", array($startpoint, $endpoint)));
 	
+	echo $result;
 ?>

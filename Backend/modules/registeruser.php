@@ -40,5 +40,6 @@
 	$user_id = $db->insertRow('hitch_users', array(NULL, 0, $state, $name, $birthdate, $joinedDate, $hitchhikes, $avatarURL));
 
 	//RETURN OUTPUT DATA AS JSON
+	print_r($user_id);
 	echo '{ "userID" : '.$user_id.' }';
 ?>

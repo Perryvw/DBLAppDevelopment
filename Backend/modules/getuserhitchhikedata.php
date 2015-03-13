@@ -19,11 +19,15 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['userID'];
 	
 	//Get data from database
+	$result = json_encode($db->getResult("SELECT timestamp, location, destination FROM hitch_hitchhikestatus WHERE userID=?", array($user_id)));
 	
+	echo $result;
 ?>

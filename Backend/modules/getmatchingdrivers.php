@@ -21,11 +21,25 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['hitchhikerID'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['hitchhikerID'];
+	if(isset($_GET['amount'])){
+		$amount = $_GET['amount'];
+	}
+	else {
+		$amount = 5;
+	}
 	
 	//Get data from database
 	
+	// WHAT ABOUT RELEVANCE?
+	
+	
+	$result = json_encode($db->getResult("SELECT ... FROM hitch_matches WHERE ...", array()));
+	
+	echo $result;
 ?>

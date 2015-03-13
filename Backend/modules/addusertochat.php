@@ -18,11 +18,14 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID']) || !isset($_GET['chatID'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['userID'];
+	$chat_id = $_GET['chatID'];
 	
 	//Get data from database
-	
+	$db->insertRow('hitch_chatusers', array($chat_id, $user_id));
 ?>
