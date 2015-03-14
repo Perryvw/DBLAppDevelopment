@@ -12,9 +12,14 @@ import android.view.View;
  */
 public class BirthActivity extends Activity {
 
+    //Preferences
+    private SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
         setContentView(R.layout.activity_birth);
     }
@@ -22,26 +27,35 @@ public class BirthActivity extends Activity {
     /**
      * Starts Register activity.
      */
-    public void register() {
+    private void register() {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
     /**
-     * Updates the shared preference to indicate that hitch has given birth and sets the DRIVER_MODE to false.
+     * Sets the shared preference boolean driver mode.
+     *
+     * @param state 0 for driver, 1 for hiker
      */
-    public void giveBirthHiker(View view) {
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(MainActivity.DRIVER_MODE_KEY, false);
+    private void setState(int state) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(MainActivity.STATE_KEY, state);
+        editor.commit();
+    }
+
+    /**
+     * Go to register activity as a hiker.
+     */
+    public void startAsHiker(View view) {
+        setState(1);
         register();
     }
 
     /**
-     * Updates the shared preference to indicate that hitch has given birth and sets the DRIVER_MODE to true.
+     * Go to register activity as a driver.
      */
-    public void giveBirthDriver(View view) {
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(MainActivity.DRIVER_MODE_KEY, true);
+    public void startAsDriver(View view) {
+        setState(0);
         register();
     }
 }

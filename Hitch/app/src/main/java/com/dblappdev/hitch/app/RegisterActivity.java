@@ -2,6 +2,7 @@ package com.dblappdev.hitch.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,12 +16,18 @@ import org.json.JSONObject;
  */
 public class RegisterActivity extends Activity {
 
+    //Preferences
+    private SharedPreferences prefs;
+    //text edit fields
     private EditText nameEdit;
     private EditText ageEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
+
         setContentView(R.layout.activity_register);
 
         Button registerButton = (Button) findViewById(R.id.btn_register);
@@ -28,19 +35,32 @@ public class RegisterActivity extends Activity {
         ageEdit = (EditText) findViewById(R.id.userAge);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * When the user presses register.
+             */
             public void onClick(View view) {
                 String name = nameEdit.getText().toString();
                 int age = Integer.parseInt(ageEdit.getText().toString());
-                registerUser(name, age);
+                int state = getState();
+                registerUser(name, age, state);
             }
         });
     }
 
-    private void registerUser(String name, int age) {
-        //get state
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        boolean driverMode = prefs.getBoolean(MainActivity.DRIVER_MODE_KEY, false);
-        String state = prefs.getBoolean(MainActivity.DRIVER_MODE_KEY, false)? "0": "1";
+    /**
+     * Register a user.
+     *
+     * @param name the name of the user
+     * @param age the age of the user
+     * @param state 0 for driver, 1 for hitcher
+     */
+    private void registerUser(String name, int age, int state) {
+        Log.d("registerUser", "{name: \"" + name + "\", age: " + age + ", state: " + state + "}");
+        giveBirth();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        /**
+
 
         //setup request
         String getRequest = "func=RegisterUser&name="+name+"&state="+state+"&hitchhikes=0&avatarURL=";
@@ -51,10 +71,19 @@ public class RegisterActivity extends Activity {
         } catch(Exception e) {
             e.printStackTrace();
         }
+         */
     }
 
+    private int getState() {
+        return prefs.getInt(MainActivity.STATE_KEY, 0);
+    }
+
+    /**
+     * Sets the shared preference boolean birth to true.
+     */
     private void giveBirth() {
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(MainActivity.BIRTH_KEY, true);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(MainActivity.BIRTH_KEY, true);
+        editor.commit();
     }
 }
