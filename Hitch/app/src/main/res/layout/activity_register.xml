@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/app_register"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2" android:typeface="serif"/>
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -21,8 +21,12 @@
             android:hint="@string/name"
             android:ems="10"
             android:id="@+id/userName"
-            android:layout_above="@+id/userAge" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_above="@+id/userAge"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/edittextstyle"
+            android:padding="5dp"
+            android:layout_margin="5dp"/>
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -30,18 +34,25 @@
             android:hint="@string/age"
             android:ems="10"
             android:id="@+id/userAge"
-            android:layout_above="@+id/btn_register" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_above="@+id/btn_register"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/edittextstyle"
+            android:padding="5dp"
+            android:layout_margin="5dp"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register"
             android:id="@+id/btn_register"
             android:onClick="registerUser"
-            android:layout_centerVertical="true" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/orange_button"
+            android:layout_margin="5dp"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:tools="http://schemas.android.com/tools"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
@@ -56,6 +67,6 @@
                 android:layout_marginTop="30dp"
                 />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 </RelativeLayout>
