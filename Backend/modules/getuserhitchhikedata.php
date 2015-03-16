@@ -27,7 +27,13 @@
 	$user_id = $_GET['userID'];
 	
 	//Get data from database
-	$result = json_encode($db->getResult("SELECT timestamp, location, destination FROM hitch_hitchhikestatus WHERE userID=?", array($user_id)));
+	$result = $db->getResult("SELECT timestamp, location, destination FROM hitch_hitchhikestatus WHERE userID=?", array($user_id));
 	
-	echo $result;
+	//Check result. If empty - error, else return result.
+	if(empty($result)) {
+		throwError('Result Empty', 403);
+	}
+	else {
+		echo json_encode($result);
+	}
 ?>

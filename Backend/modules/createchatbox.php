@@ -26,7 +26,7 @@
 	
 	//Input parameters
 	$user1_id = $_GET['user1ID'];
-	$user2_id = $_GET['user12ID'];
+	$user2_id = $_GET['user2ID'];
 	$start_point = $_GET['startPoint'];
 	$end_point = $_GET['endPoint'];
 
@@ -45,8 +45,9 @@
 	}
 
 	//Put data to database
-	$db->insertRow('hitch_chatboxes', array(null, null, $start_point, $endPoint));
-	$db->insertRow('hitch_chatusers', array($user1_id, $user2_id));
+	$chat_id = $db->insertRow('hitch_chatboxes', array(null, null, $start_point, $end_point));
+	$db->insertRow('hitch_chatusers', array($chat_id, $user1_id));
+	$db->insertRow('hitch_chatusers', array($chat_id, $user2_id));
 	
-	
+	echo '{ "chatID" : '.$chat_id.' }';
 ?>

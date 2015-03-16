@@ -35,9 +35,15 @@
 		$time = time() - 7200;
 	}
 	
-	
 	//Get data from database
-	$result = json_encode($db->getResult("SELECT * FROM hitch_matches WHERE routeID=? AND timestamp>? ".$time, array($route_id, $time)));
+	$result = $db->getResult("SELECT * FROM hitch_matches WHERE routeID=?", array($route_id));
 	
-	echo $result;
+	//Check result. If empty - error, else return result.
+	if(empty($result)) {
+		throwError('Result Empty', 403);
+	}
+	else {
+		echo json_encode($result);
+	}
+	
 ?>

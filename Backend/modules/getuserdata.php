@@ -31,7 +31,13 @@
 	$user_id = $_GET['userID'];
 		
 	//RETURN OUTPUT DATA AS JSON	
-	$result = json_encode($db->getRow("SELECT * FROM hitch_users WHERE userId=?", array($user_id)));
+	$result = $db->getRow("SELECT * FROM hitch_users WHERE userId=?", array($user_id));
 	
-	echo $result;
+	//Check result. If empty - error, else return result.
+	if(empty($result)) {
+		throwError('Result Empty', 403);
+	}
+	else {
+		echo json_encode($result);
+	}
 ?>

@@ -27,7 +27,13 @@
 	$subject_id = $_GET['subjectID'];
 	
 	//Get data from database
-	$result = json_encode($db->getRow("SELECT rating FROM hitch_ratings WHERE byUserId=? AND toUserId=?", array($user_id, $subject_id)));
+	$result = $db->getRow("SELECT rating FROM hitch_ratings WHERE byUserId=? AND toUserId=?", array($user_id, $subject_id));
 	
-	echo $result;
+	//Check result. If empty - error, else return result.
+	if(empty($result)) {
+		throwError('Result Empty', 403);
+	}
+	else {
+		echo json_encode($result);
+	}
 ?>

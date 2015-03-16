@@ -54,10 +54,10 @@
 	
 	if(isset($_GET['order'])){
 		if($_GET['order'] == "ta"){
-			$order = $_GET['ASC'];
+			$order = "ASC";
 		}
 		elseif ($_GET['order'] == "td") {
-			$order = $_GET['DESC'];
+			$order = "DESC";
 		}
 	}
 	else {
@@ -69,8 +69,15 @@
 		//$result = json_encode($db->getResult("SELECT * FROM hitch_hitchhikestatus WHERE userID=? ORDER BY LIMIT ".$limit, array($user_id)));
 	}
 	else {
-		$result = json_encode($db->getResult("SELECT * FROM hitch_hitchhikestatus WHERE userID=? ORDER BY timestamp ".$order." LIMIT ".$limit, array($user_id)));
+		$result = $db->getResult("SELECT * FROM hitch_hitchhikestatus WHERE userID=? ORDER BY timestamp ".$order." LIMIT ".$limit, array($user_id));
 	}
 	
+	//Check result. If empty - error, else return result.
+	if(empty($result)) {
+		throwError('Result Empty', 403);
+	}
+	else {
+		echo json_encode($result);
+	}
 	
 ?>
