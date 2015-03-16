@@ -29,7 +29,21 @@
 	$user2_id = $_GET['user12ID'];
 	$start_point = $_GET['startPoint'];
 	$end_point = $_GET['endPoint'];
-	
+
+	//get users from database
+	$user1 = $db->getRow("SELECT userID FROM hitch_users WHERE userID=?", array($user1_id));
+	$user2 = $db->getRow("SELECT userID FROM hitch_users WHERE userID=?", array($user2_id));
+
+	//check if user 1 was found
+	if ($user1 == false) {
+		throwError('User 1 was not found.');
+	}
+
+	//check if user 2 was found
+	if ($user2 == false) {
+		throwError('User 2 was not found.');
+	}
+
 	//Put data to database
 	$db->insertRow('hitch_chatboxes', array(null, null, $start_point, $endPoint));
 	$db->insertRow('hitch_chatusers', array($user1_id, $user2_id));
