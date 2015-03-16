@@ -20,11 +20,16 @@
 	*/
 	
 	//Check if required parameters are set
-	
+	if(!isset($_GET['userID']) || !isset($_GET['startpoint']) || !isset($_GET['endpoint']) || !isset($_GET['timestamp'])) {
+		throwError('Missing required parameters');
+	}
 	
 	//Input parameters
-	
+	$user_id = $_GET['userID'];
+	$startpoint = $_GET['startpoint'];
+	$endpoint = $_GET['endpoint'];
+	$timestamp = $_GET['timestamp'];
 	
 	//Get data from database
-	
+	$db->executeQuery("UPDATE hitch_userroutes SET startpoint=?, endpoint=?, timestamp=? WHERE userID=?", array($startpoint, $endpoint, $timestamp, $user_id));
 ?>

@@ -9,7 +9,25 @@
 	//List of modules
 	$modules = array(
 		"GetUserData" => "getuserdata.php",
-		"RegisterUser" => "registeruser.php"
+		"RegisterUser" => "registeruser.php",
+		"GetUserHitchhikeData" => "getuserhitchhikedata.php",
+		"AddUserRoute" => "adduserroute.php",
+		"AddUserToChat" => "addusertochat.php",
+		"CreateChatBox" => "createchatbox.php",
+		"DeleteUserRoute" => "deleteuserroute.php",
+		"GetChatBoxes" => "getchatboxes.php",
+		"GetChatMessages" => "getchatmessages.php",
+		"GetHitchhikeData" => "gethitchhikedata.php",
+		"GetHitchhikeMatches" => "gethitchhikematches.php",
+		"GetMatchingDrivers" => "getmatchingdrivers.php",
+		"GetUserRating" => "getuserrating.php",
+		"GetUserRatingByUser" => "getuserratingbyuser.php",
+		"GetUserRoutes" => "getuserroutes.php",
+		"GiveUserRating" => "giveuserrating.php",
+		"RegisterUser" => "registeruser.php",
+		"RemoveUserFromChat" => "removeuserfromchat.php",
+		"RemoveUserHitchhikeData" => "removeuserhitchhikedata.php",
+		"UpdateUserRoute" => "updateuserroute.php"
 	);
 
 	//Check if the func parameter is set, if not: throw an error.

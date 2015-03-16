@@ -7,24 +7,25 @@
 		Database object:
 			$db
 		
-		Module: RemoveUserHitchhikeData
+		Module: RemoveUserToChat
 		Input parameters:
-			userID: The ID of the user hitchhiking.
-
+			userID: The ID of the user joining the chatbox.
+			chatID: The ID of the chatbox to join.
+			
 		Output parameters:
 			-
 			
 	*/
 	
 	//Check if required parameters are set
-	if(!isset($_GET['userID'])) {
+	if(!isset($_GET['userID']) } || !isset($_GET['chatID'])) {
 		throwError('Missing required parameters');
 	}
 	
 	//Input parameters
 	$user_id = $_GET['userID'];
+	$chat_id = $_GET['chatID'];
 	
 	//Get data from database
-	$db->executeQuery("DELETE FROM hitch_hitchhikestatus WHERE userID=?", array($user_id));
-		
+	$db->executeQuery("DELETE FROM hitch_chatusers WHERE chatID=? AND userID=?", array($chat_id, $user_id));
 ?>

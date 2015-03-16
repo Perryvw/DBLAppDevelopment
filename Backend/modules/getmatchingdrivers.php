@@ -39,7 +39,7 @@
 	// WHAT ABOUT RELEVANCE?
 	
 	
-	$result = json_encode($db->getResult("SELECT ... FROM hitch_matches WHERE ...", array()));
+	$result = json_encode($db->getResult("SELECT * FROM hitch_matches WHERE hitchhikerID=? LIMIT".$amount, array($user_id)));
 	
 	echo $result;
 ?>

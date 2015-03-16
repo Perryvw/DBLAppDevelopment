@@ -39,7 +39,8 @@
 	//Insert data and get the ID back
 	$user_id = $db->insertRow('hitch_users', array(NULL, 0, $state, $name, $birthdate, $joinedDate, $hitchhikes, $avatarURL));
 
-	//RETURN OUTPUT DATA AS JSON
-	print_r($user_id);
+	//insert hitchhikestatus
+	$db->insertRow('hitch_hitchhikestatus', array($user_id, '1990-1-1', '', ''));
+
 	echo '{ "userID" : '.$user_id.' }';
 ?>

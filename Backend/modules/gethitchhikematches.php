@@ -9,7 +9,7 @@
 		
 		Module: GetHitchhikeMatches
 		Input parameters:
-			driverID: The user ID of the hitchhiker.
+			routeID: The route ID for which mathing is returned.
 			timeWindow: The amount of seconds since the match was made. (Optional, default = 7200).
 
 		Output parameters:
@@ -22,12 +22,12 @@
 	*/
 	
 	//Check if required parameters are set
-	if(!isset($_GET['userID'])) {
+	if(!isset($_GET['routeID'])) {
 		throwError('Missing required parameters');
 	}
 	
 	//Input parameters
-	$user_id = $_GET['userID'];
+	$route_id = $_GET['routeID'];
 	if(isset($_GET['timeWindow'])) {
 		$time = time() - $_GET['timeWindow'];
 	}
@@ -35,6 +35,9 @@
 		$time = time() - 7200;
 	}
 	
+	
 	//Get data from database
-	$result = json_encode();
+	$result = json_encode($db->getResult("SELECT * FROM hitch_matches WHERE routeID=? AND timestamp>? ".$time, array($route_id, $time)));
+	
+	echo $result;
 ?>
