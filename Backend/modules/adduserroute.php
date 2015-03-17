@@ -23,17 +23,23 @@
 	if(!isset($_GET['userID']) || !isset($_GET['startpoint']) || !isset($_GET['endpoint']) || !isset($_GET['timestamp'])) {
 		throwError('Missing required parameters');
 	}
+
+	//Set the timezone since we're using dates
+	date_default_timezone_set('Europe/London');
 	
 	//Input parameters
 	$user_id = $_GET['userID'];
 	$start_point = $_GET['startpoint'];
 	$end_point = $_GET['endpoint'];
-	$timestamp = $_GET['timestamp'];
+	$timestamp = date('Y-m-d H:i:s', $_GET['timestamp']);
 	
-	//Get data from database
+	//Get user
+	$user = $db->getRow("SELECT userID FROM hitch_users WHERE userID=?", array($user_id));
+	if ($user == false) {
+		throwError('This user could not be found!');
+	}
 	
-	//WHAT TO DO WITH AUTO INCREMENTED ROUTE ID????!!?!?!?!
-	
-	
-	$db->insertRow('hitch_userroutes', array(null, $user_id, $startpoint, $endpoint, $timestamp));
+	$route_id = $db->insertRow('hitch_userroutes', array(null, $user_id, $timestamp, $start_point, $end_point));
+
+	echo '{ "routeID" : '.$route_id.' }';
 ?>
