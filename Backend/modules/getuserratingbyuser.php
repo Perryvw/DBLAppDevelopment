@@ -25,15 +25,17 @@
 	//Input parameters
 	$user_id = $_GET['userID'];
 	$subject_id = $_GET['subjectID'];
+
+	//Check if the subject exists
+	$subject = $db->getRow("SELECT 1 FROM hitch_users WHERE userID=?", array($subject_id));
+	if ($subject == false) {
+		throwError('The subject was not found');
+	}
 	
 	//Get data from database
 	$result = $db->getRow("SELECT rating FROM hitch_ratings WHERE byUserId=? AND toUserId=?", array($user_id, $subject_id));
-	
-	//Check result. If empty - error, else return result.
-	if(empty($result)) {
-		throwError('Result Empty', 403);
-	}
-	else {
-		echo json_encode($result);
-	}
+	$rating = $result == false ? -1 : $result->rating;
+
+	//Output
+	echo '{ "rating" : '.$rating.' }';
 ?>

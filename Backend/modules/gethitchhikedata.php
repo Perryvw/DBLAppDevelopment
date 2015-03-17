@@ -9,7 +9,6 @@
 		
 		Module: GetHitchhikeData
 		Input parameters:
-			userID: The ID of an user for whom the hitchhike data is requested.
 			limit: The maximum number of results to be returned (Optional, default is 20).
 			destination: The destination of the hitchhikers (Optional).
 			location: The location of the user requesting the data (Optional).
@@ -29,55 +28,20 @@
 	
 	*/
 	
-	//Check if required parameters are set
-	if(!isset($_GET['userID'])) {
-		throwError('Missing required parameters');
+	//Get input parameters
+	$limit = isset($_GET['limit']) ? $_GET['limit'] : 20;
+	$destination = isset($_GET['destination']) ? $_GET['destination'] : false;
+	$location = isset($_GET['location']) ? $_GET['location'] : false;
+	$order = isset($_GET['order']) ? $_GET['order'] : 'ta';
+
+	$orderStr = "timestamp ASC";
+	if ($order == 'td') {
+		$orderStr = "timestamp DESC";
 	}
-	
-	//Input parameters
-	$user_id = $_GET['userID'];
-	
-	if(isset($_GET['limit'])){
-		$limit = $_GET['limit'];
-	}
-	else {
-		$limit = 20;
-	}
-	
-	if(isset($_GET['destination'])){
-		$destination = $_GET['destination'];
-	}
-	
-	if(isset($_GET['location'])){
-		$location = $_GET['location'];
-	}
-	
-	if(isset($_GET['order'])){
-		if($_GET['order'] == "ta"){
-			$order = "ASC";
-		}
-		elseif ($_GET['order'] == "td") {
-			$order = "DESC";
-		}
-	}
-	else {
-		$order = "ASC";
-	}
-	
-	//Get data from database
-	if($location) {
-		//$result = json_encode($db->getResult("SELECT * FROM hitch_hitchhikestatus WHERE userID=? ORDER BY LIMIT ".$limit, array($user_id)));
-	}
-	else {
-		$result = $db->getResult("SELECT * FROM hitch_hitchhikestatus WHERE userID=? ORDER BY timestamp ".$order." LIMIT ".$limit, array($user_id));
-	}
-	
-	//Check result. If empty - error, else return result.
-	if(empty($result)) {
-		throwError('Result Empty', 403);
-	}
-	else {
-		echo json_encode($result);
-	}
-	
+
+	$query = null;
+	$result = $db->getResult("SELECT * FROM hitch_hitchhikestatus ORDER BY ".$orderStr." LIMIT 20", array($limit));
+
+	//Output
+	echo '{ "hitchhikers": '.json_encode($result).' }';	
 ?>

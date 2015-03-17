@@ -24,7 +24,15 @@
 	//Input parameters
 	$user_id = $_GET['userID'];
 	
-	//Get data from database
-	$db->executeQuery("DELETE FROM hitch_hitchhikestatus WHERE userID=?", array($user_id));
-		
+	//Check if the user exists
+	$user = $db->getRow("SELECT userID FROM hitch_users WHERE userID=?", array($user_id));
+	if ($user == false) {
+		throwError('User not found.');
+	}
+	
+	//Update database	
+	$db->executeQuery("UPDATE hitch_hitchhikestatus SET timestamp='1990-01-01 0:00' WHERE userID=?", array($user_id));
+
+	//Output
+	echo '{}';		
 ?>

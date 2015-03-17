@@ -30,8 +30,8 @@
 	$result = $db->getResult("SELECT timestamp, location, destination FROM hitch_hitchhikestatus WHERE userID=?", array($user_id));
 	
 	//Check result. If empty - error, else return result.
-	if(empty($result)) {
-		throwError('Result Empty', 403);
+	if($result == false) {
+		throwError('This user could not be found');
 	}
 	else {
 		echo json_encode($result);

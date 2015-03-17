@@ -25,15 +25,16 @@
 	
 	//Input parameters
 	$user_id = $_GET['userID'];
+
+	//Check if the user exists
+	$user = $db->getRow("SELECT 1 FROM hitch_users WHERE userID=?", array($user_id));
+	if ($user == false) {
+		throwError('This user could not be found');
+	}
 	
 	//Get data from database
-	$result = $db->getRow("SELECT AVG(rating) as rating FROM hitch_ratings WHERE toUserId=?", array($user_id));
-	
-	//Check result. If empty - error, else return result.
-	if(empty($result)) {
-		throwError('Result Empty', 403);
-	}
-	else {
-		echo json_encode($result);
-	}
+	$result = $db->getRow("SELECT COALESCE(AVG(rating), 0) as 'rating', COUNT(rating) as 'numRatings' FROM hitch_ratings WHERE toUserId=?", array($user_id));
+	$result->userID = $user_id;
+
+	echo json_encode($result);	
 ?>

@@ -14,6 +14,7 @@
 		Output parameters:
 			routes: An array of objects representing routes, each containing the following fields:
 				routeID: The unique ID for this route.
+				userID: The ID of the user owning this route.
 				startpoint: The startpoint of the route.
 				endpoint: The endpoint of the route.
 				timestamp: The time of departure for this route.
@@ -29,13 +30,8 @@
 	$user_id = $_GET['userID'];
 	
 	//Get data from database
-	$result = $db->getResult("SELECT userrouteID, timestamp, startPoint, endPoint FROM hitch_routes WHERE userID=?", array($user_id));
+	$result = $db->getResult("SELECT userrouteID as 'routeID', userID, startPoint, endPoint, timestamp FROM hitch_userroutes WHERE userID=?", array($user_id));
 	
 	//Check result. If empty - error, else return result.
-	if(empty($result)) {
-		throwError('Result Empty', 403);
-	}
-	else {
-		echo json_encode($result);
-	}
+	echo '{ "routes" : '.json_encode($result).' }';
 ?>

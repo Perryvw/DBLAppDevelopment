@@ -28,4 +28,7 @@
 	
 	//Get data from database
 	$db->executeQuery("DELETE FROM hitch_chatusers WHERE chatID=? AND userID=?", array($chat_id, $user_id));
+
+	//Output
+	echo '{}';
 ?>

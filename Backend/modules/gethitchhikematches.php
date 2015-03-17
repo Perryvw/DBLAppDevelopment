@@ -28,22 +28,19 @@
 	
 	//Input parameters
 	$route_id = $_GET['routeID'];
+
+	//get a since time
+	$since = time() - 7200;
 	if(isset($_GET['timeWindow'])) {
-		$time = time() - $_GET['timeWindow'];
+		$since = time() - $_GET['timeWindow'];
 	}
-	else {
-		$time = time() - 7200;
-	}
-	
+
+	//set the since time to a date
+	$since = date('Y-m-d H:i:s', $since);
+
 	//Get data from database
-	$result = $db->getResult("SELECT * FROM hitch_matches WHERE routeID=?", array($route_id));
+	$result = $db->getResult("SELECT routeID, hitchhikerID as 'userID', timestamp, relevance FROM hitch_matches WHERE routeID=? AND timestamp > ?", array($route_id, $since));
 	
 	//Check result. If empty - error, else return result.
-	if(empty($result)) {
-		throwError('Result Empty', 403);
-	}
-	else {
-		echo json_encode($result);
-	}
-	
+	echo '{ "matches" : '.json_encode($result).' }';	
 ?>

@@ -39,5 +39,6 @@
 	//Insert
 	$db->insertRow('hitch_chatmessages', array($chat_id, $user_id, $date, $message));
 	
-	echo '{ }';
+	//Output
+	echo '{}';
 ?>

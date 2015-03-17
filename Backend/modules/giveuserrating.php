@@ -30,7 +30,8 @@
 	$rating = $_GET['rating'];
 	$comment = '';
 	if(isset($_GET['comment'])){
-		$comment = $_GET['comment'];
+		//url-decode the string
+		$comment = urldecode($_GET['comment']);
 	}
 	
 	//Put data to database

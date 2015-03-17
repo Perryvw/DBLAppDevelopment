@@ -6,6 +6,9 @@
 	//Require libraries
 	require('database.php');
 
+	//Set the timezone since we're using dates
+	date_default_timezone_set('Europe/London');
+
 	//List of modules
 	$modules = array(
 		"GetUserData" => "getuserdata.php",
@@ -40,7 +43,7 @@
 	//Check if the given func parameter is one of our modules, if not throw an error.
 	if (!array_key_exists($_GET['func'], $modules)) {
 		//throw other error
-		throwError('Module name not recognized.');
+		throwError('Module name not recognized.', 405);
 	}
 
 	//Connect to the database

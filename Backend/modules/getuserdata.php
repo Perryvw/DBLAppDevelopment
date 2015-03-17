@@ -35,7 +35,7 @@
 	
 	//Check result. If empty - error, else return result.
 	if(empty($result)) {
-		throwError('Result Empty', 403);
+		throwError('This user could not be found.');
 	}
 	else {
 		echo json_encode($result);
