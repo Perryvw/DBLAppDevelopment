@@ -18,10 +18,11 @@ public class MainActivity extends Activity {
     /**
      * When the app is giving birth the intent BirthActivity will be started. Otherwise we will start TabViewActivity.
      */
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = new Intent(this, RouteActivity.class);
+        startActivity(intent);
 //        SharedPreferences prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
 //        boolean birthControl = prefs.getBoolean(BIRTH_KEY, false);
 //        if (! birthControl) {
@@ -32,22 +33,5 @@ public class MainActivity extends Activity {
 //
 //        Intent intent = new Intent(this, TabViewActivity.class);
 //        startActivity(intent);
-//    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_route);
     }
-
-/*    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_map);
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-*/
 }
