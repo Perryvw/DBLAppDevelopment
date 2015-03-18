@@ -9,7 +9,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import org.json.JSONObject;
+
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 
 /**
  * Created by s128232 on 10-3-2015.
@@ -21,6 +29,9 @@ public class RegisterActivity extends Activity {
     //text edit fields
     private EditText nameEdit;
     private EditText ageEdit;
+
+    //FB
+    private UiLifecycleHelper uiHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +56,10 @@ public class RegisterActivity extends Activity {
                 registerUser(name, age, state);
             }
         });
+
+        //FB
+        uiHelper = new UiLifecycleHelper(this, callback);
+        uiHelper.onCreate(savedInstanceState);
     }
 
     /**
@@ -85,5 +100,77 @@ public class RegisterActivity extends Activity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(MainActivity.BIRTH_KEY, true);
         editor.commit();
+    }
+
+    /*
+    Facebook stuff below
+    Perhaps change something, but this should work.
+     */
+    // Called when session changes
+    private Session.StatusCallback callback = new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state,
+                         Exception exception) {
+            onSessionStateChange(session, state, exception);
+        }
+    };
+
+    // When session is changed, this method is called from callback method
+    private void onSessionStateChange(Session session, SessionState state,
+                                      Exception exception) {
+        final TextView fb_name = (TextView) findViewById(R.id.fb_name);
+        final TextView fb_age = (TextView) findViewById(R.id.fb_age);
+        // When Session is successfully opened (User logged-in)
+        if (state.isOpened()) {
+            Log.i("Facebook: ", "Logged in...");
+            // make request to the /me API to get Graph user
+            Request.newMeRequest(session, new Request.GraphUserCallback() {
+
+                // callback after Graph API response with user
+                // object
+                @Override
+                public void onCompleted(GraphUser user, Response response) {
+                    if (user != null) {
+                        // Set User name
+                        fb_name.setText("Hello " + user.getName());
+                        fb_age.setText("Age: " + user.getBirthday());
+                    }
+                }
+            }).executeAsync();
+        } else if (state.isClosed()) {
+            Log.i("Facebook: ", "Logged out...");
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        uiHelper.onActivityResult(requestCode, resultCode, data);
+        Log.i("Facebook: ", "OnActivityResult...");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        uiHelper.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        uiHelper.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        uiHelper.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        uiHelper.onSaveInstanceState(outState);
     }
 }

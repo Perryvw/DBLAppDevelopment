@@ -21,17 +21,17 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, RouteActivity.class);
-        startActivity(intent);
-//        SharedPreferences prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-//        boolean birthControl = prefs.getBoolean(BIRTH_KEY, false);
-//        if (! birthControl) {
-//            Intent intent = new Intent(this, BirthActivity.class);
-//            startActivity(intent);
-//            return;
-//        }
-//
-//        Intent intent = new Intent(this, TabViewActivity.class);
+//        Intent intent = new Intent(this, RouteActivity.class);
 //        startActivity(intent);
+        SharedPreferences prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
+        boolean birthControl = prefs.getBoolean(BIRTH_KEY, false);
+        if (! birthControl) {
+            Intent intent = new Intent(this, BirthActivity.class);
+            startActivity(intent);
+            return;
+        }
+
+        Intent intent = new Intent(this, TabViewActivity.class);
+        startActivity(intent);
     }
 }
