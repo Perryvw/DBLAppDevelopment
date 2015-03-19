@@ -23,24 +23,33 @@
 	*/
 	
 	//Check if required parameters are set
-	if(!isset($_GET['chatID']) || !isset($_GET['since'])) {
+	if(!isset($_GET['chatID']) || (!isset($_GET['since']) && !isset($_GET['limit']))) {
 		throwError('Missing required parameters');
 	}
-	
+
 	//Input parameters
 	$chat_id = $_GET['chatID'];
-	$since = $_GET['since'];
-	if(isset('limit')){
-		$limit = $_GET['limit'];
+	$since = isset($_GET['since']) ? date('Y-m-d H:i:s', $_GET['since']) : -1;
+	$limit = isset($_GET['limit']) ? $_GET['limit'] : -1;
+
+	if (!is_numeric($limit)) {
+		throwError('Limit must be numeric!');
 	}
 	
-	//Get data from database
-	if($limit) {
-		$result = json_encode($db->getResult("SELECT * FROM hitch_chatmessages WHERE timestamp > ".$since." AND chatID=? LIMIT ".$limit, array($chatID)));
-	}
-	else {
-		$result = json_encode($db->getResult("SELECT * FROM hitch_chatmessages WHERE timestamp > ".$since." AND chatID=?", array($chatID)));
+	$result = null;
+
+	//Check the case
+	if ($since == -1) {
+		//only limit is set
+		$result = $db->getResult("SELECT userID, message as 'text', timestamp FROM hitch_chatmessages WHERE chatID=? ORDER BY timestamp DESC LIMIT ".$limit, array($chat_id));
+	} elseif ($limit == -1) {
+		//only since is set
+		$result = $db->getResult("SELECT userID, message as 'text', timestamp FROM hitch_chatmessages WHERE chatID=? AND timestamp >= ? ORDER BY timestamp DESC", array($chat_id, $since));
+	} else {
+		//both are set
+		$result = $db->getResult("SELECT userID, message as 'text', timestamp FROM hitch_chatmessages WHERE chatID=? AND timestamp >= ? ORDER BY timestamp DESC LIMIT ".$limit, array($chat_id, $since));
 	}
 	
-	echo $result;
+	//output data
+	echo '{ "messages" : '.json_encode($result).' }';
 ?>

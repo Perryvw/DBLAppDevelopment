@@ -33,7 +33,22 @@
 		//url-decode the string
 		$comment = urldecode($_GET['comment']);
 	}
-	
+
+	//Check if the user exists
+	$user = $db->getRow("SELECT 1 FROM hitch_users WHERE userID=?", array($user_id));
+	if ($user == false) {
+		throwError('User was not found.');
+	}
+
+	//Check if the receiver exists
+	$rec = $db->getRow("SELECT 1 FROM hitch_users WHERE userID=?", array($receiver_id));
+	if ($rec == false) {
+		throwError('Receiving user was not found.');
+	}
+
 	//Put data to database
 	$db->insertRow('hitch_ratings', array($user_id, $receiver_id, $rating, $comment));
+
+	//Output
+	echo '{}';
 ?>

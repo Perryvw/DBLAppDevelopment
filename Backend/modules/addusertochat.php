@@ -25,7 +25,22 @@
 	//Input parameters
 	$user_id = $_GET['userID'];
 	$chat_id = $_GET['chatID'];
+
+	//Check if the chat exists
+	$chat = $db->getRow("SELECT 1 FROM hitch_chatboxes WHERE chatID=?", array($chat_id));
+	if ($chat == false) {
+		throwError('This chat was not found.');
+	}
+
+	//Check if the user exists
+	$user = $db->getRow("SELECT 1 FROM hitch_users WHERE userID=?", array($user_id));
+	if ($user == false) {
+		throwError('This user was not found.');
+	}
 	
 	//Get data from database
 	$db->insertRow('hitch_chatusers', array($chat_id, $user_id));
+
+	//Output
+	echo '{}';
 ?>

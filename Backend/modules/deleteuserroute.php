@@ -22,7 +22,16 @@
 	
 	//Input parameters
 	$route_id = $_GET['routeID'];
+
+	//Check if the route exists in our database
+	$route = $db->getRow("SELECT 1 FROM hitch_userroutes WHERE routeID=?", array($route_id));
+	if ($route == false) {
+		throwError('This route could not be found.');
+	}
 	
 	//Get data from database
 	$db->executeQuery("DELETE FROM hitch_userroutes WHERE userrouteID=?", array($route_id));
+
+	//Output
+	echo '{}';
 ?>

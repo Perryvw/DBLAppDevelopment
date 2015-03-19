@@ -15,6 +15,7 @@
 		"RegisterUser" => "registeruser.php",
 		"GetUserHitchhikeData" => "getuserhitchhikedata.php",
 		"AddUserRoute" => "adduserroute.php",
+		"AddUserHitchhikeData" => "adduserhitchhikedata.php",
 		"AddUserToChat" => "addusertochat.php",
 		"CreateChatbox" => "createchatbox.php",
 		"DeleteUserRoute" => "deleteuserroute.php",

@@ -30,13 +30,8 @@
 	$endpoint = $_GET['endpoint'];
 	
 	//Get data from database
-	$result = $db->getResult("SELECT chatID, dateCreated FROM hitch_chatboxes WHERE startpoint=? AND endpoint=?", array($startpoint, $endpoint));
+	$result = $db->getResult("SELECT chatID, dateCreated FROM hitch_chatboxes WHERE routeStartPoint=? AND routeEndPoint=?", array($startpoint, $endpoint));
 	
-	//Check result. If empty - error, else return result.
-	if(empty($result)) {
-		throwError('Result Empty', 403);
-	}
-	else {
-		echo json_encode($result);
-	}
+	//Output
+	echo '{ "chatboxes" : '.json_encode($result).' }';
 ?>

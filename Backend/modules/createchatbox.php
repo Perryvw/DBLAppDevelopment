@@ -44,10 +44,13 @@
 		throwError('User 2 was not found.');
 	}
 
-	//Put data to database
+	//Make chatbox in database (returns chat id)
 	$chat_id = $db->insertRow('hitch_chatboxes', array(null, null, $start_point, $end_point));
+
+	//Add users to the chatbox in db
 	$db->insertRow('hitch_chatusers', array($chat_id, $user1_id));
 	$db->insertRow('hitch_chatusers', array($chat_id, $user2_id));
 	
+	//Output
 	echo '{ "chatID" : '.$chat_id.' }';
 ?>

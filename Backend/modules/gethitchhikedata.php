@@ -39,6 +39,10 @@
 		$orderStr = "timestamp DESC";
 	}
 
+	if ($order == 'la' || $order == 'ld') {
+		throwError('This ordering is currently not supported.');
+	}
+
 	$query = null;
 	$result = $db->getResult("SELECT * FROM hitch_hitchhikestatus ORDER BY ".$orderStr." LIMIT 20", array($limit));
 

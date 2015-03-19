@@ -15,12 +15,11 @@
 			timestamp: The time this data was placed on the server.
 
 		Output parameters:
-			-
-			
+			-		
 	*/
 	
 	//Check if required parameters are set
-	if(!isset($_GET['userID']) || !isset($_GET['location']) || !isset($_GET['destination']) || !isset($_GET['timestamp'])) {
+	if(!isset($_GET['userID']) || !isset($_GET['location']) || !isset($_GET['destination'])) {
 		throwError('Missing required parameters');
 	}
 
@@ -31,8 +30,17 @@
 	$user_id = $_GET['userID'];
 	$location = $_GET['location'];
 	$destination = $_GET['destination'];
-	$timestamp = date('Y-m-d H:i:s', $_GET['timestamp']);
+	$timestamp = date('Y-m-d H:i:s', (isset($_GET['timestamp'])? $_GET['timestamp'] : time()));
 	
-	//Get data from database
-	$db->insertRow('hitch_hitchhikestatus', array($user_id, $timestamp, $location, $destination));
+	//Check if the user exists
+	$user = $db->getRow("SELECT 1 FROM hitch_users WHERE userID=?", array($user_id));
+	if ($user == false) {
+		throwError('This user was not found.');
+	}
+
+	//Update database
+	$db->executeQuery("UPDATE hitch_hitchhikestatus SET location=?, destination=?, timestamp=? WHERE userID=?", array($location, $destination, $timestamp, $user_id));
+
+	//Output
+	echo '{}';
 ?>
