@@ -12,6 +12,33 @@ import java.util.Date;
  * Created by guusleijsten on 18/03/15.
  */
 public class User {
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public int getHitchhikes() {
+        return hitchhikes;
+    }
+
+    public String getBirthdate() {
+        return birthdate;
+    }
+
+    public String getJoinedDate() {
+        return joinedDate;
+    }
+
+    public String getAvatarURL() {
+        return avatarURL;
+    }
 
     private int id;
     private String name;
@@ -28,28 +55,12 @@ public class User {
      */
     public User(int id) {
         this.id = id;
+        if (id == -1) {
+            return;
+        }
         if (! load()) {
             Log.e("User", "user could not now be loaded!");
         }
-    }
-
-    /**
-     * Construct user from data and registers.
-     *
-     * @param name users name
-     * @param state users state
-     * @param birthdate users date of birth
-     */
-    public User(String name, int state, String birthdate) {
-        this.name = name;
-        this.state = state;
-        this.birthdate = birthdate;
-        //get current date
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//dd/MM/yyyy
-        Date now = new Date();
-        this.joinedDate = sdfDate.format(now);
-        //Register the user and set the retrieved id.
-        this.id = register(name, state, birthdate, joinedDate);
     }
 
     public boolean load() {
@@ -68,17 +79,42 @@ public class User {
         return false;
     }
 
-    public String toString() {
-        return "{id: " + Integer.toString(id) + ", name: " + name + ", state: " + Integer.toString(state) + "}";
-    }
-
-    public int register(String name, int state, String birthdate, String joinedDate) {
+    /**
+     * Register a user.
+     *
+     * @param name name
+     * @param state state
+     * @param age age of the user
+     * @return the new id of the user
+     */
+    public static int registerUser(String name, int state, int age) {
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//dd/MM/yyyy
+        Date now = new Date();
+        String joinedDate = sdfDate.format(now);
         try {
-            JSONObject json = API.registerUser(name, state, birthdate, joinedDate);
+            JSONObject json = API.registerUser(name, state, Integer.toString(2015 - age) + "-01-01", joinedDate);
             return json.getInt("userID");
         } catch(JSONException e) {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public void setName(String name) {
+        API.updateUserData(this.id, name, -1, -1, null, null, null);
+    }
+
+    /**
+     * @param state 0 for driver, 1 for hiker
+     */
+    public void setState(int state) {
+        API.updateUserData(this.id, null, state, -1, null, null, null);
+    }
+
+    /**
+     * Increments the times successfully hitchhiked by the user.
+     */
+    public void incrementHitchhikes() {
+        API.updateUserData(this.id, null, -1, hitchhikes++, null, null, null);
     }
 }

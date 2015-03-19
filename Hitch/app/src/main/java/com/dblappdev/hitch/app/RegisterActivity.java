@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.dblappdev.hitch.model.User;
 import org.json.JSONObject;
 
 import com.facebook.Request;
@@ -52,8 +53,7 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
                 String name = nameEdit.getText().toString();
                 int age = Integer.parseInt(ageEdit.getText().toString());
-                int state = getState();
-                registerUser(name, age, state);
+                registerUser(name, age);
             }
         });
 
@@ -67,39 +67,24 @@ public class RegisterActivity extends Activity {
      *
      * @param name the name of the user
      * @param age the age of the user
-     * @param state 0 for driver, 1 for hitcher
      */
-    private void registerUser(String name, int age, int state) {
-        Log.d("registerUser", "{name: \"" + name + "\", age: " + age + ", state: " + state + "}");
-        giveBirth();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        /**
+    private void registerUser(String name, int age) {
+        int state = prefs.getInt(MainActivity.STATE_KEY, 0);
 
-
-        //setup request
-        String getRequest = "func=RegisterUser&name="+name+"&state="+state+"&hitchhikes=0&avatarURL=";
-
-        try {
-            JSONObject response = HttpURLConnection.sendGet(getRequest);
-            Log.d("response", response.toString());
-        } catch(Exception e) {
-            e.printStackTrace();
+        int id = User.registerUser(name, state, age);
+        Log.d("ID", Integer.toString(id));
+        if (id < 0) {
+            return;
         }
-         */
-    }
-
-    private int getState() {
-        return prefs.getInt(MainActivity.STATE_KEY, 0);
-    }
-
-    /**
-     * Sets the shared preference boolean birth to true.
-     */
-    private void giveBirth() {
+        // update shared preferences, birthed and user
         SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(MainActivity.USER_KEY, id);
         editor.putBoolean(MainActivity.BIRTH_KEY, true);
         editor.commit();
+        //TODO: clear history (activityCycle)
+        // navigate to main
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     /*
@@ -131,9 +116,10 @@ public class RegisterActivity extends Activity {
                 @Override
                 public void onCompleted(GraphUser user, Response response) {
                     if (user != null) {
-                        // Set User name
-                        fb_name.setText("Hello " + user.getName());
-                        fb_age.setText("Age: " + user.getBirthday());
+                        nameEdit.setText(user.getName());
+                        if (user.getBirthday() != null) {
+                            ageEdit.setText(user.getBirthday());
+                        }
                     }
                 }
             }).executeAsync();

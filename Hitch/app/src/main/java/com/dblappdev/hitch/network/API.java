@@ -74,9 +74,53 @@ public class API {
         params[2] = "state=" + Integer.toString(state);
         params[3] = "hitchhikes=0";
         params[4] = "birthDate=" + birthdate;
-        params[5] = "joinedDate" + joinedDate;
+        params[5] = "joinedDate=" + joinedDate;
         params[6] = "avatarURL";
 
+        return commit(params);
+    }
+
+    /**
+     * Updates a users fields.
+     *
+     * @param userId id of user to update
+     * @param name (optinal) the name, null if not used
+     * @param state (optional) -1 if not used
+     * @param hitchhikes (optional < 0 if not used
+     * @param birthdate (optional) null if not used
+     * @param joinedDate (optional) null if not used
+     * @param avatarURL (optional) null if not used
+     * @return server response
+     */
+    public static JSONObject updateUserData(int userId, String name, int state, int hitchhikes, String birthdate, String joinedDate, String avatarURL) {
+        int count = 0;
+        count += (name == null)? 0: 1;
+        count += (state == -1)? 0: 1;
+        count += (hitchhikes == -1)? 0: 1;
+        count += (birthdate == null)? 0: 1;
+        count += (joinedDate == null)? 0: 1;
+        count += (avatarURL == null)? 0: 1;
+        String[] params = new String[count];
+        params[0] = "func=" + FUNCTIONS[UPDATE_USER_DATA];
+        int i = 1;
+        if (name != null) {
+            params[i++] = "name=" + urlEncode(name);
+        }
+        if (state != -1) {
+            params[i++] = "state=" + Integer.toString(state);
+        }
+        if (hitchhikes < 0) {
+            params[i++] = "hitchhikes=" + Integer.toString(hitchhikes);
+        }
+        if (birthdate != null) {
+            params[i++] = "birthdate=" + birthdate;
+        }
+        if (joinedDate != null) {
+            params[i++] = "joinedDate" + joinedDate;
+        }
+        if (avatarURL != null) {
+            params[i++] = "avatarURL";
+        }
         return commit(params);
     }
 

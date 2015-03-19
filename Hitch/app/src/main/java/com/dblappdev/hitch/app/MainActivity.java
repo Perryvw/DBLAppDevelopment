@@ -14,6 +14,7 @@ public class MainActivity extends Activity {
     public static final String SHARED_PREF = "com.dblappdev.hitch";
     public static final String BIRTH_KEY = "com.dblappdev.hitch.birth";
     public static final String STATE_KEY = "com.dblappdev.hitch.mode";
+    public static final String USER_KEY = "com.dblappdev.hitch.user";
 
     /**
      * When the app is giving birth the intent BirthActivity will be started. Otherwise we will start TabViewActivity.
