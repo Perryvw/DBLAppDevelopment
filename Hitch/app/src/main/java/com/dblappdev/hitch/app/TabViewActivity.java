@@ -88,18 +88,23 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
+        Intent intent;
+        switch(id) {
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                break;
+            case R.id.action_signout:
+                undoBirth();
+                intent = new Intent(this, MainActivity.class);
+                break;
+            case R.id.action_profile:
+                intent = new Intent(this, EditProfileActivity.class);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        if (id == R.id.action_signout) {
-            undoBirth();
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        startActivity(intent);
+        return true;
     }
 
     @Override
