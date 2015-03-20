@@ -25,14 +25,6 @@ public class BirthActivity extends Activity {
     }
 
     /**
-     * Starts Register activity.
-     */
-    private void register() {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivity(intent);
-    }
-
-    /**
      * Sets the shared preference boolean driver mode.
      *
      * @param state 0 for driver, 1 for hiker
@@ -48,7 +40,8 @@ public class BirthActivity extends Activity {
      */
     public void startAsHiker(View view) {
         setState(1);
-        register();
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -56,6 +49,7 @@ public class BirthActivity extends Activity {
      */
     public void startAsDriver(View view) {
         setState(0);
-        register();
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 }

@@ -122,7 +122,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
      */
     private void undoBirth() {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(MainActivity.BIRTH_KEY, false);
+        editor.putInt(MainActivity.USER_KEY, -1);
         editor.commit();
     }
 }

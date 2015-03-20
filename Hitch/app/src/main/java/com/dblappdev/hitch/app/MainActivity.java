@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,7 +13,6 @@ import android.view.MenuItem;
 public class MainActivity extends Activity {
 
     public static final String SHARED_PREF = "com.dblappdev.hitch";
-    public static final String BIRTH_KEY = "com.dblappdev.hitch.birth";
     public static final String STATE_KEY = "com.dblappdev.hitch.mode";
     public static final String USER_KEY = "com.dblappdev.hitch.user";
 
@@ -21,18 +21,19 @@ public class MainActivity extends Activity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-//        Intent intent = new Intent(this, RouteActivity.class);
-//        startActivity(intent);
+
         SharedPreferences prefs = this.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE);
-        boolean birthControl = prefs.getBoolean(BIRTH_KEY, false);
-        if (! birthControl) {
+        int userID = prefs.getInt(USER_KEY, -1);
+
+        if (userID == -1) {
             Intent intent = new Intent(this, BirthActivity.class);
             startActivity(intent);
-            return;
+        } else {
+            Log.d("userID", Integer.toString(userID));
+            Intent intent = new Intent(this, TabViewActivity.class);
+            startActivity(intent);
         }
-
-        Intent intent = new Intent(this, TabViewActivity.class);
-        startActivity(intent);
     }
 }

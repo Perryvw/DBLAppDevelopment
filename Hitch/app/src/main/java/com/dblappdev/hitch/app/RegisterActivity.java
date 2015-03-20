@@ -72,16 +72,13 @@ public class RegisterActivity extends Activity {
         int state = prefs.getInt(MainActivity.STATE_KEY, 0);
 
         int id = User.registerUser(name, state, age);
-        Log.d("ID", Integer.toString(id));
-        if (id < 0) {
+        if (id == -1) {
             return;
         }
         // update shared preferences, birthed and user
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(MainActivity.USER_KEY, id);
-        editor.putBoolean(MainActivity.BIRTH_KEY, true);
         editor.commit();
-        //TODO: clear history (activityCycle)
         // navigate to main
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
