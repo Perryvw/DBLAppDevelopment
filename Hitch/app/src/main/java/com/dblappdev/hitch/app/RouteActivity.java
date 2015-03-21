@@ -1,15 +1,19 @@
 package com.dblappdev.hitch.app;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.dblappdev.hitch.app.GMapV2Direction;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.*;
+import org.w3c.dom.Document;
+
+import java.util.ArrayList;
 
 
 public class RouteActivity extends FragmentActivity implements OnMapReadyCallback{
@@ -35,6 +39,24 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         map.addCircle(new CircleOptions()
                 .center(new LatLng(0, 0))
                 .radius(5000000).fillColor(Color.BLUE));
+//        LatLng fromPosition = new LatLng(13.687140112679154, 100.53525868803263);
+//        LatLng toPosition = new LatLng(13.683660045847258, 100.53900808095932);
+//
+//        GMapV2Direction md = new GMapV2Direction();
+//
+//        Document doc = md.getDocument(fromPosition, toPosition, GMapV2Direction.MODE_DRIVING);
+//
+//        Log.d("getting doc onMapReady()", doc.toString());
+//
+//        ArrayList<LatLng> directionPoint = md.getDirection(doc);
+//        PolylineOptions rectLine = new PolylineOptions().width(3).color(Color.RED);
+//
+//        for(int i = 0 ; i < directionPoint.size() ; i++) {
+//            rectLine.add(directionPoint.get(i));
+//        }
+//
+//        map.addPolyline(rectLine);
+
     }
 
     @Override
