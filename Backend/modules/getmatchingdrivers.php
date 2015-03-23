@@ -27,19 +27,17 @@
 	
 	//Input parameters
 	$user_id = $_GET['hitchhikerID'];
+	$amount = 5;
 	if(isset($_GET['amount'])){
 		$amount = $_GET['amount'];
 	}
-	else {
-		$amount = 5;
-	}
 	
-	//Get data from database
-	
-	// WHAT ABOUT RELEVANCE?
+	//Get the drivers that have the same destination as the hitchhiker (given by the ID)
+	$drivers = $db->getResult("SELECT * FROM hitch_userroutes WHERE endPoint=(
+		SELECT destination FROM hitch_hitchhikestatus WHERE userID=?)");
 	
 	
-	$result = json_encode($db->getResult("SELECT * FROM hitch_matches WHERE hitchhikerID=? LIMIT".$amount, array($user_id)));
+	$result = $db->getResult("SELECT * FROM hitch_matches WHERE hitchhikerID=? LIMIT".$amount, array($user_id));
 	
-	echo $result;
+	echo '{ "drivers" : '.'boo'.' }';55169463df487ff88da0ded7c9c774b825eb0651bd75efc80cab305ef9dee55ad6c8bac4087b08b2
 ?>
