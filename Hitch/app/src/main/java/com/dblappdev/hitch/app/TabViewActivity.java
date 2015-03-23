@@ -9,9 +9,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.dblappdev.hitch.adapter.TabsPageAdapter;
+import com.dblappdev.hitch.model.User;
 
 /**
  * Created by guusleijsten on 10/03/15.
@@ -54,8 +56,13 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
             actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
         }
 
-        mAdapter.getItem(state);
+        //Set viewPager to the correct screen
+        int item = viewPager.getCurrentItem();
+        if (item != state) {
+            viewPager.setCurrentItem(state);
+        }
 
+        //Add page change listener after setting the correct page (above)
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
             @Override
@@ -63,16 +70,25 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
                 // on changing the page
                 // make respected tab selected
                 actionBar.setSelectedNavigationItem(position);
+                setState(position);
             }
 
             @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
+            public void onPageScrolled(int arg0, float arg1, int arg2) { }
 
             @Override
-            public void onPageScrollStateChanged(int arg0) {
-            }
+            public void onPageScrollStateChanged(int arg0) { }
         });
+    }
+
+    public void setState(int newState) {
+        Log.e("state change", Integer.toString(newState));
+        // apply to database
+        User user = new User(prefs.getInt(MainActivity.USER_KEY, -1), false);
+        user.setState(newState);
+        // update respected shared preference
+        prefs.edit().putInt(MainActivity.STATE_KEY, newState);
+        prefs.edit().commit();
     }
 
     @Override
@@ -113,8 +129,6 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
 
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        // on tab selected
-        // show respected fragment view
         viewPager.setCurrentItem(tab.getPosition());
     }
 

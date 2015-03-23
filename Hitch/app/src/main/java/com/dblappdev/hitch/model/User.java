@@ -52,13 +52,14 @@ public class User {
      * Construct users from their id.
      *
      * @param id userID
+     * @param instantiate whether you want to load the data from the server.
      */
-    public User(int id) {
+    public User(int id, boolean instantiate) {
         this.id = id;
         if (id == -1) {
             return;
         }
-        if (! load()) {
+        if (instantiate && ! load()) {
             Log.e("User", "user could not now be loaded!");
         }
     }
