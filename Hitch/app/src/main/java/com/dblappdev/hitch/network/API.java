@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * Created by guusleijsten on 16/03/15.
@@ -93,33 +94,31 @@ public class API {
      * @return server response
      */
     public static JSONObject updateUserData(int userId, String name, int state, int hitchhikes, String birthdate, String joinedDate, String avatarURL) {
-        int count = 0;
-        count += (name == null)? 0: 1;
-        count += (state == -1)? 0: 1;
-        count += (hitchhikes == -1)? 0: 1;
-        count += (birthdate == null)? 0: 1;
-        count += (joinedDate == null)? 0: 1;
-        count += (avatarURL == null)? 0: 1;
-        String[] params = new String[count];
-        params[0] = "func=" + FUNCTIONS[UPDATE_USER_DATA];
-        int i = 1;
+        ArrayList<String> arr = new ArrayList<String>();
+        arr.add("func=" + FUNCTIONS[UPDATE_USER_DATA]);
+        arr.add("userID=" + Integer.toString(userId));
         if (name != null) {
-            params[i++] = "name=" + urlEncode(name);
+            arr.add("name=" + urlEncode(name));
         }
         if (state != -1) {
-            params[i++] = "state=" + Integer.toString(state);
+            arr.add("state=" + Integer.toString(state));
         }
         if (hitchhikes < 0) {
-            params[i++] = "hitchhikes=" + Integer.toString(hitchhikes);
+            arr.add("hitchhikes=" + Integer.toString(hitchhikes));
         }
         if (birthdate != null) {
-            params[i++] = "birthdate=" + birthdate;
+            arr.add("birthdate=" + birthdate);
         }
         if (joinedDate != null) {
-            params[i++] = "joinedDate" + joinedDate;
+            arr.add("joinedDate" + joinedDate);
         }
         if (avatarURL != null) {
-            params[i++] = "avatarURL";
+            arr.add("avatarURL");
+        }
+        //convert to array
+        String[] params = new String[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            params[i] = arr.get(i);
         }
         return commit(params);
     }
