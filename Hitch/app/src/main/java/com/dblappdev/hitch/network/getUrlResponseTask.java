@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.concurrent.Callable;
 
 /**
  * Created by guusleijsten on 19/03/15.
@@ -21,6 +22,7 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
 
     private static final String BASE_URL = "http://www.yrrep.me/hitch/";
 
+    private Callable<Void> callback;
     @Override
     protected JSONObject doInBackground(String... params) {
         try {
@@ -35,8 +37,9 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
             if (status == 200) {
                 HttpEntity entity = response.getEntity();
                 String data = EntityUtils.toString(entity);
-
-                return new JSONObject(data);
+                JSONObject json = new JSONObject(data);
+                API.setResponse(json);
+                return json;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,6 +47,11 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    protected void execute(Callable<Void> callback, String... params) {
+        super.execute(params);
+        this.callback = callback;
     }
 
     @Override
@@ -54,6 +62,15 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
 
 
     protected void onPostExecute(JSONObject result) {
+        super.onPostExecute(result);
+        if (callback == null) {
+            return;
+        }
+        try {
+            callback.call();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -68,6 +85,8 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
             url += (i == 0)? "?" : "&";
             url += query[i];
         }
+        //Debugging only
+        Log.e("request", url);
         return url;
     }
 }

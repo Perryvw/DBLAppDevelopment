@@ -32,7 +32,7 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Age:"
+                android:text="Birthdate:"
                 android:id="@+id/textView2"
                 android:layout_marginTop="80dp"
                 android:textSize="16sp"
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="27 years"
-                android:id="@+id/ageLabel"
+                android:id="@+id/birthdateLabel"
                 android:textSize="13dp"
                 android:layout_below="@+id/textView2"
                 android:layout_alignLeft="@+id/textView2"

@@ -1,5 +1,7 @@
 package com.dblappdev.hitch.app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -14,6 +16,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.dblappdev.hitch.app.R;
+import com.dblappdev.hitch.network.API;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+import java.util.concurrent.Callable;
+
 /**
  * Created by s128232 on 10-3-2015.
  */
@@ -37,8 +47,6 @@ public class DriverFragment extends Fragment {
         final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, groupList, routeCollection);
         expListView.setAdapter(expListAdapter);
 
-        //setGroupIndicatorToRight();
-
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             public boolean onChildClick(ExpandableListView parent, View v,
@@ -49,6 +57,16 @@ public class DriverFragment extends Fragment {
                         .show();
 
                 return true;
+            }
+        });
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
+        int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+
+        API.getUserRoutes(userID, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                callback();
+                return null;
             }
         });
 
@@ -120,4 +138,23 @@ public class DriverFragment extends Fragment {
         // Convert the dps to pixels, based on density scale
         return (int) (pixels * scale + 0.5f);
     }
+
+    public void callback() {
+        JSONObject json = API.getResponse();
+        try {
+            JSONArray arr = json.getJSONArray("routes");
+
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject route = arr.getJSONObject(i);
+                int routeID = route.getInt("routeID");
+                int userID = route.getInt("userID");
+                String startPoint = route.getString("startPoint");
+                String endPoint = route.getString("endPoint");
+                String timestamp = route.getString("timestamp");
+            }
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

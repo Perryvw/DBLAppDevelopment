@@ -60,6 +60,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         int item = viewPager.getCurrentItem();
         if (item != state) {
             viewPager.setCurrentItem(state);
+            actionBar.setSelectedNavigationItem(state);
         }
 
         //Add page change listener after setting the correct page (above)
@@ -86,7 +87,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
     public void setState(int newState) {
         Log.e("state change", Integer.toString(newState));
         // apply to database
-        User user = new User(prefs.getInt(MainActivity.USER_KEY, -1), false);
+        User user = new User(prefs.getInt(MainActivity.USER_KEY, -1), false, null);
         user.setState(newState);
         // update respected shared preference
         prefs.edit().putInt(MainActivity.STATE_KEY, newState);
