@@ -97,6 +97,20 @@ public class API {
     }
 
     /**
+     * Retrieves the routes for a given user.
+     *
+     * @param userID the id of the user for which you want to retrieve his or her routes
+     * @param callback the callback
+     */
+    public static void getUserRoutes(int userID, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_USER_ROUTES];
+        params[1] = "userID=" + Integer.toString(userID);
+
+        commit(params, callback);
+    }
+
+    /**
      * Updates a users fields.
      *
      * @param userId id of user to update
