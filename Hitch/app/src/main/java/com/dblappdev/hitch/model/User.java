@@ -48,14 +48,17 @@ public class User {
     private String birthdate;
     private String joinedDate;
     private String avatarURL;
+    private Callable<Void> callback;
 
     /**
      * Construct users from their id.
      *
      * @param id userID
      * @param instantiate whether you want to load the data from the server.
+     * @param callback null if not instantiating, otherwise the function you want to call after loading the data.
      */
-    public User(int id, boolean instantiate) {
+    public User(int id, boolean instantiate, Callable<Void> callback) {
+        this.callback = callback;
         this.id = id;
         if (id == -1) {
             return;
@@ -81,6 +84,13 @@ public class User {
             birthdate = json.getString("birthdate");
             joinedDate = json.getString("joinedDate");
             avatarURL = json.getString("avatarURL");
+            if (callback != null) {
+                try {
+                    callback.call();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
             return true;
         } catch(JSONException e) {
             e.printStackTrace();
