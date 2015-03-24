@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Callable;
 
 /**
  * Created by guusleijsten on 18/03/15.
@@ -59,14 +60,21 @@ public class User {
         if (id == -1) {
             return;
         }
-        if (instantiate && ! load()) {
-            Log.e("User", "user could not now be loaded!");
+        if (! instantiate) {
+            return;
         }
+        API.getUserData(id, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                load();
+                return null;
+            }
+        });
     }
 
     public boolean load() {
+        JSONObject json = API.getResponse();
         try {
-            JSONObject json = API.getUserData(id);
             name = json.getString("name");
             state = json.getInt("state");
             hitchhikes = json.getInt("hitchhikes");
@@ -88,17 +96,11 @@ public class User {
      * @param age age of the user
      * @return the new id of the user
      */
-    public static int registerUser(String name, int state, int age) {
+    public static void registerUser(String name, int state, int age, Callable<Void> callback) {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//dd/MM/yyyy
         Date now = new Date();
         String joinedDate = sdfDate.format(now);
-        try {
-            JSONObject json = API.registerUser(name, state, Integer.toString(2015 - age) + "-01-01", joinedDate);
-            return json.getInt("userID");
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
-        return -1;
+        API.registerUser(name, state, Integer.toString(2015 - age) + "-01-01", joinedDate, callback);
     }
 
     public void setName(String name) {

@@ -60,6 +60,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         int item = viewPager.getCurrentItem();
         if (item != state) {
             viewPager.setCurrentItem(state);
+            actionBar.setSelectedNavigationItem(state);
         }
 
         //Add page change listener after setting the correct page (above)
