@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:orientation="vertical" >
+
+        <TextView
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec lectus ipsum. Phasellus sagittis nisl nibh, non rhoncus diam pellentesque quis. Ut vitae fringilla libero, non placerat lorem. Mauris at nibh ex. Morbi volutpat, mi nec rutrum pellentesque, mauris velit elementum ante, nec ornare tellus risus nec risus. Quisque posuere urna eget felis accumsan, eu viverra sem efficitur. Ut ut enim leo. Ut commodo vulputate mauris id sollicitudin. Proin fringilla sagittis orci, eu fringilla libero accumsan non. Aenean bibendum eros eget orci pulvinar porttitor. Morbi semper, libero quis molestie sagittis, nisi arcu ultrices nisi, nec condimentum metus diam vitae odio. Duis nec lorem at urna auctor auctor ut id diam.
+
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed suscipit ipsum ac neque suscipit lobortis. Quisque vel consectetur nunc, at consectetur magna. Suspendisse tristique pharetra ultrices. Nulla a condimentum turpis. Duis convallis commodo odio nec malesuada. Sed nec feugiat lorem, vel sodales felis. Donec euismod, lacus quis euismod sodales, lacus justo ultricies nulla, vel venenatis dui nulla bibendum justo. Donec arcu ex, ornare tincidunt massa at, pulvinar porttitor felis. Vivamus id purus auctor, sodales diam vel, convallis est. Suspendisse condimentum nisi ut suscipit ultricies. Suspendisse porta quam quis risus interdum dapibus."
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/list">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:orientation="vertical" >
+
+        <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>
