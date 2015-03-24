@@ -111,6 +111,21 @@ public class API {
     }
 
     /**
+     * Retrieves what hitchikers will match some given route.
+     *
+     * @param routeID the id of the user for which you want to retrieve his or her routes
+     * @param timeWindow the time window which you want to search for
+     * @param callback the callback
+     */
+    public static void getHitchhikeMatches(int routeID, int timeWindow, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_HITCHHIKE_MATCHES];
+        params[1] = "routeID=" + Integer.toString(routeID);
+        params[1] = "timeWindow=" + Integer.toString(timeWindow);
+        commit(params, callback);
+    }
+
+    /**
      * Updates a users fields.
      *
      * @param userId id of user to update
