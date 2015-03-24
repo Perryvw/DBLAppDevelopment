@@ -32,7 +32,8 @@
 		"RegisterUser" => "registeruser.php",
 		"RemoveUserFromChat" => "removeuserfromchat.php",
 		"RemoveUserHitchhikeData" => "removeuserhitchhikedata.php",
-		"UpdateUserRoute" => "updateuserroute.php"
+		"UpdateUserRoute" => "updateuserroute.php",
+		"UpdateUserData" => "updateuserdata.php"
 	);
 
 	//Check if the func parameter is set, if not: throw an error.
