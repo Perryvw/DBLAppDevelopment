@@ -79,6 +79,8 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
             @Override
             public void onPageScrollStateChanged(int arg0) { }
         });
+
+
     }
 
     public void setState(int newState) {
