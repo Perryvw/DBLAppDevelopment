@@ -9,6 +9,8 @@
           android:title="@string/action_signout"
           android:orderInCategory="100"
           android:showAsAction="never"/>
-    <item android:id="@+id/action_profile"
+    <item android:id="@+id/action_profileEdit"
           android:title="@string/action_profile" />
+    <item android:id="@+id/action_profileView"
+          android:title="@string/action_profileView" />
 </menu>

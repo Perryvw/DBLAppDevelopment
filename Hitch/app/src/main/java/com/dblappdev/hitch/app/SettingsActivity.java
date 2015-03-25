@@ -1,15 +1,10 @@
 package com.dblappdev.hitch.app;
-
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -51,22 +46,15 @@ public class SettingsActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                // ListView Clicked item value
-                int  itemValue = position;
-
                 // Show Alert
-                switch (itemValue) {
+                switch (position) {
                     case 0:
                         //Hiker or driver
-                        Toast.makeText(getApplicationContext(),
-                                "Hiker or driver, open pop-up" , Toast.LENGTH_LONG)
-                                .show();
+                        setState(view);
                         break;
                     case 1:
-                        //Profile
-                        Toast.makeText(getApplicationContext(),
-                                "Profile, start edit profile intent" , Toast.LENGTH_LONG)
-                                .show();
+                        Intent editProfileActivity = new Intent(getApplicationContext(),com.dblappdev.hitch.app.EditProfileActivity.class);
+                        startActivity(editProfileActivity);
                         break;
                     case 2:
                         //Saved routes
@@ -84,5 +72,37 @@ public class SettingsActivity extends FragmentActivity {
             }
 
         });
+    }
+
+    public void setState(View view){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Choose if you want to be a hiker or driver");
+        alertDialogBuilder.setPositiveButton("Driver",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Clicked driver!
+                        Toast.makeText(getApplicationContext(),
+                                "SetPreference: Driver" , Toast.LENGTH_LONG)
+                                .show();
+
+                    }
+                });
+        alertDialogBuilder.setNegativeButton("Hiker",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Clicked hiker!
+                        Toast.makeText(getApplicationContext(),
+                                "SetPreference: Hiker" , Toast.LENGTH_LONG)
+                                .show();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 }
