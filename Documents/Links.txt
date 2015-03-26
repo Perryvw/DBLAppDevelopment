@@ -4,3 +4,5 @@ Overleaf requirements: https://www.overleaf.com/2287053mdzkrw#/5874023/
 Design document: https://www.overleaf.com/2343850hpxmyp#/6043792/
 
 Design document high-level gDocs: https://docs.google.com/document/d/1JVkOjupKbzvNnQeGSWV3kmQ2IHPl0dswP8jo7haQ50Q/edit
+
+Acceptance test plan: https://www.overleaf.com/2452265ftxjvp#/6390122/
