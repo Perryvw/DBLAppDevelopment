@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
 public class EditProfileActivity extends Activity {
 
     private User user;
-    private TextView nameView, birthdateView, registeredView;
+    private EditText nameView, birthdateView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public class EditProfileActivity extends Activity {
         SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
         int userID = prefs.getInt(MainActivity.USER_KEY, -1);
 
-        setContentView(R.layout.activity_viewprofile);
+        setContentView(R.layout.activity_editprofile);
 
         user = new User(userID, true, new Callable<Void>() {
             @Override
@@ -35,14 +35,12 @@ public class EditProfileActivity extends Activity {
             }
         });
 
-        nameView = (TextView) findViewById(R.id.nameLabel);
-        birthdateView = (TextView) findViewById(R.id.birthdateLabel);
-        registeredView = (TextView) findViewById(R.id.registeredLabel);
+        nameView = (EditText) findViewById(R.id.editName);
+        birthdateView = (EditText) findViewById(R.id.editDate);
     }
 
     public void callback() {
         nameView.setText(user.getName());
         birthdateView.setText(user.getBirthdate());
-        registeredView.setText(user.getJoinedDate());
     }
 }

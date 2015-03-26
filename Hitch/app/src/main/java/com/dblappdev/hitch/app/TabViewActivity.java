@@ -116,8 +116,11 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
                 undoBirth();
                 intent = new Intent(this, MainActivity.class);
                 break;
-            case R.id.action_profile:
+            case R.id.action_profileEdit:
                 intent = new Intent(this, EditProfileActivity.class);
+                break;
+            case R.id.action_profileView:
+                intent = new Intent(this, ViewProfileActivity.class);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
