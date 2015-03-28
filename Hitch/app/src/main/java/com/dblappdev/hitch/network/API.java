@@ -1,9 +1,12 @@
 package com.dblappdev.hitch.network;
 
+import android.util.Log;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 /**
  * Created by guusleijsten on 16/03/15.
@@ -36,17 +39,30 @@ public class API {
     public static final int GET_MATCHING_DRIVERS = 18;
     public static final int GET_HITCHHIKE_MATCHES = 19;
 
+    private static JSONObject RESPONSE;
 
+    public static void setResponse(JSONObject response) {
+        RESPONSE = response;
+    }
 
+    public static JSONObject getResponse() {
+        return RESPONSE;
+    }
 
-    private static JSONObject commit(String[] params) {
+    private static void commit(String[] params) {
         try {
-            JSONObject response = new getUrlResponseTask().execute(params).get();
-            return response;
+            new getUrlResponseTask().execute(params);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+    }
+
+    private static void commit(String[] params, Callable<Void> callback) {
+        try {
+            new getUrlResponseTask().execute(callback, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -54,12 +70,12 @@ public class API {
      *
      * @param userID the id of the user
      */
-    public static JSONObject getUserData(int userID) {
+    public static void getUserData(int userID, Callable<Void> callback) {
         String[] params = new String[2];
         params[0] = "func=" + FUNCTIONS[GET_USER_DATA];
         params[1] = "userID=" + Integer.toString(userID);
 
-        return commit(params);
+        commit(params, callback);
     }
 
     /**
@@ -67,7 +83,7 @@ public class API {
      *
      *
      */
-    public static JSONObject registerUser(String name, int state, String birthdate, String joinedDate) {
+    public static void registerUser(String name, int state, String birthdate, String joinedDate, Callable<Void> callback) {
         String[] params = new String[7];
         params[0] = "func=" + FUNCTIONS[REGISTER_USER];
         params[1] = "name=" + urlEncode(name);
@@ -77,7 +93,36 @@ public class API {
         params[5] = "joinedDate=" + joinedDate;
         params[6] = "avatarURL";
 
-        return commit(params);
+        commit(params, callback);
+    }
+
+    /**
+     * Retrieves the routes for a given user.
+     *
+     * @param userID the id of the user for which you want to retrieve his or her routes
+     * @param callback the callback
+     */
+    public static void getUserRoutes(int userID, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_USER_ROUTES];
+        params[1] = "userID=" + Integer.toString(userID);
+
+        commit(params, callback);
+    }
+
+    /**
+     * Retrieves what hitchikers will match some given route.
+     *
+     * @param routeID the id of the user for which you want to retrieve his or her routes
+     * @param timeWindow the time window which you want to search for
+     * @param callback the callback
+     */
+    public static void getHitchhikeMatches(int routeID, int timeWindow, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_HITCHHIKE_MATCHES];
+        params[1] = "routeID=" + Integer.toString(routeID);
+        params[1] = "timeWindow=" + Integer.toString(timeWindow);
+        commit(params, callback);
     }
 
     /**
@@ -86,42 +131,40 @@ public class API {
      * @param userId id of user to update
      * @param name (optinal) the name, null if not used
      * @param state (optional) -1 if not used
-     * @param hitchhikes (optional < 0 if not used
+     * @param hitchhikes (optional -1 if not used
      * @param birthdate (optional) null if not used
      * @param joinedDate (optional) null if not used
      * @param avatarURL (optional) null if not used
      * @return server response
      */
-    public static JSONObject updateUserData(int userId, String name, int state, int hitchhikes, String birthdate, String joinedDate, String avatarURL) {
-        int count = 0;
-        count += (name == null)? 0: 1;
-        count += (state == -1)? 0: 1;
-        count += (hitchhikes == -1)? 0: 1;
-        count += (birthdate == null)? 0: 1;
-        count += (joinedDate == null)? 0: 1;
-        count += (avatarURL == null)? 0: 1;
-        String[] params = new String[count];
-        params[0] = "func=" + FUNCTIONS[UPDATE_USER_DATA];
-        int i = 1;
+    public static void updateUserData(int userId, String name, int state, int hitchhikes, String birthdate, String joinedDate, String avatarURL) {
+        ArrayList<String> arr = new ArrayList<String>();
+        arr.add("func=" + FUNCTIONS[UPDATE_USER_DATA]);
+        arr.add("userID=" + Integer.toString(userId));
         if (name != null) {
-            params[i++] = "name=" + urlEncode(name);
+            arr.add("name=" + urlEncode(name));
         }
         if (state != -1) {
-            params[i++] = "state=" + Integer.toString(state);
+            arr.add("state=" + Integer.toString(state));
         }
-        if (hitchhikes < 0) {
-            params[i++] = "hitchhikes=" + Integer.toString(hitchhikes);
+        if (hitchhikes != -1) {
+            arr.add("hitchhikes=" + Integer.toString(hitchhikes));
         }
         if (birthdate != null) {
-            params[i++] = "birthdate=" + birthdate;
+            arr.add("birthdate=" + birthdate);
         }
         if (joinedDate != null) {
-            params[i++] = "joinedDate" + joinedDate;
+            arr.add("joinedDate" + joinedDate);
         }
         if (avatarURL != null) {
-            params[i++] = "avatarURL";
+            arr.add("avatarURL");
         }
-        return commit(params);
+        //convert to array
+        String[] params = new String[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            params[i] = arr.get(i);
+        }
+        commit(params);
     }
 
     private static String urlEncode(String str) {

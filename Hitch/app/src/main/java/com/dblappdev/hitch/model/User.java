@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Callable;
 
 /**
  * Created by guusleijsten on 18/03/15.
@@ -47,32 +48,49 @@ public class User {
     private String birthdate;
     private String joinedDate;
     private String avatarURL;
+    private Callable<Void> callback;
 
     /**
      * Construct users from their id.
      *
      * @param id userID
      * @param instantiate whether you want to load the data from the server.
+     * @param callback null if not instantiating, otherwise the function you want to call after loading the data.
      */
-    public User(int id, boolean instantiate) {
+    public User(int id, boolean instantiate, Callable<Void> callback) {
+        this.callback = callback;
         this.id = id;
         if (id == -1) {
             return;
         }
-        if (instantiate && ! load()) {
-            Log.e("User", "user could not now be loaded!");
+        if (! instantiate) {
+            return;
         }
+        API.getUserData(id, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                load();
+                return null;
+            }
+        });
     }
 
     public boolean load() {
+        JSONObject json = API.getResponse();
         try {
-            JSONObject json = API.getUserData(id);
             name = json.getString("name");
             state = json.getInt("state");
             hitchhikes = json.getInt("hitchhikes");
             birthdate = json.getString("birthdate");
             joinedDate = json.getString("joinedDate");
             avatarURL = json.getString("avatarURL");
+            if (callback != null) {
+                try {
+                    callback.call();
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
             return true;
         } catch(JSONException e) {
             e.printStackTrace();
@@ -88,17 +106,11 @@ public class User {
      * @param age age of the user
      * @return the new id of the user
      */
-    public static int registerUser(String name, int state, int age) {
+    public static void registerUser(String name, int state, int age, Callable<Void> callback) {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//dd/MM/yyyy
         Date now = new Date();
         String joinedDate = sdfDate.format(now);
-        try {
-            JSONObject json = API.registerUser(name, state, Integer.toString(2015 - age) + "-01-01", joinedDate);
-            return json.getInt("userID");
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
-        return -1;
+        API.registerUser(name, state, Integer.toString(2015 - age) + "-01-01", joinedDate, callback);
     }
 
     public void setName(String name) {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.dblappdev.hitch.model.User;
+import com.dblappdev.hitch.network.API;
 import org.json.JSONObject;
 
 import com.facebook.Request;
@@ -19,6 +20,8 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
+
+import java.util.concurrent.Callable;
 
 /**
  * Created by s128232 on 10-3-2015.
@@ -71,10 +74,28 @@ public class RegisterActivity extends Activity {
     private void registerUser(String name, int age) {
         int state = prefs.getInt(MainActivity.STATE_KEY, 0);
 
-        int id = User.registerUser(name, state, age);
+        User.registerUser(name, state, age, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                registerCallback();
+                return null;
+            }
+        });
+
+    }
+
+    public void registerCallback() {
+        int id = -1;
+        JSONObject json = API.getResponse();
+        try {
+            id = json.getInt("userID");
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         if (id == -1) {
             return;
         }
+        Log.e("callback register", Integer.toString(id));
         // update shared preferences, birthed and user
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(MainActivity.USER_KEY, id);
@@ -82,6 +103,10 @@ public class RegisterActivity extends Activity {
         // navigate to main
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void finalizeRegister() {
+
     }
 
     /*
