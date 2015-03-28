@@ -5,7 +5,8 @@
                 android:layout_height="match_parent"
                 tools:context=".DriverFragment"
                 android:orientation="vertical"
-                android:background="@color/Gray">
+                android:background="@color/Gray"
+        android:id="@+id/driver_fragment">
 
                 <ExpandableListView
                         android:id="@+id/route_list"
@@ -18,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add a route"
+            android:onClick="addDriverRoute"
             android:id="@+id/button4" android:layout_alignParentTop="true" android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" android:layout_marginTop="30dp" android:layout_marginRight="15dp"/>
     <TextView

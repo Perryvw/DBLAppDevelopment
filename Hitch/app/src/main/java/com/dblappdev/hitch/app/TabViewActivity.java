@@ -6,12 +6,14 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import com.dblappdev.hitch.adapter.TabsPageAdapter;
 import com.dblappdev.hitch.model.User;
 
@@ -25,8 +27,6 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
     private ViewPager viewPager;
     private TabsPageAdapter mAdapter;
     private ActionBar actionBar;
-    // Tab titles
-    private String[] tabs = { "Driver", "Hitcher" };
 
     /**
      * When the shared variable DRIVER_MODE_KEY is true, we will initialize the tabbed view with DriverFragment,
@@ -52,6 +52,10 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Adding Tabs
+        Resources res = getResources();
+        String[] tabs = new String[2];
+        tabs[0] = res.getString(R.string.driver);
+        tabs[1] = res.getString(R.string.hiker);
         for (String tab_name : tabs) {
             actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
         }
@@ -80,18 +84,17 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
             @Override
             public void onPageScrollStateChanged(int arg0) { }
         });
-
-
     }
 
     public void setState(int newState) {
-        Log.e("state change", Integer.toString(newState));
+        //Log.e("state change", Integer.toString(newState));
         // apply to database
         User user = new User(prefs.getInt(MainActivity.USER_KEY, -1), false, null);
         user.setState(newState);
         // update respected shared preference
-        prefs.edit().putInt(MainActivity.STATE_KEY, newState);
-        prefs.edit().commit();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(MainActivity.STATE_KEY, newState);
+        editor.commit();
     }
 
     @Override
@@ -113,7 +116,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
                 intent = new Intent(this, SettingsActivity.class);
                 break;
             case R.id.action_signout:
-                undoBirth();
+                resetUser();
                 intent = new Intent(this, MainActivity.class);
                 break;
             case R.id.action_profileEdit:
@@ -143,11 +146,23 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
     }
 
     /**
-     * Sets the shared preference boolean birth to false.
+     * Sets the shared preference containing user id to -1, it's initial value.
      */
-    private void undoBirth() {
+    private void resetUser() {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(MainActivity.USER_KEY, -1);
         editor.commit();
+    }
+
+
+
+    /**
+     * Go to add a route for configuring driver routes.
+     */
+    public void addDriverRoute(View v) {
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.driver_fragment, new DriverRouteFragment());
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }
