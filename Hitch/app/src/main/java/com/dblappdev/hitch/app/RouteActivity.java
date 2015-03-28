@@ -1,62 +1,71 @@
 package com.dblappdev.hitch.app;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.dblappdev.hitch.app.GMapV2Direction;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.*;
-import org.w3c.dom.Document;
-
 import java.util.ArrayList;
 
 
 public class RouteActivity extends FragmentActivity implements OnMapReadyCallback{
 
+    ArrayList<LatLng> directions;
+    MapFragment mapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        directions = (ArrayList) bundle.get("LATLNG_DIRECTIONS_LIST");
         onMapReady(mapFragment.getMap());
+        setCameraOnRoute(directions);
     }
 
+    private void setCameraOnRoute(ArrayList<LatLng> directions) {
+
+        double minLat = Integer.MAX_VALUE;
+        double maxLat = Integer.MIN_VALUE;
+        double minLon = Integer.MAX_VALUE;
+        double maxLon = Integer.MIN_VALUE;
+
+        for(int i = 0 ; i < directions.size() ; i++) {
+            maxLat = Math.max(directions.get(i).latitude, maxLat);
+            minLat = Math.min(directions.get(i).latitude, minLat);
+            maxLon = Math.max(directions.get(i).longitude, maxLon);
+            minLon = Math.min(directions.get(i).longitude, minLon);
+        }
+
+        final LatLngBounds bounds = new LatLngBounds.Builder().include(new LatLng(maxLat, maxLon)).include(new LatLng(minLat, minLon)).build();
+
+        mapFragment.getMap().setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                mapFragment.getMap().setPadding(10, 10, 10, 10);
+                mapFragment.getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 120));
+            }
+        });
+    }
 
     @Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Testing if I can do stuff with it :D"));
 
-        map.addCircle(new CircleOptions()
-                .center(new LatLng(0, 0))
-                .radius(5000000).fillColor(Color.BLUE));
-//        LatLng fromPosition = new LatLng(13.687140112679154, 100.53525868803263);
-//        LatLng toPosition = new LatLng(13.683660045847258, 100.53900808095932);
-//
-//        GMapV2Direction md = new GMapV2Direction();
-//
-//        Document doc = md.getDocument(fromPosition, toPosition, GMapV2Direction.MODE_DRIVING);
-//
-//        Log.d("getting doc onMapReady()", doc.toString());
-//
-//        ArrayList<LatLng> directionPoint = md.getDirection(doc);
-//        PolylineOptions rectLine = new PolylineOptions().width(3).color(Color.RED);
-//
-//        for(int i = 0 ; i < directionPoint.size() ; i++) {
-//            rectLine.add(directionPoint.get(i));
-//        }
-//
-//        map.addPolyline(rectLine);
+        PolylineOptions rectLine = new PolylineOptions().width(6).color(Color.GRAY);
 
+        for(int i = 0 ; i < directions.size() ; i++) {
+            rectLine.add(directions.get(i));
+        }
+
+        map.addPolyline(rectLine);
     }
 
     @Override
