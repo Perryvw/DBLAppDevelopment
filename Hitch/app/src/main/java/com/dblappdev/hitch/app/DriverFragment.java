@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import com.dblappdev.hitch.app.R;
+import com.dblappdev.hitch.model.User;
 import com.dblappdev.hitch.network.API;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,19 +34,21 @@ public class DriverFragment extends Fragment {
     List<String> groupList;
     List<String> childList;
     Map<String, List<String>> routeCollection;
-    ExpandableListView expListView;
+    private SharedPreferences prefs;
+    private int userID;
+    ExpandableListAdapter expListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_driver, container, false);
 
+        prefs = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
+
         createGroupList();
 
-        createCollection();
-
         ExpandableListView expListView = (ExpandableListView) rootView.findViewById(R.id.route_list);
-        final ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, groupList, routeCollection);
+        expListAdapter = new ExpandableListAdapter(this, groupList, routeCollection);
         expListView.setAdapter(expListAdapter);
 
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -55,80 +59,56 @@ public class DriverFragment extends Fragment {
                         groupPosition, childPosition);
                 Toast.makeText(getActivity().getBaseContext(), selected, Toast.LENGTH_LONG)
                         .show();
-
+                userID = prefs.getInt(MainActivity.USER_KEY, -1);
                 return true;
-            }
-        });
-        SharedPreferences prefs = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        int userID = prefs.getInt(MainActivity.USER_KEY, -1);
-
-        API.getUserRoutes(userID, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                callback();
-                return null;
             }
         });
 
         return rootView;
     }
 
+
     private void createGroupList() {
-        groupList = new ArrayList<String>();
-        groupList.add("HP");
-        groupList.add("Dell");
-        groupList.add("Lenovo");
-        groupList.add("Sony");
-        groupList.add("HCL");
-        groupList.add("Samsung");
-    }
-
-    private void createCollection() {
-        // preparing route collection(child)
-        String[] hpModels = { "HP Pavilion G6-2014TX", "ProBook HP 4540",
-                "HP Envy 4-1025TX" };
-        String[] hclModels = { "HCL S2101", "HCL L2102", "HCL V2002" };
-        String[] lenovoModels = { "IdeaPad Z Series", "Essential G Series",
-                "ThinkPad X Series", "Ideapad Z Series" };
-        String[] sonyModels = { "VAIO E Series", "VAIO Z Series",
-                "VAIO S Series", "VAIO YB Series" };
-        String[] dellModels = { "Inspiron", "Vostro", "XPS" };
-        String[] samsungModels = { "NP Series", "Series 5", "SF Series" };
-
         routeCollection = new LinkedHashMap<String, List<String>>();
+        groupList = new ArrayList<String>();
+        groupList.add("HP12");
+        final API api = new API();
 
-        for (String route : groupList) {
-            if (route.equals("HP")) {
-                loadChild(hpModels);
-            } else if (route.equals("Dell"))
-                loadChild(dellModels);
-            else if (route.equals("Sony"))
-                loadChild(sonyModels);
-            else if (route.equals("HCL"))
-                loadChild(hclModels);
-            else if (route.equals("Samsung"))
-                loadChild(samsungModels);
-            else
-                loadChild(lenovoModels);
+        api.getUserRoutes(/*userID*/2, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createGroupListCallback(api);
+                for (String routeName: groupList) {
+                    createHitcherCollection(routeName);
+                }
+                return null;
+            }
+        });
 
-            routeCollection.put(route, childList);
-        }
+        groupList.add("HP");
     }
 
-    private void loadChild(String[] routeModels) {
+    private void createHitcherCollection(String routeName) {
+        final API api = new API();
+        // preparing route collection(child)
         childList = new ArrayList<String>();
-        for (String model : routeModels)
-            childList.add(model);
+        /*api.getHitchhikeMatches(2, 2, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                createHitcherCollectionCallback(api);
+                return null;
+            }
+        });*/
+
+        childList.add("child");
+
+        routeCollection.put(routeName, childList);
+
     }
 
-    private void setGroupIndicatorToRight() {
-        /* Get the screen width */
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-
-        expListView.setIndicatorBounds(width - getDipsFromPixel(35), width
-                - getDipsFromPixel(5));
+    private void loadChild(String[] hitchers) {
+        for (String hitcher : hitchers)
+            childList.add(hitcher);
     }
 
     // Convert pixel to dip
@@ -139,18 +119,43 @@ public class DriverFragment extends Fragment {
         return (int) (pixels * scale + 0.5f);
     }
 
-    public void callback() {
-        JSONObject json = API.getResponse();
+    public void createGroupListCallback(API api) {
+
+        JSONObject json = api.getResponse();
         try {
             JSONArray arr = json.getJSONArray("routes");
-
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject route = arr.getJSONObject(i);
                 int routeID = route.getInt("routeID");
-                int userID = route.getInt("userID");
                 String startPoint = route.getString("startPoint");
                 String endPoint = route.getString("endPoint");
                 String timestamp = route.getString("timestamp");
+                String routeName = startPoint + " -> " + endPoint;
+                groupList.add(routeName/* + ". At " + timestamp*/);
+            }
+
+        } catch(JSONException e) {
+            e.printStackTrace();
+            groupList.add("exception");
+        }
+
+        groupList.add("dasdas");
+        routeCollection.put("dasdas", new ArrayList<String>());
+        expListAdapter.notifyDataSetChanged();
+
+    }
+
+    public void createHitcherCollectionCallback(API api) {
+        JSONObject json = api.getResponse();
+        try {
+            JSONArray arr = json.getJSONArray("matches");
+            childList = new ArrayList<String>();
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject route = arr.getJSONObject(i);
+                int userID = route.getInt("userID");
+                int relevance = route.getInt("relevance");
+                String timestamp = route.getString("timestamp");
+                childList.add(Integer.toString(userID));
             }
         } catch(JSONException e) {
             e.printStackTrace();

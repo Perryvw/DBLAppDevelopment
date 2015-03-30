@@ -84,11 +84,11 @@ public class RouteDisplayer {
                         (int) (addresses.get(0).getLatitude() * 1E6),
                         (int) (addresses.get(0).getLongitude() * 1E6), location, addresses.get(0).getCountryName());
 
-                lat=p.getLatitudeE6()/1E6;
-                lng=p.getLongitudeE6()/1E6;
+                //lat=p.getLatitudeE6()/1E6;
+                //lng=p.getLongitudeE6()/1E6;
 
-                Log.d("Latitude", ""+lat);
-                Log.d("Longitude", "" + lng);
+                //Log.d("Latitude", ""+lat);
+               // Log.d("Longitude", "" + lng);
                 return p;
             }
         }

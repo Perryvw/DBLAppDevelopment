@@ -21,10 +21,10 @@ public class TabsPageAdapter extends FragmentPagerAdapter {
 
         switch (index) {
             case 0:
-                // Top Rated fragment activity
+                // Driver fragment activity
                 return new DriverFragment();
             case 1:
-                // Games fragment activity
+                // Hitcher fragment activity
                 return new HitchFragment();
             case 2:
                 return new DriverRouteFragment();

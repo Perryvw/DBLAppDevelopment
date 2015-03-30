@@ -168,6 +168,19 @@ public class API {
     }
 
     /**
+     * Retrieves drivers for some route that are matched for a user.
+     *
+     * @param hitchhikerID the id of the hitchhiker for which you want to retrieve matched drivers
+     * @param callback the callback
+     */
+    public void getMatchingDrivers(int hitchhikerID, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_MATCHING_DRIVERS];
+        params[1] = "hitchhikerID=" + Integer.toString(hitchhikerID);
+        commit(params, callback);
+    }
+
+    /**
      * Retrieves what hitchikers will match some given route.
      *
      * @param routeID the id of the user for which you want to retrieve his or her routes
@@ -178,7 +191,7 @@ public class API {
         String[] params = new String[2];
         params[0] = "func=" + FUNCTIONS[GET_HITCHHIKE_MATCHES];
         params[1] = "routeID=" + Integer.toString(routeID);
-        params[1] = "timeWindow=" + Integer.toString(timeWindow);
+        params[2] = "timeWindow=" + Integer.toString(timeWindow);
         commit(params, callback);
     }
 
