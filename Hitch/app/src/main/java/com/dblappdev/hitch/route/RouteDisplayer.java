@@ -1,4 +1,4 @@
-package com.dblappdev.hitch.maps;
+package com.dblappdev.hitch.route;
 
 import android.content.Context;
 import android.location.Address;
@@ -13,7 +13,7 @@ import java.util.Locale;
  * This class is used to start a RouteActivity from a start point to an end point. The
  * call to use the functionality is for example as follows:
  *
- * RouteDisplayer.getInstance().showRouteActivity("Eindhoven","Amsterdam",getApplicationContext(),"driving");
+ * RouteDisplayer.getInstance().showRouteActivity("Eindhoven","Amsterdam","Henk","11:00","15:00",getApplicationContext(),"driving");
  *
  * Created by Ziad on 3/24/2015.
  */
@@ -51,14 +51,15 @@ public class RouteDisplayer {
      * @param context
      * @param mode
      */
-    public void showRouteActivity(String start, String end, Context context, String mode) {
+    public void showRouteActivity(String start, String end, String driver, String depTime, String eta,Context context, String mode) {
         this.c = context;
         GeoPoint startPoint = getLocGeoPoint(start);
         GeoPoint endPoint = getLocGeoPoint(end);
-        new StartRouteActivityTask(context).execute((new GMapV2Direction())
-                .getDocumentUrl(new LatLng(startPoint.getLatitudeE6()/1E6,startPoint.getLongitudeE6()/1E6)
-                        , new LatLng(endPoint.getLatitudeE6()/1E6,endPoint.getLongitudeE6()/1E6)
-                        ,mode));
+        Route route = new Route(startPoint,endPoint, driver, depTime,eta);
+        String url = (new GMapV2Direction()).getDocumentUrl(new LatLng(startPoint.getLatitude()
+                ,startPoint.getLongitude()),new LatLng(endPoint.getLatitude(),endPoint.getLongitude())
+                ,mode);
+        new StartRouteActivityTask(context,route).execute(url);
 
     }
 
@@ -68,7 +69,7 @@ public class RouteDisplayer {
      *
      * @return GeoPoint of location <@code>location</@code>
      */
-    private GeoPoint getLocGeoPoint(String location) {
+    public GeoPoint getLocGeoPoint(String location) {
 
         double lat;
         double lng;
@@ -81,7 +82,7 @@ public class RouteDisplayer {
             {
                 GeoPoint p = new GeoPoint(
                         (int) (addresses.get(0).getLatitude() * 1E6),
-                        (int) (addresses.get(0).getLongitude() * 1E6));
+                        (int) (addresses.get(0).getLongitude() * 1E6), location, addresses.get(0).getCountryName());
 
                 lat=p.getLatitudeE6()/1E6;
                 lng=p.getLongitudeE6()/1E6;

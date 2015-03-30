@@ -1,4 +1,4 @@
-package com.dblappdev.hitch.maps;
+package com.dblappdev.hitch.route;
 
 import java.util.ArrayList;
 import org.w3c.dom.Document;

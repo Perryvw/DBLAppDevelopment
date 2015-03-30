@@ -1,4 +1,4 @@
-package com.dblappdev.hitch.maps;
+package com.dblappdev.hitch.route;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +24,7 @@ public class StartRouteActivityTask extends  AsyncTask<String, Void, Document> {
 
     /** Context of the parent activity in which this was called */
     private Context parentContext;
+    private Route route;
 
     /**
      * Constructor of asynchronous task to retrieve document with route details
@@ -31,8 +32,9 @@ public class StartRouteActivityTask extends  AsyncTask<String, Void, Document> {
      *
      * @param context the parent activity context
      */
-    public StartRouteActivityTask(Context context) {
+    public StartRouteActivityTask(Context context, Route route) {
         this.parentContext = context;
+        this.route = route;
     }
 
     @Override
@@ -62,9 +64,10 @@ public class StartRouteActivityTask extends  AsyncTask<String, Void, Document> {
             Log.d("RetrieveMapDocTask.onPostExecute()", "error fetching doc details");
         } else {
             Log.d("RetrieveMapDocTask.onPostExecute()", "successfully returned doc");
+            route.setDirections(new GMapV2Direction().getDirection(doc));
             parentContext.startActivity(new Intent(parentContext, RouteActivity.class)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-                    .putExtra("LATLNG_DIRECTIONS_LIST", new GMapV2Direction().getDirection(doc)));
+                    .putExtra("ROUTE", route));
         }
     }
 }
