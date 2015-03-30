@@ -15,6 +15,7 @@
 		Output parameters;
 			userID: The user’s ID.
 			name: The user’s Hitch nickname.
+			phoneNumber: The user's phone number.
 			state: The user’s state (0=driver, 1=hitchhiker).
 			hitchhikes: The number of times this user has successfully used Hitch before.
 			birthdate: The user’s birthdate.
@@ -34,7 +35,7 @@
 	$result = $db->getRow("SELECT * FROM hitch_users WHERE userId=?", array($user_id));
 	
 	//Check result. If empty - error, else return result.
-	if(empty($result)) {
+	if($result == false) {
 		throwError('This user could not be found.');
 	}
 	else {

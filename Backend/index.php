@@ -29,6 +29,7 @@
 		"GetUserRoutes" => "getuserroutes.php",
 		"GiveUserRating" => "giveuserrating.php",
 		"InsertChatMessage" => "insertchatmessage.php",
+		"LoginUser" => "loginUser.php",
 		"RegisterUser" => "registeruser.php",
 		"RemoveUserFromChat" => "removeuserfromchat.php",
 		"RemoveUserHitchhikeData" => "removeuserhitchhikedata.php",

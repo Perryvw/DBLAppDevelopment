@@ -27,7 +27,10 @@
 
 	//loop over all tables to clean
 	foreach($tablesToClean as $table){
-		$db->executeQuery("TRUNCATE TABLE ".$table);
-		$db->executeQuery("ALTER TABLE ".$table." auto_increment = 1");
+		//truncate
+		$db->executeQuery("TRUNCATE TABLE ".$table, array());
+
+		//reset auto increment
+		$db->executeQuery("ALTER TABLE ".$table." auto_increment = 1", array());
 	}
 ?>
