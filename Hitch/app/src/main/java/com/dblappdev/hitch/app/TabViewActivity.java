@@ -126,6 +126,9 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
             case R.id.action_profileView:
                 intent = new Intent(this, ViewProfileActivity.class);
                 break;
+            case R.id.action_openChat:
+                intent = new Intent(this, ChatActivity.class);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }

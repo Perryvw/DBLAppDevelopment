@@ -13,4 +13,6 @@
           android:title="@string/action_profile" />
     <item android:id="@+id/action_profileView"
           android:title="@string/action_profileView" />
+    <item android:id="@+id/action_openChat"
+          android:title="@string/action_chat" />
 </menu>

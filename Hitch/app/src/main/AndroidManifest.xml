@@ -76,6 +76,10 @@
             android:name=".RouteActivity"
             android:label="@string/title_activity_route" >
         </activity>
+        <activity
+                android:name=".ChatActivity"
+                android:label="Hitch" >
+        </activity>
     </application>
 
 </manifest>
