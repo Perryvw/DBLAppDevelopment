@@ -66,17 +66,18 @@ public class User {
         if (! instantiate) {
             return;
         }
-        API.getUserData(id, new Callable<Void>() {
+        final API api = new API();
+        api.getUserData(id, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                load();
+                load(api);
                 return null;
             }
         });
     }
 
-    public boolean load() {
-        JSONObject json = API.getResponse();
+    public boolean load(API api) {
+        JSONObject json = api.getResponse();
         try {
             name = json.getString("name");
             state = json.getInt("state");
@@ -110,24 +111,24 @@ public class User {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//dd/MM/yyyy
         Date now = new Date();
         String joinedDate = sdfDate.format(now);
-        API.registerUser(name, state, phone, Integer.toString(2015 - age) + "-01-01", joinedDate, callback);
+        new API().registerUser(name, state, phone, Integer.toString(2015 - age) + "-01-01", joinedDate, callback);
     }
 
     public void setName(String name) {
-        API.updateUserData(this.id, name, -1, -1, null, null, null);
+        new API().updateUserData(this.id, name, -1, -1, null, null, null);
     }
 
     /**
      * @param state 0 for driver, 1 for hiker
      */
     public void setState(int state) {
-        API.updateUserData(this.id, null, state, -1, null, null, null);
+        new API().updateUserData(this.id, null, state, -1, null, null, null);
     }
 
     /**
      * Increments the times successfully hitchhiked by the user.
      */
     public void incrementHitchhikes() {
-        API.updateUserData(this.id, null, -1, hitchhikes++, null, null, null);
+        new API().updateUserData(this.id, null, -1, hitchhikes++, null, null, null);
     }
 }

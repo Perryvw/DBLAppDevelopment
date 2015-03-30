@@ -23,6 +23,7 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
     private static final String BASE_URL = "http://www.yrrep.me/hitch/";
 
     private Callable<Void> callback;
+    private API instance;
     @Override
     protected JSONObject doInBackground(String... params) {
         try {
@@ -38,7 +39,7 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
                 HttpEntity entity = response.getEntity();
                 String data = EntityUtils.toString(entity);
                 JSONObject json = new JSONObject(data);
-                API.setResponse(json);
+                instance.setResponse(json);
                 return json;
             }
         } catch (IOException e) {
@@ -49,7 +50,13 @@ public class getUrlResponseTask extends AsyncTask<String, Void, JSONObject> {
         return null;
     }
 
-    protected void execute(Callable<Void> callback, String... params) {
+    protected void execute(API api, String... params) {
+        instance = api;
+        super.execute(params);
+    }
+
+    protected void execute(API api, Callable<Void> callback, String... params) {
+        instance = api;
         super.execute(params);
         this.callback = callback;
     }

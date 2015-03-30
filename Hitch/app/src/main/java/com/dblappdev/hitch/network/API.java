@@ -17,7 +17,7 @@ public class API {
             "GetUserRatingByUser", "GetUserRoutes", "AddUserRoute", "DeleteUserRoute", "UpdateUserRoute",
             "GetHitchhikeData", "GetUserHitchhikeData", "AddUserHitchhikeData", "RemoveUserHitchhikeData",
             "AddUserToChat", "RemoveUserFromChat", "CreateChatbox", "GetChatMessages", "GetChatBoxes",
-            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser"};
+            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser", "InsertChatMessage"};
     public static final int GET_USER_DATA = 0;
     public static final int REGISTER_USER = 1;
     public static final int UPDATE_USER_DATA = 2;
@@ -39,31 +39,72 @@ public class API {
     public static final int GET_MATCHING_DRIVERS = 18;
     public static final int GET_HITCHHIKE_MATCHES = 19;
     public static final int LOGIN_USER = 20;
+    public static final int INSERT_CHAT_MESSAGE = 21;
 
-    private static JSONObject RESPONSE;
+    private JSONObject RESPONSE;
 
-    public static void setResponse(JSONObject response) {
+    public void setResponse(JSONObject response) {
         RESPONSE = response;
     }
 
-    public static JSONObject getResponse() {
+    public JSONObject getResponse() {
         return RESPONSE;
     }
 
-    private static void commit(String[] params) {
+    private void commit(String[] params) {
         try {
-            new getUrlResponseTask().execute(params);
+            new getUrlResponseTask().execute(this, params);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void commit(String[] params, Callable<Void> callback) {
+    private void commit(String[] params, Callable<Void> callback) {
         try {
-            new getUrlResponseTask().execute(callback, params);
+            new getUrlResponseTask().execute(this, callback, params);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getChatMessages(int chatID, int limit, String since, Callable<Void> callback) {
+        String[] params = new String[4];
+        params[0] = "func=" + FUNCTIONS[GET_CHAT_MESSAGES];
+        params[1] = "chatID=" + Integer.toString(chatID);
+        params[2] = "limit=" + Integer.toString(limit);
+        params[3] = "since=" + since;
+
+        commit(params, callback);
+    }
+
+    public void getChatBoxes(Callable<Void> callback) {
+        String[] params = new String[3];
+        params[0] = "func=" + FUNCTIONS[GET_CHAT_BOXES];
+        params[1] = "startpoint=";
+        params[2] = "endpoint=";
+
+        commit(params, callback);
+    }
+
+    public void insertChatMessage(int userID, int chatID, String message, Callable<Void> callback) {
+        String[] params = new String[4];
+        params[0] = "func=" + FUNCTIONS[INSERT_CHAT_MESSAGE];
+        params[1] = "userID=" + Integer.toString(userID);
+        params[2] = "chatID=" + Integer.toString(chatID);
+        params[3] = "message="+ urlEncode(message);
+
+        commit(params, callback);
+    }
+
+    public void createChatbox(int userID1, int userID2, Callable<Void> callback) {
+        String[] params = new String[5];
+        params[0] = "func=" + FUNCTIONS[CREATE_CHATBOX];
+        params[1] = "userID1=" + Integer.toString(userID1);
+        params[2] = "userID2=" + Integer.toString(userID2);
+        params[3] = "startpoint=";
+        params[4] = "endpoint=";
+
+        commit(params, callback);
     }
 
     /**
@@ -72,7 +113,7 @@ public class API {
      * @param phoneNumber the users phone number
      * @param callback the callback which sets the userID which is returned
      */
-    public static void LoginUser(String phoneNumber, Callable<Void> callback) {
+    public void LoginUser(String phoneNumber, Callable<Void> callback) {
         String[] params = new String[2];
         params[0] = "func=" + FUNCTIONS[LOGIN_USER];
         params[1] = "phoneNumber=" + phoneNumber;
@@ -85,7 +126,7 @@ public class API {
      *
      * @param userID the id of the user
      */
-    public static void getUserData(int userID, Callable<Void> callback) {
+    public void getUserData(int userID, Callable<Void> callback) {
         String[] params = new String[2];
         params[0] = "func=" + FUNCTIONS[GET_USER_DATA];
         params[1] = "userID=" + Integer.toString(userID);
@@ -98,7 +139,7 @@ public class API {
      *
      *
      */
-    public static void registerUser(String name, int state, String phoneNumber, String birthdate, String joinedDate, Callable<Void> callback) {
+    public void registerUser(String name, int state, String phoneNumber, String birthdate, String joinedDate, Callable<Void> callback) {
         String[] params = new String[8];
         params[0] = "func=" + FUNCTIONS[REGISTER_USER];
         params[1] = "name=" + urlEncode(name);
@@ -118,7 +159,7 @@ public class API {
      * @param userID the id of the user for which you want to retrieve his or her routes
      * @param callback the callback
      */
-    public static void getUserRoutes(int userID, Callable<Void> callback) {
+    public void getUserRoutes(int userID, Callable<Void> callback) {
         String[] params = new String[2];
         params[0] = "func=" + FUNCTIONS[GET_USER_ROUTES];
         params[1] = "userID=" + Integer.toString(userID);
@@ -133,7 +174,7 @@ public class API {
      * @param timeWindow the time window which you want to search for
      * @param callback the callback
      */
-    public static void getHitchhikeMatches(int routeID, int timeWindow, Callable<Void> callback) {
+    public void getHitchhikeMatches(int routeID, int timeWindow, Callable<Void> callback) {
         String[] params = new String[2];
         params[0] = "func=" + FUNCTIONS[GET_HITCHHIKE_MATCHES];
         params[1] = "routeID=" + Integer.toString(routeID);
@@ -153,7 +194,7 @@ public class API {
      * @param avatarURL (optional) null if not used
      * @return server response
      */
-    public static void updateUserData(int userId, String name, int state, int hitchhikes, String birthdate, String joinedDate, String avatarURL) {
+    public void updateUserData(int userId, String name, int state, int hitchhikes, String birthdate, String joinedDate, String avatarURL) {
         ArrayList<String> arr = new ArrayList<String>();
         arr.add("func=" + FUNCTIONS[UPDATE_USER_DATA]);
         arr.add("userID=" + Integer.toString(userId));

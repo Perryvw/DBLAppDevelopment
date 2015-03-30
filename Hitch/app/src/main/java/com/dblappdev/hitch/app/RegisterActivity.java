@@ -76,20 +76,20 @@ public class RegisterActivity extends Activity {
      */
     private void registerUser(String name, int age, String phone) {
         int state = prefs.getInt(MainActivity.STATE_KEY, 0);
-
+        final API api = new API();
         User.registerUser(name, state, age, phone, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                registerCallback();
+                registerCallback(api);
                 return null;
             }
         });
 
     }
 
-    public void registerCallback() {
+    public void registerCallback(API api) {
         int id = -1;
-        JSONObject json = API.getResponse();
+        JSONObject json = api.getResponse();
         try {
             id = json.getInt("userID");
         } catch(Exception e) {
@@ -107,10 +107,6 @@ public class RegisterActivity extends Activity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
-
-    public void finalizeRegister() {
-
     }
 
     /*

@@ -87,10 +87,11 @@ public class LoginDialogFragment extends DialogFragment {
                         final EditText phoneText = (EditText) view.findViewById(R.id.phone);
                         String str = phoneText.getText().toString();
                         Log.d("phone", str);
-                        API.LoginUser(str, new Callable<Void>() {
+                        final API api = new API();
+                        api.LoginUser(str, new Callable<Void>() {
                             @Override
                             public Void call() throws Exception {
-                                callback();
+                                callback(api);
                                 return null;
                             }
                         });
@@ -104,9 +105,9 @@ public class LoginDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public void callback() {
+    public void callback(API api) {
         int id = -1;
-        JSONObject json = API.getResponse();
+        JSONObject json = api.getResponse();
         try {
             id = json.getInt("userID");
         } catch(Exception e) {
