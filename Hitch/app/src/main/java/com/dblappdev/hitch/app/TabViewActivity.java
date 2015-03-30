@@ -118,6 +118,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
             case R.id.action_signout:
                 resetUser();
                 intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 break;
             case R.id.action_profileEdit:
                 intent = new Intent(this, EditProfileActivity.class);

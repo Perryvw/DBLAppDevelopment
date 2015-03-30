@@ -33,6 +33,7 @@ public class RegisterActivity extends Activity {
     //text edit fields
     private EditText nameEdit;
     private EditText ageEdit;
+    private EditText phoneEdit;
 
     //FB
     private UiLifecycleHelper uiHelper;
@@ -48,6 +49,7 @@ public class RegisterActivity extends Activity {
         Button registerButton = (Button) findViewById(R.id.btn_register);
         nameEdit = (EditText) findViewById(R.id.userName);
         ageEdit = (EditText) findViewById(R.id.userAge);
+        phoneEdit = (EditText) findViewById(R.id.userPhone);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             /**
@@ -56,7 +58,8 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
                 String name = nameEdit.getText().toString();
                 int age = Integer.parseInt(ageEdit.getText().toString());
-                registerUser(name, age);
+                String phone = phoneEdit.getText().toString();
+                registerUser(name, age, phone);
             }
         });
 
@@ -71,10 +74,10 @@ public class RegisterActivity extends Activity {
      * @param name the name of the user
      * @param age the age of the user
      */
-    private void registerUser(String name, int age) {
+    private void registerUser(String name, int age, String phone) {
         int state = prefs.getInt(MainActivity.STATE_KEY, 0);
 
-        User.registerUser(name, state, age, new Callable<Void>() {
+        User.registerUser(name, state, age, phone, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 registerCallback();
@@ -95,13 +98,14 @@ public class RegisterActivity extends Activity {
         if (id == -1) {
             return;
         }
-        Log.e("callback register", Integer.toString(id));
+        //Log.e("callback register", Integer.toString(id));
         // update shared preferences, birthed and user
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(MainActivity.USER_KEY, id);
         editor.commit();
         // navigate to main
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

@@ -17,7 +17,7 @@ public class API {
             "GetUserRatingByUser", "GetUserRoutes", "AddUserRoute", "DeleteUserRoute", "UpdateUserRoute",
             "GetHitchhikeData", "GetUserHitchhikeData", "AddUserHitchhikeData", "RemoveUserHitchhikeData",
             "AddUserToChat", "RemoveUserFromChat", "CreateChatbox", "GetChatMessages", "GetChatBoxes",
-            "GetMatchingDrivers", "GetHitchhikeMatches"};
+            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser"};
     public static final int GET_USER_DATA = 0;
     public static final int REGISTER_USER = 1;
     public static final int UPDATE_USER_DATA = 2;
@@ -38,6 +38,7 @@ public class API {
     public static final int GET_CHAT_BOXES = 17;
     public static final int GET_MATCHING_DRIVERS = 18;
     public static final int GET_HITCHHIKE_MATCHES = 19;
+    public static final int LOGIN_USER = 20;
 
     private static JSONObject RESPONSE;
 
@@ -66,6 +67,20 @@ public class API {
     }
 
     /**
+     * Login a user by phone number.
+     *
+     * @param phoneNumber the users phone number
+     * @param callback the callback which sets the userID which is returned
+     */
+    public static void LoginUser(String phoneNumber, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[LOGIN_USER];
+        params[1] = "phoneNumber=" + phoneNumber;
+
+        commit(params, callback);
+    }
+
+    /**
      * Get the data of a user by id.
      *
      * @param userID the id of the user
@@ -83,15 +98,16 @@ public class API {
      *
      *
      */
-    public static void registerUser(String name, int state, String birthdate, String joinedDate, Callable<Void> callback) {
-        String[] params = new String[7];
+    public static void registerUser(String name, int state, String phoneNumber, String birthdate, String joinedDate, Callable<Void> callback) {
+        String[] params = new String[8];
         params[0] = "func=" + FUNCTIONS[REGISTER_USER];
         params[1] = "name=" + urlEncode(name);
         params[2] = "state=" + Integer.toString(state);
-        params[3] = "hitchhikes=0";
-        params[4] = "birthDate=" + birthdate;
-        params[5] = "joinedDate=" + joinedDate;
-        params[6] = "avatarURL";
+        params[3] = "phoneNumber=" + phoneNumber;
+        params[4] = "hitchhikes=0";
+        params[5] = "birthDate=" + birthdate;
+        params[6] = "joinedDate=" + joinedDate;
+        params[7] = "avatarURL";
 
         commit(params, callback);
     }

@@ -5,10 +5,13 @@
     <string name="app_name">Hitch</string>
     <string name="app_birth">Choose if you want to be a hitchhiker or a driver\n(this can always be changed later)</string>
     <string name="app_register">Choose to fill in, or login with facebook</string>
+    <string name="phone_nr">Phone number</string>
     <string name="hiker">Hiker</string>
     <string name="driver">Driver</string>
     <string name="already_registered">Already registered?</string>
     <string name="login">Login</string>
+    <string name="signin">Sign in</string>
+    <string name="cancel">Cancel</string>
     <string name="register">Register</string>
     <string name="name">Name</string>
     <string name="age">Age</string>
