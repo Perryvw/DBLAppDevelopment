@@ -1,23 +1,30 @@
 package com.dblappdev.hitch.app;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import com.dblappdev.hitch.model.User;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.*;
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 
 public class RouteActivity extends FragmentActivity implements OnMapReadyCallback{
 
     ArrayList<LatLng> directions;
     MapFragment mapFragment;
+    private User user;
+    private TextView nameView, birthdateView, registeredView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +36,21 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         directions = (ArrayList) bundle.get("LATLNG_DIRECTIONS_LIST");
         onMapReady(mapFragment.getMap());
         setCameraOnRoute(directions);
+
+        //THIS SHOULD BE THE USERID OF THE DRIVER INSTEAD
+        int userID = 1;
+
+        nameView = (TextView) findViewById(R.id.nameLabel);
+        birthdateView = (TextView) findViewById(R.id.birthdateLabel);
+        registeredView = (TextView) findViewById(R.id.registeredLabel);
+
+        user = new User(userID, true, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                callback();
+                return null;
+            }
+        });
     }
 
     private void setCameraOnRoute(ArrayList<LatLng> directions) {
@@ -88,5 +110,11 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void callback() {
+        nameView.setText(user.getName());
+        birthdateView.setText(user.getBirthdate());
+        registeredView.setText(user.getJoinedDate());
     }
 }

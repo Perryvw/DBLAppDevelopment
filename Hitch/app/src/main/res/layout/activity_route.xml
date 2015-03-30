@@ -17,14 +17,135 @@
                 android:layout_height="match_parent"
                 android:layout_weight="2.0"
                 android:orientation="vertical">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Start point - end point"
+                    android:id="@+id/routeName"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+                    android:textStyle="bold"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Departure"
+                    android:id="@+id/textView11"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="-30dp"
+                    android:layout_alignLeft="@+id/routeName"
+                    android:layout_centerHorizontal="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Estimated arrival"
+                    android:id="@+id/textView22"
+                    android:layout_marginTop="50dp"
+                    android:layout_alignLeft="@+id/routeName"
+                    android:layout_marginLeft="-30dp"
+                    android:layout_centerHorizontal="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="00:00"
+                    android:id="@+id/departureTime"
+                    android:layout_marginTop="30dp"
+                    android:layout_alignRight="@+id/routeName"
+                    android:layout_marginRight="-30dp"
+                    android:layout_centerHorizontal="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="00:00"
+                    android:id="@+id/arrivalTime"
+                    android:layout_marginTop="50dp"
+                    android:layout_alignRight="@+id/routeName"
+                    android:layout_marginRight="-30dp"
+                    android:layout_centerHorizontal="true"/>
         </RelativeLayout>
-        <LinearLayout
+        <RelativeLayout
                    android:id="@+id/driverDetails"
                    android:layout_weight="1.0"
                    android:orientation="vertical"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent">
-       </LinearLayout>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username:"
+                    android:id="@+id/textView"
+                    android:layout_marginTop="0dp"
+                    android:textSize="16sp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="71dp"
+                    android:layout_marginEnd="71dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username Surname"
+                    android:id="@+id/nameLabel"
+                    android:textSize="13sp"
+                    android:layout_below="@+id/textView"
+                    android:layout_alignLeft="@+id/textView"
+                    android:layout_alignStart="@+id/textView"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Birthdate:"
+                    android:id="@+id/textView2"
+                    android:layout_marginTop="46dp"
+                    android:textSize="16sp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignLeft="@+id/textView"
+                    android:layout_centerHorizontal="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="27 years"
+                    android:id="@+id/birthdateLabel"
+                    android:textSize="13dp"
+                    android:layout_below="@+id/textView2"
+                    android:layout_alignLeft="@+id/textView2"
+                    android:layout_alignStart="@+id/textView2"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Registered since:"
+                    android:id="@+id/textView3"
+                    android:layout_marginTop="95dp"
+                    android:textSize="16sp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignLeft="@+id/textView"
+                    android:layout_centerHorizontal="true"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23//04/2014"
+                    android:id="@+id/registeredLabel"
+                    android:textSize="13dp"
+                    android:layout_below="@+id/textView3"
+                    android:layout_alignLeft="@+id/textView3"
+                    android:layout_alignStart="@+id/textView3"/>
+            <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:id="@+id/imageView"
+                    android:layout_alignTop="@+id/textView"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="41dp"
+                    android:layout_marginStart="41dp"
+                    android:layout_alignBottom="@+id/registeredLabel"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
     <LinearLayout

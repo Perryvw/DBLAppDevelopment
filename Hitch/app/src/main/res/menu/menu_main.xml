@@ -15,4 +15,6 @@
           android:title="@string/action_profileView" />
     <item android:id="@+id/action_openChat"
           android:title="@string/action_chat" />
+    <item android:id="@+id/action_routeActivity"
+          android:title="@string/action_routeActivity" />
 </menu>
