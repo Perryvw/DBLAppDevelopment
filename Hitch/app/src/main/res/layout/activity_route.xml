@@ -88,7 +88,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Username Surname"
+                    android:text="Loading..."
                     android:id="@+id/nameLabel"
                     android:textSize="13sp"
                     android:layout_below="@+id/textView"
@@ -108,7 +108,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="27 years"
+                    android:text="Loading..."
                     android:id="@+id/birthdateLabel"
                     android:textSize="13dp"
                     android:layout_below="@+id/textView2"
@@ -128,7 +128,7 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="23//04/2014"
+                    android:text="Loading..."
                     android:id="@+id/registeredLabel"
                     android:textSize="13dp"
                     android:layout_below="@+id/textView3"
@@ -143,8 +143,12 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginLeft="41dp"
                     android:layout_marginStart="41dp"
-                    android:layout_alignBottom="@+id/registeredLabel"/>
+                    android:layout_alignBottom="@+id/registeredLabel"/><![CDATA[
+            /ratingBarStyleSmall
+                    android:layout_alignParentBottom="true" android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"/>
 
+        ]]>
         </RelativeLayout>
 
     </LinearLayout>
