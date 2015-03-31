@@ -107,11 +107,11 @@ public class User {
      * @param age age of the user
      * @return the new id of the user
      */
-    public static void registerUser(String name, int state, int age, String phone, Callable<Void> callback) {
+    public static void registerUser(API api, String name, int state, int age, String phone, Callable<Void> callback) {
         SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");//dd/MM/yyyy
         Date now = new Date();
         String joinedDate = sdfDate.format(now);
-        new API().registerUser(name, state, phone, Integer.toString(2015 - age) + "-01-01", joinedDate, callback);
+        api.registerUser(name, state, phone, Integer.toString(2015 - age) + "-01-01", joinedDate, callback);
     }
 
     public void setName(String name) {

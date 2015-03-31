@@ -79,7 +79,7 @@ public class RegisterActivity extends Activity {
     private void registerUser(String name, int age, String phone) {
         int state = prefs.getInt(MainActivity.STATE_KEY, 0);
         final API api = new API();
-        User.registerUser(name, state, age, phone, new Callable<Void>() {
+        User.registerUser(api, name, state, age, phone, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 registerCallback(api);
@@ -92,6 +92,7 @@ public class RegisterActivity extends Activity {
     public void registerCallback(API api) {
         int id = -1;
         JSONObject json = api.getResponse();
+        Log.e("json", json.toString());
         try {
             id = json.getInt("userID");
         } catch(Exception e) {
