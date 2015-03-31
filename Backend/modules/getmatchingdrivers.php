@@ -23,13 +23,29 @@
 	$MAX_PERC_DEVIATION = 0.15; //The maximum percentage the algorithm can deviate from the original route length
 
 	//Request a distance between two places from the google API
-	function getDistance($start, $end) {
-		$response = file_get_contents("https://maps.googleapis.com/maps/api/distancematrix/json?origins=".$start."&destinations=".$end);
-		$respObj = json_decode($response);
-		if ($respObj->status == "OK") {
-			return $respObj->rows[0]->elements[0]->distance->value;
+	function getDistance($start, $end, $db) {
+		//try to retrieve data from the cache first:
+		$res = $db->getRow("SELECT distance FROM hitch_distanceMatrix WHERE (placeA=? AND placeB=?) OR (placeA=? AND placeB=?)", array($start, $end, $end, $start));
+
+		if ($res == false) {
+			//If the data is not found in the cache, request it from the API
+			$response = file_get_contents("https://maps.googleapis.com/maps/api/distancematrix/json?origins=".urlencode($start)."&destinations=".urlencode($end));
+			$respObj = json_decode($response);
+			if ($respObj->status == "OK") {
+				//Get distance from response
+				$dist = $respObj->rows[0]->elements[0]->distance->value;
+
+				//save in the cache
+				$db->insertRow('hitch_distanceMatrix', array($start, $end, $dist));
+
+				return $dist;
+			} else {
+				//invalid return data
+				return -1;
+			}
 		} else {
-			return -1;
+			//returned cached data
+			return $res->distance;
 		}
 	}
 	
@@ -52,34 +68,47 @@
 		throwError('Hitchhiker ID not found.');
 	}
 
-	$hhiker->timestamp = '2015-03-17 13:00:00';
-
 	$matchedRoutes = array();
 
 	//Use iterative deepening to look further back
-	for ($i = 0; $i < 12 && count($matchedroutes) < 5; $i++) {
+	for ($i = 0; $i < 6 && count($matchedroutes) < 5; $i++) {
 		//get routes leaving withing X time
-		$routes = $db->getResult("SELECT * FROM hitch_userroutes WHERE 
+		$routes = $db->getResult("SELECT a.*, (SELECT COALESCE(AVG(rating), 0) FROM hitch_ratings b WHERE b.toUserID = a.userID) as 'rating' FROM hitch_userroutes a WHERE 
 			 (TIMESTAMPDIFF(MINUTE, ?, timestamp) % 10080) >= ? AND (TIMESTAMPDIFF(MINUTE, ?, timestamp) % 10080) < ?", 
 			 array($hhiker->timestamp, $i*60, $hhiker->timestamp, ($i+1)*60));
 
 		foreach($routes as $route) {
 			//Get the distance from route to destination
-			$d1 = getDistance($route->startPoint, $route->endPoint);
+			$d1 = getDistance($route->startPoint, $route->endPoint, $db);
+			if ($d1 == 0) $d1 = 1;
 			
 			//get the distance from route to hitchhiker
-			$d2 = getDistance($route->startPoint, $hhiker->location);
+			$d2 = getDistance($route->startPoint, $hhiker->location, $db);
 
 			//get the distance from hitchhiker to route destination
-			$d3 = getDistance($hhiker->location, $route->endPoint);
+			$d3 = getDistance($hhiker->location, $route->endPoint, $db);
 
 			//check the route deviation in percentages
-			if ((($d2 + $d3) - $d1) / $d1 <= $MAX_PERC_DEVIATION) {
+			$deviation = (($d2 + $d3) - $d1) / $d1;
+			if ($deviation <= $MAX_PERC_DEVIATION) {
 				//if the deviation is allowed, add the route to our matches
-				$matchedRoutes[] = (object) array("userID" => $route->userID, "routeID" => $route->userrouteID, "relevance" => 100);
+				$matchedRoutes[] = (object) array("userID" => $route->userID, "routeID" => $route->userrouteID, 
+					"relevance" => (100-($deviation/$MAX_PERC_DEVIATION)*90), "rating" => $route->rating);
 			}
 		}
 	}
+
+	//order the data
+	usort($matchedRoutes, function($a, $b) {
+		if ($a->relevance == $b->relevance) {
+			return $b->rating - $a ->rating;
+		} else {
+			return $b->relevance - $a->relevance;
+		}
+	});
+
+	//remove old matches for this user
+	$db->executeQuery("DELETE FROM hitch_matches WHERE hitchhikerID=?", array($hhiker->userID));
 
 	//Insert the matches made into the database
 	foreach ($matchedRoutes as $match){

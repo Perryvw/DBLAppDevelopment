@@ -18,7 +18,7 @@
 	$lastName = array("Smith", "Johnson", "Williams", "Brown", "Jones", "Davis", "Miller", "Garcia", "Rodriguez", "Wilson");
 
 	//How many sample users do we want to generate?
-	$USERS_TO_GENERATE = 100;
+	$USERS_TO_GENERATE = 50;
 	$HITCHHIKER_DISTRIBUTION = 0.2;
 
 	//Generate users
