@@ -15,21 +15,17 @@ public class Route implements Parcelable {
 
     private GeoPoint start;
     private GeoPoint end;
-    private String owner;
+    private int ownerID;
     private String depTime;
     private String eta;
     private ArrayList<LatLng> directions;
 
-    public Route(GeoPoint start, GeoPoint end, String owner, String depTime, String eta) {
+    public Route(GeoPoint start, GeoPoint end, int ownerID, String depTime, String eta) {
         this.start = start;
         this.end = end;
-        this.owner = owner;
+        this.ownerID = ownerID;
         this.depTime = depTime;
         this.eta = eta;
-    }
-
-    public Route(Parcel in) {
-
     }
 
     public void setDirections(ArrayList<LatLng> directions) {
@@ -48,8 +44,8 @@ public class Route implements Parcelable {
         return eta;
     }
 
-    public String getOwner() {
-        return owner;
+    public int getOwnerID() {
+        return ownerID;
     }
 
     public GeoPoint getStart() {
@@ -60,6 +56,20 @@ public class Route implements Parcelable {
         return end;
     }
 
+    protected Route(Parcel in) {
+        start = (GeoPoint) in.readValue(GeoPoint.class.getClassLoader());
+        end = (GeoPoint) in.readValue(GeoPoint.class.getClassLoader());
+        ownerID = in.readInt();
+        depTime = in.readString();
+        eta = in.readString();
+        if (in.readByte() == 0x01) {
+            directions = new ArrayList<LatLng>();
+            in.readList(directions, LatLng.class.getClassLoader());
+        } else {
+            directions = null;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -67,6 +77,29 @@ public class Route implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeValue(start);
+        dest.writeValue(end);
+        dest.writeInt(ownerID);
+        dest.writeString(depTime);
+        dest.writeString(eta);
+        if (directions == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(directions);
+        }
     }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Route> CREATOR = new Parcelable.Creator<Route>() {
+        @Override
+        public Route createFromParcel(Parcel in) {
+            return new Route(in);
+        }
+
+        @Override
+        public Route[] newArray(int size) {
+            return new Route[size];
+        }
+    };
 }

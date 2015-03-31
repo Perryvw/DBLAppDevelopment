@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.dblappdev.hitch.model.User;
+import com.dblappdev.hitch.route.Route;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -23,8 +24,9 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
 
     ArrayList<LatLng> directions;
     MapFragment mapFragment;
+    Route route;
     private User user;
-    private TextView nameView, birthdateView, registeredView;
+    private TextView nameView, birthdateView, registeredView, routeNameView, depTimeView, etaView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +35,20 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        directions = (ArrayList) bundle.get("LATLNG_DIRECTIONS_LIST");
+        route = (Route) bundle.get("ROUTE");
+        directions = route.getDirections();
         onMapReady(mapFragment.getMap());
         setCameraOnRoute(directions);
 
         //THIS SHOULD BE THE USERID OF THE DRIVER INSTEAD
-        int userID = 1;
+        int userID = route.getOwnerID();
 
         nameView = (TextView) findViewById(R.id.nameLabel);
         birthdateView = (TextView) findViewById(R.id.birthdateLabel);
         registeredView = (TextView) findViewById(R.id.registeredLabel);
+        routeNameView = (TextView) findViewById(R.id.routeName);
+        depTimeView = (TextView) findViewById(R.id.departureTime);
+        etaView = (TextView) findViewById(R.id.arrivalTime);
 
         user = new User(userID, true, new Callable<Void>() {
             @Override
@@ -67,7 +73,8 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
             minLon = Math.min(directions.get(i).longitude, minLon);
         }
 
-        final LatLngBounds bounds = new LatLngBounds.Builder().include(new LatLng(maxLat, maxLon)).include(new LatLng(minLat, minLon)).build();
+        final LatLngBounds bounds = new LatLngBounds.Builder().include(new LatLng(maxLat, maxLon))
+                .include(new LatLng(minLat, minLon)).build();
 
         mapFragment.getMap().setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
@@ -76,16 +83,36 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
                 mapFragment.getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 120));
             }
         });
+
+        mapFragment.getMap().getUiSettings().setRotateGesturesEnabled(false);
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
 
-        PolylineOptions rectLine = new PolylineOptions().width(6).color(Color.GRAY);
+        PolylineOptions rectLine = new PolylineOptions().width(6).color(Color.rgb(225,102,0));
 
         for(int i = 0 ; i < directions.size() ; i++) {
             rectLine.add(directions.get(i));
         }
+
+        Marker start = mapFragment.getMap().addMarker(new MarkerOptions()
+                .position(new LatLng(route.getStart().getLatitude(), route.getStart().getLongitude()))
+                .title(route.getStart().getCity())
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                .snippet("Start point route")
+                .alpha(0.7f));
+
+        Marker end = mapFragment.getMap().addMarker(new MarkerOptions()
+                .position(new LatLng(route.getEnd().getLatitude(), route.getEnd().getLongitude()))
+                .title(route.getEnd().getCity())
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                .snippet("End point route")
+                .alpha(0.7f));
+
+        start.isVisible();
+
+        end.isVisible();
 
         map.addPolyline(rectLine);
     }
@@ -116,5 +143,8 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         nameView.setText(user.getName());
         birthdateView.setText(user.getBirthdate());
         registeredView.setText(user.getJoinedDate());
+        routeNameView.setText(route.getStart().getCity() + " - " + route.getEnd().getCity());
+        depTimeView.setText(route.getDepTime());
+        etaView.setText(route.getEta());
     }
 }

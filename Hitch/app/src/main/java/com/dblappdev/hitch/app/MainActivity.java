@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.dblappdev.hitch.model.User;
+import com.dblappdev.hitch.route.RouteDisplayer;
+
+import java.util.concurrent.Callable;
 
 
 public class MainActivity extends Activity {
@@ -37,9 +41,10 @@ public class MainActivity extends Activity {
             //Log.d("userID", Integer.toString(userID));
             intent = new Intent(this, TabViewActivity.class);
         }
-        
+
+        RouteDisplayer.getInstance().showRouteActivity("Eindhoven","Amsterdam",1,"11:00","15:00",getApplicationContext());
         //intent = new Intent(this, RouteActivity.class);
-        startActivity(intent);
+        //startActivity(intent);
     }
 
     @Override
