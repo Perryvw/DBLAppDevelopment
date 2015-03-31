@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import com.dblappdev.hitch.model.User;
 import com.dblappdev.hitch.route.Route;
@@ -27,6 +30,7 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
     Route route;
     private User user;
     private TextView nameView, birthdateView, registeredView, routeNameView, depTimeView, etaView;
+    private Button endHitchButton,openChatButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,48 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         routeNameView = (TextView) findViewById(R.id.routeName);
         depTimeView = (TextView) findViewById(R.id.departureTime);
         etaView = (TextView) findViewById(R.id.arrivalTime);
+        openChatButton = (Button) findViewById(R.id.openChatButton);
+        endHitchButton = (Button) findViewById(R.id.endHitchButton);
+
+        openChatButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+                    endHitchButton.setBackgroundColor(darker(Color.BLUE,0.7f));
+
+
+
+
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    endHitchButton.setBackgroundColor(Color.BLUE);
+
+                    //TODO OPEN CHAT BUTTON FUNCTIONALITY HERE
+                }
+
+                return false;
+            }
+        });
+
+        endHitchButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+                    endHitchButton.setBackgroundColor(darker(Color.RED,0.7f));
+
+
+
+
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    endHitchButton.setBackgroundColor(Color.RED);
+
+                    //TODO END HITCH BUTTON FUNCTIONALITY HERE
+                }
+
+                return false;
+            }
+        });
 
         user = new User(userID, true, new Callable<Void>() {
             @Override
@@ -137,6 +183,21 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Returns darker version of specified <code>color</code>.
+     */
+    public static int darker (int color, float factor) {
+        int a = Color.alpha( color );
+        int r = Color.red( color );
+        int g = Color.green( color );
+        int b = Color.blue( color );
+
+        return Color.argb( a,
+                Math.max( (int)(r * factor), 0 ),
+                Math.max( (int)(g * factor), 0 ),
+                Math.max( (int)(b * factor), 0 ) );
     }
 
     public void callback() {

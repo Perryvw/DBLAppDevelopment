@@ -171,7 +171,21 @@
                 android:layout_weight="4.0"
                 android:gravity="center">
             <Button
-                    android:id="@+id/angry_btn"
+                    android:id="@+id/openChatButton"
+                    android:padding="10dip"
+                    android:text="Open chat"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:background="@color/Blue"
+                    android:shadowColor="#A8A8A8"
+                    android:shadowRadius="5"
+                    android:layout_gravity="center" android:focusableInTouchMode="true" android:focusable="true"
+                    android:enabled="true"
+                    android:layout_weight="1.0"/>
+            <Button
+                    android:id="@+id/endHitchButton"
                     android:padding="10dip"
                     android:text="End this hitchhike"
                     android:textColor="#FFFFFF"
@@ -182,7 +196,8 @@
                     android:shadowColor="#A8A8A8"
                     android:shadowRadius="5"
                     android:layout_gravity="center" android:focusableInTouchMode="true" android:focusable="true"
-                    />
+                    android:enabled="true"
+                    android:layout_weight="1.0"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
