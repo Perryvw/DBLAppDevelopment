@@ -158,7 +158,15 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         editor.commit();
     }
 
-
+    /**
+     * Go to add a route for configuring driver routes.
+     */
+    public void addHitchRoute(View v) {
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.hitch_fragment, new HitchRouteFragment());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 
     /**
      * Go to add a route for configuring driver routes.
