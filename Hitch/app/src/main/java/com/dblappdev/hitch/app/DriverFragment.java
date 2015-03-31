@@ -84,31 +84,24 @@ public class DriverFragment extends Fragment {
                 return null;
             }
         });
-
-        groupList.add("HP");
     }
 
-    private void createHitcherCollection(String routeName) {
+    private void createHitcherCollection(final String routeName) {
         final API api = new API();
-        // preparing route collection(child)
         childList = new ArrayList<String>();
+        // preparing route collection(child)
         /*api.getHitchhikeMatches(2, 2, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                createHitcherCollectionCallback(api);
+                createHitcherCollectionCallback(api, routeName, childList);
                 return null;
             }
         });*/
-
-        childList.add("child");
-
+        if (childList.isEmpty()) {
+            childList.add("No hitchhikers");
+        }
+        childList.add("dasdasda");
         routeCollection.put(routeName, childList);
-
-    }
-
-    private void loadChild(String[] hitchers) {
-        for (String hitcher : hitchers)
-            childList.add(hitcher);
     }
 
     // Convert pixel to dip
@@ -138,18 +131,14 @@ public class DriverFragment extends Fragment {
             e.printStackTrace();
             groupList.add("exception");
         }
-
-        groupList.add("dasdas");
-        routeCollection.put("dasdas", new ArrayList<String>());
-        expListAdapter.notifyDataSetChanged();
+        updateAdapter();
 
     }
 
-    public void createHitcherCollectionCallback(API api) {
+    public void createHitcherCollectionCallback(API api, String routeName, List<String> childList) {
         JSONObject json = api.getResponse();
         try {
             JSONArray arr = json.getJSONArray("matches");
-            childList = new ArrayList<String>();
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject route = arr.getJSONObject(i);
                 int userID = route.getInt("userID");
@@ -157,9 +146,19 @@ public class DriverFragment extends Fragment {
                 String timestamp = route.getString("timestamp");
                 childList.add(Integer.toString(userID));
             }
+            if (childList.isEmpty()) {
+                childList.add("No hitchhikers");
+            }
+            routeCollection.put(routeName, childList);
+            updateAdapter();
         } catch(JSONException e) {
             e.printStackTrace();
         }
     }
+
+    public void updateAdapter() {
+        expListAdapter.notifyDataSetChanged();
+    }
+
 
 }

@@ -100,7 +100,6 @@ public class HitchFragment extends ListFragment {
     }
 
     private void createHitchListCallback(API api) {
-
         json = api.getResponse();
         try {
             JSONArray array = json.getJSONArray("routes");
@@ -121,6 +120,9 @@ public class HitchFragment extends ListFragment {
             // initialize and set the list adapter
             setListAdapter(listAdapter);
         } catch(JSONException e) {
+            mItems.add(new ListViewItem( "test 2 ","das",
+                    "TIMEEXC", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
+                    resources.getDrawable(R.drawable.arrow_right)));
             e.printStackTrace();
         }
 

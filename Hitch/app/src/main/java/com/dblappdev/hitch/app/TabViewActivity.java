@@ -182,4 +182,14 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         ft.addToBackStack(null);
         ft.commit();
     }
+
+    /**
+     * Go to driver home.
+     */
+    public void goDriverHome(View v) {
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_driver_route, new DriverFragment());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 }

@@ -6,8 +6,98 @@
                 tools:context=".DriverFragment"
                 android:orientation="vertical"
                 android:background="@color/GhostWhite"
-                android:id="@+id/driver_fragment">
+                android:id="@+id/fragment_driver_route">
 
+    <Spinner
+            android:id="@+id/routes_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp" android:layout_alignParentTop="true" android:layout_alignLeft="@+id/useCurrentLoc"
+            android:layout_alignStart="@+id/useCurrentLoc" android:layout_alignRight="@+id/useCurrentLoc"
+            android:layout_alignEnd="@+id/useCurrentLoc"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Or create a new one"
+            android:id="@+id/textView5" android:layout_below="@+id/routes_spinner"
+            android:layout_centerHorizontal="true" android:layout_marginTop="5dp"/>
+    <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Use current location"
+            android:id="@+id/useCurrentLoc"
+            android:checked="false"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/textView5" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
+            android:layout_marginLeft="15dp" android:layout_marginRight="15dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Starting point: "
+            android:id="@+id/textView8"
+            android:layout_below="@+id/useCurrentLoc" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginLeft="15dp" android:layout_marginTop="15dp"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/startPoint"
+            android:layout_below="@+id/textView8" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginLeft="15dp"
+            android:layout_alignRight="@+id/destinationPoint" android:layout_alignEnd="@+id/destinationPoint"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Destination point"
+            android:id="@+id/textView9" android:layout_below="@+id/startPoint" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginTop="15dp" android:layout_marginLeft="15dp"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/destinationPoint" android:layout_below="@+id/textView9" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginLeft="15dp"
+            android:layout_alignRight="@+id/useCurrentLoc" android:layout_alignEnd="@+id/useCurrentLoc"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Choose an existing route"
+            android:id="@+id/textView12"
+            android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:id="@+id/buttonOK"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" android:layout_marginRight="15dp"
+            android:layout_alignLeft="@+id/buttonNow" android:layout_alignStart="@+id/buttonNow"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:onClick="goDriverHome"
+            android:id="@+id/buttonCancel" android:layout_alignTop="@+id/buttonOK" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_marginLeft="15dp"/>
+    <TimePicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/driverRouteTimePicker"
+            android:layout_below="@+id/destinationPoint" android:layout_alignLeft="@+id/destinationPoint"
+            android:layout_alignStart="@+id/destinationPoint"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Now"
+            android:id="@+id/buttonNow" android:layout_alignTop="@+id/driverRouteTimePicker" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" android:layout_marginTop="45dp"
+            android:layout_marginRight="15dp" android:layout_toRightOf="@+id/driverRouteTimePicker"
+            android:layout_toEndOf="@+id/driverRouteTimePicker" android:layout_marginLeft="15dp"/>
 
 
 </RelativeLayout>

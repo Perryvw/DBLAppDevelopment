@@ -155,6 +155,21 @@ public class API {
     }
 
     /**
+     * Adds a new user route.
+     *
+     *
+     */
+    public void addUserRoute(int userID, String startpoint, String endpoint, String timestamp, Callable<Void> callback) {
+        String[] params = new String[5];
+        params[0] = "func=" + FUNCTIONS[ADD_USER_ROUTE];
+        params[1] = "userID=" + userID;
+        params[2] = "startpoint=" + startpoint;
+        params[3] = "endpoint=" + endpoint;
+        params[4] = "timestamp=" + timestamp;
+        commit(params, callback);
+    }
+
+    /**
      * Retrieves the routes for a given user.
      *
      * @param userID the id of the user for which you want to retrieve his or her routes
