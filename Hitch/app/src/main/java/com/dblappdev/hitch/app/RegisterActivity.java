@@ -82,8 +82,8 @@ public class RegisterActivity extends Activity {
         User.registerUser(api, name, state, age, phone, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                registerCallback(api);
-                return null;
+            registerCallback(api);
+            return null;
             }
         });
 
