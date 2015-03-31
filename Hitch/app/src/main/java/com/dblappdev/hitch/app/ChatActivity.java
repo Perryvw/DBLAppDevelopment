@@ -4,19 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Html;
+import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-import com.dblappdev.hitch.model.User;
 import com.dblappdev.hitch.network.API;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Random;
 import java.util.concurrent.Callable;
 
 /**
@@ -30,13 +28,12 @@ public class ChatActivity extends Activity {
     private EditText messageText;
     private Button sendMessageButton;
     private EditText messageHistoryText;
+    private String since = "0";
 
-    private String[][] chatMessages;
+    Handler mHandler = new Handler();
+    ChatThread mThread;
 
     private final static int CHAT_ID = 1;
-    private final static int CHAT_LIMIT = 50;
-
-    private User sender;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,25 +70,33 @@ public class ChatActivity extends Activity {
             }
         });
 
-        /**
-        //Fill array with fake chat data
-        for (int i = 0; i<25; i++) {
-            for (int j = 0; j<2; j++) {
-                //name
-                if (j==0) {
-                    if (getRandomBoolean()) {
-                        chatMessages[i][j] = "<b><font color=#000000>You</font></b>";
-                    } else {
-                        chatMessages[i][j] = "<u><font color=#cc0029>Friend</font></u>";
+        loadMessageHistory();
+        mThread = new ChatThread(new Runnable() {
+            @Override
+            public void run() {
+                while (ChatThread.RUNNING) {
+                    try {
+                        Thread.sleep(5000);
+                        mHandler.post(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                loadMessageHistory();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                //message
-                } else {
-                    chatMessages[i][j] = "<font color=#ffa500>The message</font>";
                 }
             }
-        }
-         */
-        loadMessageHistory();
+        });
+        mThread.start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mThread.end();
     }
 
     public void sendMessage() {
@@ -115,7 +120,7 @@ public class ChatActivity extends Activity {
 
     public void loadMessageHistory() {
         final API api = new API();
-        api.getChatMessages(CHAT_ID, CHAT_LIMIT, "0", new Callable<Void>() {
+        api.getChatMessages(CHAT_ID, 50, since, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 loadMessageHistoryCallback(api);
@@ -129,13 +134,12 @@ public class ChatActivity extends Activity {
 
         try {
             JSONArray arr = json.getJSONArray("messages");
-            for(int i = 0; i < arr.length(); i++) {
+            for(int i = arr.length()-1; i >= 0; i--) {
                 JSONObject message = arr.getJSONObject(i);
-
+                since = message.getString("timestamp");
                 String sender = message.getString("username");
                 String text = message.getString("text");
                 appendToMessageHistory(sender, text);
-
             }
         } catch(JSONException e) {
             e.printStackTrace();

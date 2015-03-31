@@ -72,7 +72,7 @@ public class API {
         params[0] = "func=" + FUNCTIONS[GET_CHAT_MESSAGES];
         params[1] = "chatID=" + Integer.toString(chatID);
         params[2] = "limit=" + Integer.toString(limit);
-        params[3] = "since=" + since;
+        params[3] = "since=" + urlEncode(since);
 
         commit(params, callback);
     }
