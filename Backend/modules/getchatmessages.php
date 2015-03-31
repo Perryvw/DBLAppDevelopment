@@ -53,6 +53,10 @@
 			FROM hitch_chatmessages a WHERE a.chatID=? AND a.timestamp >= ? ORDER BY a.timestamp DESC LIMIT ".$limit, array($chat_id, $since));
 	}
 	
+	foreach ($result as $r) {
+		$r->timestamp = strtotime($r->timestamp);
+	}
+
 	//output data
 	echo '{ "messages" : '.json_encode($result).' }';
 ?>
