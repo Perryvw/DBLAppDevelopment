@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.dblappdev.hitch.model.User;
+import com.dblappdev.hitch.route.GMapV2Direction;
+import com.dblappdev.hitch.route.GetRouteDirectionsTask;
 import com.dblappdev.hitch.route.Route;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,42 +42,29 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         route = (Route) bundle.get("ROUTE");
+        String url = (new GMapV2Direction()).getDocDrivingUrl(route);
+        //String url = (new GMapV2Direction()).getDocWalkingUrl(route);
+        new GetRouteDirectionsTask(new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                buildRouteActivity();
+                return null;
+            }
+        }, route).execute(url);
+
+
+    }
+
+    private void buildRouteActivity() {
+        loadComponents();
         directions = route.getDirections();
         onMapReady(mapFragment.getMap());
         setCameraOnRoute(directions);
+        initEndHitchButton();
+        initStartChatButton();
+    }
 
-        //THIS SHOULD BE THE USERID OF THE DRIVER INSTEAD
-        int userID = route.getOwnerID();
-
-        nameView = (TextView) findViewById(R.id.nameLabel);
-        birthdateView = (TextView) findViewById(R.id.birthdateLabel);
-        registeredView = (TextView) findViewById(R.id.registeredLabel);
-        routeNameView = (TextView) findViewById(R.id.routeName);
-        depTimeView = (TextView) findViewById(R.id.departureTime);
-        etaView = (TextView) findViewById(R.id.arrivalTime);
-        openChatButton = (Button) findViewById(R.id.openChatButton);
-        endHitchButton = (Button) findViewById(R.id.endHitchButton);
-
-        openChatButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
-                    openChatButton.setBackgroundColor(darker(Color.BLUE,0.7f));
-
-
-
-
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    openChatButton.setBackgroundColor(Color.BLUE);
-
-                    //TODO OPEN CHAT BUTTON FUNCTIONALITY HERE
-                }
-
-                return false;
-            }
-        });
-
+    private void initEndHitchButton() {
         endHitchButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -95,12 +84,49 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
                 return false;
             }
         });
+    }
+
+    private void loadComponents() {
+
+        //THIS SHOULD BE THE USERID OF THE DRIVER INSTEAD
+        int userID = route.getOwnerID();
+
+        nameView = (TextView) findViewById(R.id.nameLabel);
+        birthdateView = (TextView) findViewById(R.id.birthdateLabel);
+        registeredView = (TextView) findViewById(R.id.registeredLabel);
+        routeNameView = (TextView) findViewById(R.id.routeName);
+        depTimeView = (TextView) findViewById(R.id.departureTime);
+        etaView = (TextView) findViewById(R.id.arrivalTime);
+        openChatButton = (Button) findViewById(R.id.openChatButton);
+        endHitchButton = (Button) findViewById(R.id.endHitchButton);
 
         user = new User(userID, true, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 callback();
                 return null;
+            }
+        });
+    }
+
+    private void initStartChatButton() {
+        openChatButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
+                    openChatButton.setBackgroundColor(darker(Color.BLUE,0.7f));
+
+
+
+
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    openChatButton.setBackgroundColor(Color.BLUE);
+
+                    //TODO OPEN CHAT BUTTON FUNCTIONALITY HERE
+                }
+
+                return false;
             }
         });
     }
@@ -200,7 +226,7 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
                 Math.max( (int)(b * factor), 0 ) );
     }
 
-    public void callback() {
+    private void callback() {
         nameView.setText(user.getName());
         birthdateView.setText(user.getBirthdate());
         registeredView.setText(user.getJoinedDate());
