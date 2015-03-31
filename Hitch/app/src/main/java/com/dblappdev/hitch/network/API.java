@@ -17,7 +17,7 @@ public class API {
             "GetUserRatingByUser", "GetUserRoutes", "AddUserRoute", "DeleteUserRoute", "UpdateUserRoute",
             "GetHitchhikeData", "GetUserHitchhikeData", "AddUserHitchhikeData", "RemoveUserHitchhikeData",
             "AddUserToChat", "RemoveUserFromChat", "CreateChatbox", "GetChatMessages", "GetChatBoxes",
-            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser", "InsertChatMessage"};
+            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser", "InsertChatMessage", "GetRouteData"};
     public static final int GET_USER_DATA = 0;
     public static final int REGISTER_USER = 1;
     public static final int UPDATE_USER_DATA = 2;
@@ -40,6 +40,7 @@ public class API {
     public static final int GET_HITCHHIKE_MATCHES = 19;
     public static final int LOGIN_USER = 20;
     public static final int INSERT_CHAT_MESSAGE = 21;
+    public static final int GET_ROUTE_DATA = 22;
 
     private JSONObject RESPONSE;
 
@@ -163,6 +164,20 @@ public class API {
         String[] params = new String[2];
         params[0] = "func=" + FUNCTIONS[GET_USER_ROUTES];
         params[1] = "userID=" + Integer.toString(userID);
+
+        commit(params, callback);
+    }
+
+    /**
+     * Retrieves the routes for a given user.
+     *
+     * @param routeID the id of the route for which we want data
+     * @param callback the callback
+     */
+    public void getRouteData(int routeID, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_ROUTE_DATA];
+        params[1] = "routeID=" + Integer.toString(routeID);
 
         commit(params, callback);
     }

@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.dblappdev.hitch.adapter.ListAdapter;
 import com.dblappdev.hitch.model.ListViewItem;
 import com.dblappdev.hitch.network.API;
+import com.dblappdev.hitch.route.RouteDisplayer;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,7 +74,23 @@ public class HitchFragment extends ListFragment {
         ListViewItem item = mItems.get(position);
 
         // do something
-        Toast.makeText(getActivity(), item.name, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), item.name, Toast.LENGTH_SHORT).show();
+        final API api = new API();
+        api.getRouteData((int)id, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                json = api.getResponse();
+                try {
+                    Log.d("test", json.toString());
+                    Log.d("test", json.getInt("userID")+"");
+                    RouteDisplayer.getInstance().showRouteActivity(json.get("startPoint").toString(), json.get("endPoint").toString(),
+                            json.getInt("userID"),"11:00","15:00",getActivity().getApplicationContext());
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        });
     }
 
     private void createHitchList () {

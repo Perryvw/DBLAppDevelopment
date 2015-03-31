@@ -25,7 +25,7 @@
 	//Request a distance between two places from the google API
 	function getDistance($start, $end, $db) {
 		//try to retrieve data from the cache first:
-		$res = $db->getRow("SELECT distance FROM hitch_distanceMatrix WHERE (placeA=? AND placeB=?) OR (placeA=? AND placeB=?)", array($start, $end, $end, $start));
+		$res = $db->getRow("SELECT distance FROM hitch_routes WHERE (startPoint=? AND endPoint=?) OR (endPoint=? AND startPoint=?)", array($start, $end, $end, $start));
 
 		if ($res == false) {
 			//If the data is not found in the cache, request it from the API
@@ -34,9 +34,10 @@
 			if ($respObj->status == "OK") {
 				//Get distance from response
 				$dist = $respObj->rows[0]->elements[0]->distance->value;
+				$duration = $respObj->rows[0]->elements[0]->duration->value;
 
 				//save in the cache
-				$db->insertRow('hitch_distanceMatrix', array($start, $end, $dist));
+				$db->insertRow('hitch_routes', array($start, $end, $dist, $duration));
 
 				return $dist;
 			} else {
@@ -44,7 +45,7 @@
 				return -1;
 			}
 		} else {
-			//returned cached data
+			//returned cached data;
 			return $res->distance;
 		}
 	}
@@ -73,9 +74,10 @@
 	//Use iterative deepening to look further back
 	for ($i = 0; $i < 6 && count($matchedroutes) < 5; $i++) {
 		//get routes leaving withing X time
-		$routes = $db->getResult("SELECT a.*, (SELECT COALESCE(AVG(rating), 0) FROM hitch_ratings b WHERE b.toUserID = a.userID) as 'rating' FROM hitch_userroutes a WHERE 
-			 (TIMESTAMPDIFF(MINUTE, ?, timestamp) % 10080) >= ? AND (TIMESTAMPDIFF(MINUTE, ?, timestamp) % 10080) < ?", 
-			 array($hhiker->timestamp, $i*60, $hhiker->timestamp, ($i+1)*60));
+		$routes = $db->getResult("SELECT a.*, (SELECT COALESCE(AVG(rating), 0) FROM hitch_ratings b WHERE b.toUserID = a.userID) as 'rating',
+			(SELECT name FROM hitch_users c WHERE c.userID=a.userID) as 'ownerName' FROM hitch_userroutes a WHERE 
+			(TIMESTAMPDIFF(MINUTE, ?, timestamp) % 10080) >= ? AND (TIMESTAMPDIFF(MINUTE, ?, timestamp) % 10080) < ?", 
+			array($hhiker->timestamp, $i*60, $hhiker->timestamp, ($i+1)*60));
 
 		foreach($routes as $route) {
 			//Get the distance from route to destination
@@ -93,7 +95,7 @@
 			if ($deviation <= $MAX_PERC_DEVIATION) {
 				//if the deviation is allowed, add the route to our matches
 				$matchedRoutes[] = (object) array("userID" => $route->userID, "routeID" => $route->userrouteID, 
-					"relevance" => (100-($deviation/$MAX_PERC_DEVIATION)*90), "rating" => $route->rating);
+					"relevance" => (100-($deviation/$MAX_PERC_DEVIATION)*90), "rating" => $route->rating, "userName" => $route->ownerName);
 			}
 		}
 	}

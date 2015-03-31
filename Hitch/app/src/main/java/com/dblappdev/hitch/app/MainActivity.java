@@ -42,9 +42,9 @@ public class MainActivity extends Activity {
             intent = new Intent(this, TabViewActivity.class);
         }
 
-        RouteDisplayer.getInstance().showRouteActivity("Eindhoven","Amsterdam",1,"11:00","15:00",getApplicationContext());
+        //RouteDisplayer.getInstance().showRouteActivity("Eindhoven","Amsterdam",1,"11:00","15:00",getApplicationContext());
         //intent = new Intent(this, RouteActivity.class);
-        //startActivity(intent);
+        startActivity(intent);
     }
 
     @Override

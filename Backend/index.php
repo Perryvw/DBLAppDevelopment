@@ -24,6 +24,7 @@
 		"GetHitchhikeData" => "gethitchhikedata.php",
 		"GetHitchhikeMatches" => "gethitchhikematches.php",
 		"GetMatchingDrivers" => "getmatchingdrivers.php",
+		"GetRouteData" => "getroutedata.php",
 		"GetUserRating" => "getuserrating.php",
 		"GetUserRatingByUser" => "getuserratingbyuser.php",
 		"GetUserRoutes" => "getuserroutes.php",

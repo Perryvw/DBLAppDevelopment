@@ -41,13 +41,16 @@
 	//Check the case
 	if ($since == -1) {
 		//only limit is set
-		$result = $db->getResult("SELECT userID, message as 'text', timestamp FROM hitch_chatmessages WHERE chatID=? ORDER BY timestamp DESC LIMIT ".$limit, array($chat_id));
+		$result = $db->getResult("SELECT a.userID, (SELECT name FROM hitch_users b WHERE a.userID=b.userID) as 'username', a.message as 'text', a.timestamp 
+			FROM hitch_chatmessages a WHERE a.chatID=? ORDER BY a.timestamp DESC LIMIT ".$limit, array($chat_id));
 	} elseif ($limit == -1) {
 		//only since is set
-		$result = $db->getResult("SELECT userID, message as 'text', timestamp FROM hitch_chatmessages WHERE chatID=? AND timestamp >= ? ORDER BY timestamp DESC", array($chat_id, $since));
+		$result = $db->getResult("SELECT a.userID, (SELECT name FROM hitch_users b WHERE a.userID=b.userID) as 'username', a.message as 'text', a.timestamp 
+			FROM hitch_chatmessages a WHERE a.chatID=? AND a.timestamp >= ? ORDER BY a.timestamp DESC", array($chat_id, $since));
 	} else {
 		//both are set
-		$result = $db->getResult("SELECT userID, message as 'text', timestamp FROM hitch_chatmessages WHERE chatID=? AND timestamp >= ? ORDER BY timestamp DESC LIMIT ".$limit, array($chat_id, $since));
+		$result = $db->getResult("SELECT a.userID, (SELECT name FROM hitch_users b WHERE a.userID=b.userID) as 'username', a.message as 'text', a.timestamp 
+			FROM hitch_chatmessages a WHERE a.chatID=? AND a.timestamp >= ? ORDER BY a.timestamp DESC LIMIT ".$limit, array($chat_id, $since));
 	}
 	
 	//output data
