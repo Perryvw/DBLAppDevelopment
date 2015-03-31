@@ -120,14 +120,19 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
                 intent = new Intent(this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 break;
-            case R.id.action_profileEdit:
-                intent = new Intent(this, EditProfileActivity.class);
-                break;
             case R.id.action_profileView:
+                int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+                if (userID == -1) {
+                    return false;
+                }
                 intent = new Intent(this, ViewProfileActivity.class);
+                intent.putExtra("userID", prefs.getInt(MainActivity.USER_KEY, -1));
                 break;
             case R.id.action_openChat:
                 intent = new Intent(this, ChatActivity.class);
+                break;
+            case R.id.action_routeActivity:
+                intent = new Intent(this, RouteActivity.class);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

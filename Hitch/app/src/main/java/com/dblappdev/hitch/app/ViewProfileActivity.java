@@ -20,9 +20,8 @@ public class ViewProfileActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-        int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+        Bundle bundle = getIntent().getExtras();
+        int userID = bundle.getInt("userID");
 
         setContentView(R.layout.activity_viewprofile);
 

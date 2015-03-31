@@ -1,20 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
-    <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
-          android:orderInCategory="100"
-          android:showAsAction="never"/>
     <item android:id="@+id/action_signout"
           android:title="@string/action_signout"
           android:orderInCategory="100"
           android:showAsAction="never"/>
-    <item android:id="@+id/action_profileEdit"
-          android:title="@string/action_profile" />
-    <item android:id="@+id/action_profileView"
-          android:title="@string/action_profileView" />
     <item android:id="@+id/action_openChat"
           android:title="@string/action_chat" />
     <item android:id="@+id/action_routeActivity"
           android:title="@string/action_routeActivity" />
+    <item android:id="@+id/action_settings"
+          android:title="@string/action_settings"
+          android:showAsAction="never"/>
+    <item android:id="@+id/action_profileView"
+          android:title="@string/action_profileView" />
 </menu>
