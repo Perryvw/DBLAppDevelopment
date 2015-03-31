@@ -1,5 +1,7 @@
 package com.dblappdev.hitch.app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,12 +32,15 @@ public class HitchFragment extends ListFragment {
 
     private List<ListViewItem> mItems;        // ListView items list
     private JSONObject json;
+    private SharedPreferences prefs;
     Resources resources;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_hitcher, container, false);
+
+        prefs = getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
         // initialize the items list
         mItems = new ArrayList<ListViewItem>();
@@ -44,19 +49,8 @@ public class HitchFragment extends ListFragment {
         Drawable stars = resources.getDrawable(R.drawable.stars);
         Drawable arrow = resources.getDrawable(R.drawable.arrow_right);
 
-        // Sample additions
-        mItems.add(new ListViewItem("Eindhoven-Amsterdam", "Driver Name Surname", "12:00", avatar, stars, arrow));
-        mItems.add(new ListViewItem("Eindhoven-Amsterdam", "Driver Name Surname", "13:00", avatar, stars, arrow));
-        mItems.add(new ListViewItem("Eindhoven-Amsterdam", "Driver Name Surname", "14:00", avatar, stars, arrow));
-
         // Creates the List
         createHitchList();
-
-        // ListAdapter
-        ListAdapter listAdapter = new ListAdapter(getActivity(), mItems);
-
-        // initialize and set the list adapter
-        setListAdapter(listAdapter);
 
         return view;
     }
@@ -76,7 +70,8 @@ public class HitchFragment extends ListFragment {
         // do something
         //Toast.makeText(getActivity(), item.name, Toast.LENGTH_SHORT).show();
         final API api = new API();
-        api.getRouteData((int)id, new Callable<Void>() {
+        int routeID = ((ListViewItem)l.getItemAtPosition((int)id)).getRouteID();
+        api.getRouteData(routeID, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 json = api.getResponse();
@@ -95,7 +90,9 @@ public class HitchFragment extends ListFragment {
 
     private void createHitchList () {
         final API api = new API();
-        api.getMatchingDrivers(/*userID*/2, new Callable<Void>() {
+        int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+        if (userID == -1) return;
+        api.getMatchingDrivers(userID, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 createHitchListCallback(api);
@@ -109,26 +106,28 @@ public class HitchFragment extends ListFragment {
         json = api.getResponse();
         try {
             JSONArray array = json.getJSONArray("routes");
+            mItems = new ArrayList<ListViewItem>();
             for (int i = 0; i < array.length(); i++) {
                 JSONObject match = array.getJSONObject(i);
                 int driverID = match.getInt("userID");
                 int routeID = match.getInt("routeID");
                 int relevance = match.getInt("relevance");
-                mItems.add(new ListViewItem( Integer.toString(routeID), Integer.toString(driverID),
+                mItems.add(new ListViewItem(routeID, match.getString("routeName"), match.getString("userName"),
                         "TIME", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
                         resources.getDrawable(R.drawable.arrow_right)));
+                Log.d("route", match.getString("routeName"));
             }
-            mItems.add(new ListViewItem( "test 2 ","das",
-                    "TIME", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
-                    resources.getDrawable(R.drawable.arrow_right)));
+
+            // ListAdapter
+            ListAdapter listAdapter = new ListAdapter(getActivity(), mItems);
+
+            // initialize and set the list adapter
+            setListAdapter(listAdapter);
         } catch(JSONException e) {
             e.printStackTrace();
         }
-        mItems.add(new ListViewItem( "test 2 ","das",
-                "TIME", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
-                resources.getDrawable(R.drawable.arrow_right)));
 
-        getListAdapter().notifyAll();
+        //getListAdapter().notifyAll();
     }
 }
 

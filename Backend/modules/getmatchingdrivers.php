@@ -95,7 +95,8 @@
 			if ($deviation <= $MAX_PERC_DEVIATION) {
 				//if the deviation is allowed, add the route to our matches
 				$matchedRoutes[] = (object) array("userID" => $route->userID, "routeID" => $route->userrouteID, 
-					"relevance" => (100-($deviation/$MAX_PERC_DEVIATION)*90), "rating" => $route->rating, "userName" => $route->ownerName);
+					"relevance" => (100-($deviation/$MAX_PERC_DEVIATION)*90), "rating" => $route->rating, "userName" => $route->ownerName,
+					"routeName"=>$route->startPoint."-".$route->endPoint);
 			}
 		}
 	}
