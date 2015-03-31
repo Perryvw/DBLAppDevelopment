@@ -60,14 +60,14 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN ) {
-                    endHitchButton.setBackgroundColor(darker(Color.BLUE,0.7f));
+                    openChatButton.setBackgroundColor(darker(Color.BLUE,0.7f));
 
 
 
 
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    endHitchButton.setBackgroundColor(Color.BLUE);
+                    openChatButton.setBackgroundColor(Color.BLUE);
 
                     //TODO OPEN CHAT BUTTON FUNCTIONALITY HERE
                 }
