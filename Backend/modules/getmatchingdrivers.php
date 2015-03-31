@@ -69,6 +69,11 @@
 		throwError('Hitchhiker ID not found.');
 	}
 
+	if ($hhiker->location == $hhiker->destination || $hhiker->location == "" || $hhikekr->destination="") {
+		echo '{ "routes" : [] }';
+		exit();
+	}
+
 	$matchedRoutes = array();
 
 	//Use iterative deepening to look further back
@@ -87,11 +92,14 @@
 			//get the distance from route to hitchhiker
 			$d2 = getDistance($route->startPoint, $hhiker->location, $db);
 
-			//get the distance from hitchhiker to route destination
-			$d3 = getDistance($hhiker->location, $route->endPoint, $db);
+			//get the distance from hitchhiker to hitchhiker destination
+			$d3 = getDistance($hhiker->location, $hhiker->destination, $db);
+
+			//get the distance from the hitchhiker dest to route dest
+			$d4 = getDistance($hhiker->destination, $route->endPoint, $db);
 
 			//check the route deviation in percentages
-			$deviation = (($d2 + $d3) - $d1) / $d1;
+			$deviation = (($d2 + $d3 + $d4) - $d1) / $d1;
 			if ($deviation <= $MAX_PERC_DEVIATION) {
 				//if the deviation is allowed, add the route to our matches
 				$matchedRoutes[] = (object) array("userID" => $route->userID, "routeID" => $route->userrouteID, 

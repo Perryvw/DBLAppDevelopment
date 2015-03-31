@@ -76,8 +76,6 @@ public class HitchFragment extends ListFragment {
             public Void call() throws Exception {
                 json = api.getResponse();
                 try {
-                    Log.d("test", json.toString());
-                    Log.d("test", json.getInt("userID")+"");
                     RouteDisplayer.getInstance().showRouteActivity(json.get("startPoint").toString(), json.get("endPoint").toString(),
                             json.getInt("userID"),"11:00","15:00",getActivity().getApplicationContext());
                 } catch(JSONException e) {
@@ -115,7 +113,6 @@ public class HitchFragment extends ListFragment {
                 mItems.add(new ListViewItem(routeID, match.getString("routeName"), match.getString("userName"),
                         "TIME", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
                         resources.getDrawable(R.drawable.arrow_right)));
-                Log.d("route", match.getString("routeName"));
             }
 
             // ListAdapter
