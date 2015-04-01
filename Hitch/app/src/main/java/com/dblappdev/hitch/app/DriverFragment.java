@@ -73,7 +73,12 @@ public class DriverFragment extends Fragment {
         groupList = new ArrayList<String>();
         final API api = new API();
 
-        api.getUserRoutes(2, new Callable<Void>() {
+        //get the user id
+        int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+        if (userID == -1) return;
+
+        //get routes from the database
+        api.getUserRoutes(userID, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 createGroupListCallback(api);

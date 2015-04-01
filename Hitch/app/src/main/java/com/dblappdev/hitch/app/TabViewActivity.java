@@ -174,6 +174,14 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
     }
 
     /**
+     * Get the driver matches for the current user
+     */
+    public void getDriverMatches(View v) {
+        HitchFragment hf = (HitchFragment)getSupportFragmentManager().findFragmentById(R.id.pager);
+        hf.loadDriverMatches();
+    }
+
+    /**
      * Go to add a route for configuring driver routes.
      */
     public void addDriverRoute(View v) {

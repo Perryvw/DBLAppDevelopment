@@ -48,9 +48,6 @@ public class HitchFragment extends ListFragment {
         Drawable avatar = resources.getDrawable(R.drawable.ic_launcher);
         Drawable stars = resources.getDrawable(R.drawable.stars);
         Drawable arrow = resources.getDrawable(R.drawable.arrow_right);
-
-        // Creates the List
-        createHitchList();
         return view;
     }
 
@@ -110,7 +107,7 @@ public class HitchFragment extends ListFragment {
                 int routeID = match.getInt("routeID");
                 String routeName = match.getString("routeName");
                 String userName = match.getString("userName");
-                String timestamp = match.getString("timestamp");
+                String timestamp = match.getString("time");
                 mItems.add(new ListViewItem(routeID, routeName, userName,
                         timestamp, resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
                         resources.getDrawable(R.drawable.arrow_right)));
@@ -127,6 +124,11 @@ public class HitchFragment extends ListFragment {
         }
 
         //getListAdapter().notifyAll();
+    }
+
+    public void loadDriverMatches() {
+        //build the list of matched drivers
+        createHitchList();
     }
 }
 
