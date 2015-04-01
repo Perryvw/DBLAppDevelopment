@@ -1,13 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".DriverFragment"
                 android:orientation="vertical"
                 android:background="@color/GhostWhite"
-                android:id="@+id/fragment_hitch_route">
+                android:id="@+id/fragment_hitch_route" android:paddingLeft="15dp" android:paddingRight="15dp">
 
 
-
-</RelativeLayout>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Where do you want to go?"
+            android:id="@+id/textView10" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"/>
+    <Switch
+            android:layout_width="355dp"
+            android:layout_height="wrap_content"
+            android:text="Use current location"
+            android:id="@+id/currentLocationSwitch" android:layout_below="@+id/textView10" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:checked="false" android:layout_gravity="center_horizontal"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Starting point"
+            android:id="@+id/textView13" android:layout_below="@+id/currentLocationSwitch"
+            android:layout_alignParentLeft="true" android:layout_alignParentStart="true"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/startPoint"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Destination"
+            android:id="@+id/textView14"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/endPoint"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Date of travel"
+            android:id="@+id/textView15"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/travelDate"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Time of travel"
+            android:id="@+id/textView16"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/travelTime"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_gravity="bottom" android:gravity="bottom">
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/button7" android:layout_gravity="center_horizontal"/>
+        <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:id="@+id/button8" android:layout_gravity="right"/>
+    </LinearLayout>
+</LinearLayout>
