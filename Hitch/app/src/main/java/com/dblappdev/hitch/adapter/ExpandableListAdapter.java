@@ -3,6 +3,8 @@ package com.dblappdev.hitch.adapter;
         import java.util.ArrayList;
         import java.util.List;
         import java.util.Map;
+        import java.util.concurrent.Callable;
+
         import android.app.Activity;
         import android.app.AlertDialog;
         import android.app.Fragment;
@@ -20,18 +22,21 @@ package com.dblappdev.hitch.adapter;
         import android.widget.TextView;
         import com.dblappdev.hitch.app.DriverFragment;
         import com.dblappdev.hitch.app.R;
+        import com.dblappdev.hitch.network.API;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     // Adapter variables
     private DriverFragment context;
     private Map<String, List<String>> routeCollections;
     private List<String> routes;
+    private List<Integer> ids;
 
     public ExpandableListAdapter(DriverFragment context, List<String> routes,
-                                 Map<String, List<String>> routeCollections) {
+                                 List<Integer> ids, Map<String, List<String>> routeCollections) {
         this.context = context;
         this.routeCollections = routeCollections;
         this.routes = routes;
+        this.ids = ids;
     }
 
     // Gets the child of an object
@@ -103,9 +108,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 builder.setPositiveButton("Yes",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                removed = routeCollections.remove(routes.get(groupPosition));
-                                routes.remove(groupPosition);
-                                notifyDataSetChanged();
+                                API api = new API();
+                                api.deleteUserRoute(ids.get(groupPosition), new Callable<Void>() {
+                                    @Override
+                                    public Void call() throws Exception {
+                                        removed = routeCollections.remove(routes.get(groupPosition));
+                                        routes.remove(groupPosition);
+                                        ids.remove(groupPosition);
+                                        notifyDataSetChanged();
+                                        return null;
+                                    }
+                                });
                             }
                         });
                 builder.setNegativeButton("No",

@@ -198,6 +198,20 @@ public class API {
     }
 
     /**
+     * Remove a route by routeID.
+     *
+     * @param routeID the id of the route for which we want data
+     * @param callback the callback
+     */
+    public void deleteUserRoute(int routeID, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[DELETE_USER_ROUTE];
+        params[1] = "routeID=" + Integer.toString(routeID);
+
+        commit(params, callback);
+    }
+
+    /**
      * Retrieves drivers for some route that are matched for a user.
      *
      * @param hitchhikerID the id of the hitchhiker for which you want to retrieve matched drivers
@@ -218,7 +232,7 @@ public class API {
      * @param callback the callback
      */
     public void getHitchhikeMatches(int routeID, int timeWindow, Callable<Void> callback) {
-        String[] params = new String[2];
+        String[] params = new String[3];
         params[0] = "func=" + FUNCTIONS[GET_HITCHHIKE_MATCHES];
         params[1] = "routeID=" + Integer.toString(routeID);
         params[2] = "timeWindow=" + Integer.toString(timeWindow);

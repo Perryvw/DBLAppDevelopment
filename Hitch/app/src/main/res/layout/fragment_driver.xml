@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Here you can see all relevant routes"
+            android:text="Your routes:"
             android:id="@+id/textView6"
             android:layout_marginTop="10dp" android:layout_below="@+id/button4" android:layout_centerHorizontal="true"/>
     <ImageView

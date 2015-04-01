@@ -32,6 +32,7 @@ import java.util.concurrent.Callable;
 public class DriverFragment extends Fragment {
     // Route dropdown list
     List<String> groupList;
+    List<Integer> idList;
     List<String> childList;
     Map<String, List<String>> routeCollection;
     private SharedPreferences prefs;
@@ -48,7 +49,7 @@ public class DriverFragment extends Fragment {
         createGroupList();
 
         ExpandableListView expListView = (ExpandableListView) rootView.findViewById(R.id.route_list);
-        expListAdapter = new ExpandableListAdapter(this, groupList, routeCollection);
+        expListAdapter = new ExpandableListAdapter(this, groupList, idList, routeCollection);
         expListView.setAdapter(expListAdapter);
 
         expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
@@ -71,6 +72,7 @@ public class DriverFragment extends Fragment {
     private void createGroupList() {
         routeCollection = new LinkedHashMap<String, List<String>>();
         groupList = new ArrayList<String>();
+        idList = new ArrayList<Integer>();
         final API api = new API();
 
         //get the user id
@@ -82,29 +84,24 @@ public class DriverFragment extends Fragment {
             @Override
             public Void call() throws Exception {
                 createGroupListCallback(api);
-                for (String routeName: groupList) {
-                    createHitcherCollection(routeName);
+                for (int i=0; i< groupList.size(); i++) {
+                    createHitcherCollection(idList.get(i), groupList.get(i));
                 }
                 return null;
             }
         });
     }
 
-    private void createHitcherCollection(final String routeName) {
+    private void createHitcherCollection(int routeID,final String routeName) {
         final API api = new API();
-        childList = new ArrayList<String>();
-        // preparing route collection(child)
-        /*api.getHitchhikeMatches(2, 2, new Callable<Void>() {
+        // add children (hitchhikers belonging to this route)
+        api.getHitchhikeMatches(routeID, 7200, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                createHitcherCollectionCallback(api, routeName, childList);
+                createHitcherCollectionCallback(api, routeName);
                 return null;
             }
-        });*/
-        if (childList.isEmpty()) {
-            childList.add("No hitchhikers");
-        }
-        routeCollection.put(routeName, childList);
+        });
     }
 
     // Convert pixel to dip
@@ -128,32 +125,43 @@ public class DriverFragment extends Fragment {
                 String timestamp = route.getString("timestamp");
                 String routeName = startPoint + " -> " + endPoint;
                 groupList.add(routeName/* + ". At " + timestamp*/);
+                idList.add(routeID);
             }
 
         } catch(JSONException e) {
             e.printStackTrace();
-            groupList.add("exception");
         }
         updateAdapter();
 
     }
 
-    public void createHitcherCollectionCallback(API api, String routeName, List<String> childList) {
+    public void createHitcherCollectionCallback(API api, String routeName) {
         JSONObject json = api.getResponse();
         try {
+            //save children
+            List<String> children = new ArrayList<String>();
+
+            //read the response
             JSONArray arr = json.getJSONArray("matches");
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject route = arr.getJSONObject(i);
                 int userID = route.getInt("userID");
                 int relevance = route.getInt("relevance");
                 String timestamp = route.getString("timestamp");
-                childList.add(Integer.toString(userID));
+
+                //add to children
+                children.add(userID+"");
             }
-            if (childList.isEmpty()) {
-                childList.add("No hitchhikers");
+
+            //if there are no childen add a dummy entry
+            if (children.isEmpty()) {
+                children.add("No hitchhikers");
             }
-            routeCollection.put(routeName, childList);
+            //update entries
+            routeCollection.put(routeName, children);
+
             updateAdapter();
+
         } catch(JSONException e) {
             e.printStackTrace();
         }

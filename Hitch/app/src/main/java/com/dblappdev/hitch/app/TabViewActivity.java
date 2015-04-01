@@ -177,7 +177,9 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
      * Get the driver matches for the current user
      */
     public void getDriverMatches(View v) {
+        //get the hitchhike fragment
         HitchFragment hf = (HitchFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + viewPager.getCurrentItem());
+        //tell the fragment to load the matches
         hf.loadDriverMatches();
     }
 
