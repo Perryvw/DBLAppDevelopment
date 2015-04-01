@@ -1,5 +1,7 @@
 package com.dblappdev.hitch.app;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,10 +32,14 @@ public class DriverRouteFragment extends Fragment {
     private TimePicker timePicker;
     private String strDateTime;
     private API api;
+    private SharedPreferences prefs;
+    private int userID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_driver_route, container, false);
+
+        prefs = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
         start = (EditText) rootView.findViewById(R.id.startPoint);
         destination = (EditText) rootView.findViewById(R.id.destinationPoint);
@@ -62,9 +68,13 @@ public class DriverRouteFragment extends Fragment {
     }
 
     public void buildSpinnerList() {
+        //get the user id
+        userID = prefs.getInt(MainActivity.USER_KEY, -1);
+        if (userID == -1) return;
+
         final API api = new API();
 
-        api.getUserRoutes(2, new Callable<Void>() {
+        api.getUserRoutes(userID, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 JSONObject json = api.getResponse();
@@ -109,12 +119,12 @@ public class DriverRouteFragment extends Fragment {
                     Toast.makeText(getActivity().getBaseContext(),
                             "Selected route : " + startValue + " -> " + destinationValue + " at" + strDateTime,
                             Toast.LENGTH_SHORT).show();
-                    /*api.addUserRoute(2, startValue, destinationValue, strDateTime, new Callable<Void>() {
+                    api.addUserRoute(userID, startValue, destinationValue, strDateTime, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
                             return null;
                         }
-                    });*/
+                    });
 
                 }
 
