@@ -42,36 +42,45 @@
         <activity
             android:name="com.facebook.LoginActivity"
             android:label="@string/app_name"
+            android:windowSoftInputMode="stateVisible|adjustPan"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
             android:name=".BirthActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
                 android:name=".SettingsActivity"
                 android:label="@string/app_name" >
         </activity>
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
             android:name=".RegisterActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
             android:name=".TabViewActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
                 android:name=".ViewProfileActivity"
                 android:label="Hitch">
         </activity>
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
                 android:name=".EditProfileActivity"
                 android:label="Hitch">
         </activity>
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
             android:name=".RouteActivity"
             android:label="@string/title_activity_route" >
         </activity>
         <activity
+                android:windowSoftInputMode="stateVisible|adjustPan"
                 android:name=".ChatActivity"
                 android:label="Hitch" >
         </activity>
