@@ -123,9 +123,6 @@ public class HitchFragment extends ListFragment {
             setListAdapter(listAdapter);
 
         } catch(JSONException e) {
-            mItems.add(new ListViewItem( 2, "test 2 ","das",
-                    "TIMEEXC", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
-                    resources.getDrawable(R.drawable.arrow_right)));
             e.printStackTrace();
         }
 

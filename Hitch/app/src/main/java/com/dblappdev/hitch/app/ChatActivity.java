@@ -3,18 +3,23 @@ package com.dblappdev.hitch.app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import com.dblappdev.hitch.model.User;
 import com.dblappdev.hitch.network.API;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Random;
 import java.util.concurrent.Callable;
 
 /**
@@ -27,8 +32,12 @@ public class ChatActivity extends Activity {
 
     private EditText messageText;
     private Button sendMessageButton;
-    private EditText messageHistoryText;
     private String since = "0";
+    private ListView listView;
+    private ChatArrayAdapter chatArrayAdapter;
+    private Boolean left = false;
+    private User user;
+    private String currentUsername = "";
 
     Handler mHandler = new Handler();
     ChatThread mThread;
@@ -43,9 +52,13 @@ public class ChatActivity extends Activity {
         prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
         messageText = (EditText) findViewById(R.id.message);
-        messageHistoryText = (EditText) findViewById(R.id.messageHistory);
         sendMessageButton = (Button) findViewById(R.id.sendMessageButton);
         messageText.requestFocus();
+
+        listView = (ListView) findViewById(R.id.listView1);
+
+        chatArrayAdapter = new ChatArrayAdapter(getApplicationContext(), R.layout.activity_chat_singlemessage);
+        listView.setAdapter(chatArrayAdapter);
 
         messageText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -70,7 +83,27 @@ public class ChatActivity extends Activity {
             }
         });
 
-        loadMessageHistory();
+        int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+        user = new User(userID, true, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                callback();
+                return null;
+            }
+        });
+
+        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+        listView.setAdapter(chatArrayAdapter);
+
+        //to scroll the list view to bottom on data change
+        chatArrayAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                listView.setSelection(chatArrayAdapter.getCount() - 1);
+            }
+        });
+
         mThread = new ChatThread(new Runnable() {
             @Override
             public void run() {
@@ -93,6 +126,11 @@ public class ChatActivity extends Activity {
         mThread.start();
     }
 
+    public void callback() {
+        currentUsername = user.getName();
+        loadMessageHistory();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -101,11 +139,11 @@ public class ChatActivity extends Activity {
 
     public void sendMessage() {
         String message = messageText.getText().toString();
-        appendToMessageHistory("You", message);
         int userID = prefs.getInt(MainActivity.USER_KEY, -1);
         if (userID == -1) {
             return;
         }
+        appendToMessageHistory("You", message);
         new API().insertChatMessage(userID, CHAT_ID, message, null);
     }
 
@@ -114,8 +152,14 @@ public class ChatActivity extends Activity {
             username = "Unknown";
             message = "Unknown";
         }
-        messageHistoryText.append(username + ":\n");
-        messageHistoryText.append(message + "\n");
+
+        if (username.equals(currentUsername)) {
+            left = false;
+        } else {
+            left = true;
+        }
+        Log.d("Chat:", left.toString() + "::::" + username);
+        chatArrayAdapter.add(new ChatMessage(left, username + ": " + message));
     }
 
     public void loadMessageHistory() {

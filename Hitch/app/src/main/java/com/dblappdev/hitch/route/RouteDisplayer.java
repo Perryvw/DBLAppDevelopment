@@ -1,9 +1,11 @@
 package com.dblappdev.hitch.route;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
+import com.dblappdev.hitch.app.RouteActivity;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
@@ -61,10 +63,9 @@ public class RouteDisplayer {
         GeoPoint startPoint = getLocGeoPoint(start);
         GeoPoint endPoint = getLocGeoPoint(end);
         Route route = new Route(startPoint,endPoint, ownerID, depTime,eta);
-        String url = (new GMapV2Direction()).getDocumentUrl(new LatLng(startPoint.getLatitude()
-                ,startPoint.getLongitude()),new LatLng(endPoint.getLatitude(),endPoint.getLongitude())
-                ,"driving");
-        new StartRouteActivityTask(context,route).execute(url);
+        context.startActivity(new Intent(context, RouteActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+                .putExtra("ROUTE", route));
     }
 
     /**

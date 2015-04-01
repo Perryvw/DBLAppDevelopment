@@ -16,6 +16,18 @@ public class GMapV2Direction {
 
     public GMapV2Direction() { }
 
+    public String getDocDrivingUrl(Route route) {
+         return getDocumentUrl(
+                 new LatLng(route.getStart().getLatitude(),route.getStart().getLongitude())
+                 ,new LatLng(route.getEnd().getLatitude(),route.getEnd().getLongitude()),MODE_DRIVING);
+    }
+
+    public String getDocWalkingUrl(Route route) {
+        return getDocumentUrl(
+                new LatLng(route.getStart().getLatitude(),route.getStart().getLongitude())
+                ,new LatLng(route.getEnd().getLatitude(),route.getEnd().getLongitude()),MODE_WALKING);
+    }
+
     public String getDocumentUrl(LatLng start, LatLng end, String mode) {
         String url = "http://maps.googleapis.com/maps/api/directions/xml?"
                 + "origin=" + start.latitude + "," + start.longitude

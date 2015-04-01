@@ -2,6 +2,7 @@ package com.dblappdev.hitch.route;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaRouter;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.dblappdev.hitch.app.RouteActivity;
@@ -16,24 +17,19 @@ import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.InputStream;
+import java.util.concurrent.Callable;
 
 /**
  * Created by Ziad on 3/19/2015.
  */
-public class StartRouteActivityTask extends  AsyncTask<String, Void, Document> {
+public class GetRouteDirectionsTask extends  AsyncTask<String, Void, Document> {
 
     /** Context of the parent activity in which this was called */
-    private Context parentContext;
+    private Callable<Void> callback;
     private Route route;
 
-    /**
-     * Constructor of asynchronous task to retrieve document with route details
-     * from google maps.
-     *
-     * @param context the parent activity context
-     */
-    public StartRouteActivityTask(Context context, Route route) {
-        this.parentContext = context;
+    public GetRouteDirectionsTask(Callable<Void> callback, Route route){
+        this.callback = callback;
         this.route = route;
     }
 
@@ -64,10 +60,12 @@ public class StartRouteActivityTask extends  AsyncTask<String, Void, Document> {
             Log.d("RetrieveMapDocTask.onPostExecute()", "error fetching doc details");
         } else {
             Log.d("RetrieveMapDocTask.onPostExecute()", "successfully returned doc");
-            route.setDirections(new GMapV2Direction().getDirection(doc));
-            parentContext.startActivity(new Intent(parentContext, RouteActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
-                    .putExtra("ROUTE", route));
+            try {
+                route.setDirections(new GMapV2Direction().getDirection(doc));
+                callback.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
