@@ -2,12 +2,15 @@ package com.dblappdev.hitch.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -143,7 +146,6 @@ public class ChatActivity extends Activity {
         if (userID == -1) {
             return;
         }
-        appendToMessageHistory("You", message);
         new API().insertChatMessage(userID, CHAT_ID, message, null);
     }
 
@@ -158,12 +160,14 @@ public class ChatActivity extends Activity {
         } else {
             left = true;
         }
-        Log.d("Chat:", left.toString() + "::::" + username);
         chatArrayAdapter.add(new ChatMessage(left, username + ": " + message));
     }
 
     public void loadMessageHistory() {
         final API api = new API();
+        int tempSince = Integer.parseInt(since);
+        tempSince++;
+        since = Integer.toString(tempSince);
         api.getChatMessages(CHAT_ID, 50, since, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
@@ -188,5 +192,44 @@ public class ChatActivity extends Activity {
         } catch(JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        Intent intent;
+        switch(id) {
+            case R.id.action_settings:
+                intent = new Intent(this, SettingsActivity.class);
+                break;
+            case R.id.action_profileView:
+                int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+                if (userID == -1) {
+                    return false;
+                }
+                intent = new Intent(this, ViewProfileActivity.class);
+                intent.putExtra("userID", prefs.getInt(MainActivity.USER_KEY, -1));
+                break;
+            case R.id.action_openChat:
+                intent = new Intent(this, ChatActivity.class);
+                break;
+            case R.id.action_routeActivity:
+                intent = new Intent(this, RouteActivity.class);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        startActivity(intent);
+        return true;
     }
 }

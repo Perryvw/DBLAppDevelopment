@@ -19,6 +19,7 @@ public class ChatArrayAdapter extends ArrayAdapter {
     private TextView message;
     private List<ChatMessage> chatMessageList = new ArrayList<ChatMessage>();
     private LinearLayout singleMessageContainer;
+    private LinearLayout messageBox;
 
     public void add(ChatMessage object) {
         chatMessageList.add(object);
@@ -43,11 +44,19 @@ public class ChatArrayAdapter extends ArrayAdapter {
             LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.activity_chat_singlemessage, parent, false);
         }
+
         singleMessageContainer = (LinearLayout) row.findViewById(R.id.singleMessageContainer);
         ChatMessage chatMessageObj = getItem(position);
         message = (TextView) row.findViewById(R.id.singleMessage);
         message.setText(chatMessageObj.message);
-        message.setBackgroundResource(chatMessageObj.left ? R.drawable.bubble_b : R.drawable.bubble_a);
+        if (chatMessageObj.left) {
+            message.setPadding(10,10,10,30);
+        } else {
+            message.setPadding(10,30,10,10);
+        }
+        messageBox = (LinearLayout) row.findViewById(R.id.singleMessageBubble);
+        messageBox.setBackgroundResource(chatMessageObj.left ? R.drawable.bubble_a : R.drawable.bubble_b);
+
         singleMessageContainer.setGravity(chatMessageObj.left ? Gravity.LEFT : Gravity.RIGHT);
         return row;
     }
