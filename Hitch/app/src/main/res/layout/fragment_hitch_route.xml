@@ -6,7 +6,7 @@
                 tools:context=".DriverFragment"
                 android:orientation="vertical"
                 android:background="@color/GhostWhite"
-                android:id="@+id/driver_fragment">
+                android:id="@+id/fragment_hitch_route">
 
 
 

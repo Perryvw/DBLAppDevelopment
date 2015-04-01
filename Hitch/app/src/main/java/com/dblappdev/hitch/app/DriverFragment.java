@@ -71,10 +71,9 @@ public class DriverFragment extends Fragment {
     private void createGroupList() {
         routeCollection = new LinkedHashMap<String, List<String>>();
         groupList = new ArrayList<String>();
-        groupList.add("HP12");
         final API api = new API();
 
-        api.getUserRoutes(/*userID*/2, new Callable<Void>() {
+        api.getUserRoutes(2, new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 createGroupListCallback(api);
@@ -100,7 +99,6 @@ public class DriverFragment extends Fragment {
         if (childList.isEmpty()) {
             childList.add("No hitchhikers");
         }
-        childList.add("dasdasda");
         routeCollection.put(routeName, childList);
     }
 

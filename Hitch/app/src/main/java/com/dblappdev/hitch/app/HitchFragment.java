@@ -51,7 +51,6 @@ public class HitchFragment extends ListFragment {
 
         // Creates the List
         createHitchList();
-
         return view;
     }
 
@@ -77,8 +76,8 @@ public class HitchFragment extends ListFragment {
                 json = api.getResponse();
                 try {
                     RouteDisplayer.getInstance().showRouteActivity(json.get("startPoint").toString(), json.get("endPoint").toString(),
-                            json.getInt("userID"),"11:00","15:00",getActivity().getApplicationContext());
-                } catch(JSONException e) {
+                            json.getInt("userID"), "11:00", "15:00", getActivity().getApplicationContext());
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 return null;
@@ -97,6 +96,7 @@ public class HitchFragment extends ListFragment {
                 return null;
             }
         });
+
     }
 
     private void createHitchListCallback(API api) {
@@ -108,19 +108,22 @@ public class HitchFragment extends ListFragment {
                 JSONObject match = array.getJSONObject(i);
                 int driverID = match.getInt("userID");
                 int routeID = match.getInt("routeID");
-                int relevance = match.getInt("relevance");
-                mItems.add(new ListViewItem(routeID, match.getString("routeName"), match.getString("userName"),
-                        "TIME", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
+                String routeName = match.getString("routeName");
+                String userName = match.getString("userName");
+                String timestamp = match.getString("timestamp");
+                mItems.add(new ListViewItem(routeID, routeName, userName,
+                        timestamp, resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
                         resources.getDrawable(R.drawable.arrow_right)));
             }
 
-            // ListAdapter
+            // ListAdapter0
             ListAdapter listAdapter = new ListAdapter(getActivity(), mItems);
 
             // initialize and set the list adapter
             setListAdapter(listAdapter);
+
         } catch(JSONException e) {
-            mItems.add(new ListViewItem( "test 2 ","das",
+            mItems.add(new ListViewItem( 2, "test 2 ","das",
                     "TIMEEXC", resources.getDrawable(R.drawable.ic_launcher), resources.getDrawable(R.drawable.stars),
                     resources.getDrawable(R.drawable.arrow_right)));
             e.printStackTrace();

@@ -30,7 +30,6 @@ public class DriverRouteFragment extends Fragment {
     private TimePicker timePicker;
     private String strDateTime;
     private API api;
-    private Switch currentLoc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,12 +39,11 @@ public class DriverRouteFragment extends Fragment {
         destination = (EditText) rootView.findViewById(R.id.destinationPoint);
         spinner = (Spinner) rootView.findViewById(R.id.routes_spinner);
         timePicker = (TimePicker) rootView.findViewById(R.id.driverRouteTimePicker);
-        currentLoc = (Switch) rootView.findViewById(R.id.useCurrentLoc);
 
         buildSpinnerList();
-
         addItemsToSpinner(rootView);
         addListenerOnButtons(rootView);
+        addSpinnerListener();
         return rootView;
     }
 
@@ -134,16 +132,33 @@ public class DriverRouteFragment extends Fragment {
             }
 
         });
+    }
 
-        currentLoc.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    start.setText("Current");
+    public void addSpinnerListener () {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String selected = parentView.getItemAtPosition(position).toString();
+                if (selected == "Choose an existing route") {
+                    start.setText("");
+                    destination.setText("");
+                    start.setEnabled(true);
+                    destination.setEnabled(true);
                 }
                 else {
-                    start.setText("");
+                    start.setText(selected.split("->")[0]);
+                    destination.setText(selected.split("->")[1]);
+                    start.setEnabled(false);
+                    destination.setEnabled(false);
                 }
+
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
         });
     }
 }

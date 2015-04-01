@@ -192,4 +192,14 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         ft.addToBackStack(null);
         ft.commit();
     }
+
+    /**
+     * Go to hitcher home.
+     */
+    public void goHitcherHome(View v) {
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_hitch_route, new HitchFragment());
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 }
