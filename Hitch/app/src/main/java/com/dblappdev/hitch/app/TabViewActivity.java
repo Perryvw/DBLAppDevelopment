@@ -177,7 +177,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
      * Get the driver matches for the current user
      */
     public void getDriverMatches(View v) {
-        HitchFragment hf = (HitchFragment)getSupportFragmentManager().findFragmentById(R.id.pager);
+        HitchFragment hf = (HitchFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + viewPager.getCurrentItem());
         hf.loadDriverMatches();
     }
 
@@ -206,7 +206,7 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
      */
     public void goHitcherHome(View v) {
         android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fragment_hitch_route, new HitchFragment());
+        ft.replace(R.id.fragment_hitch_route, new HitchFragment(), "HITCH_FRAGMENT");
         ft.addToBackStack(null);
         ft.commit();
     }
