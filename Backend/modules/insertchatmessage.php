@@ -38,7 +38,14 @@
 
 	//Insert
 	$db->insertRow('hitch_chatmessages', array($chat_id, $user_id, $date, $message));
-	
+
+	//FOR TESTING ONLY: AUTOMATICALLY REPLY
+	$otheruser = $db->getRow("SELECT userID FROM hitch_chatusers WHERE chatID=? AND NOT userID=?", array($chat_id, $user_id));
+	if ($otheruser != false) {
+		$messages = array("Hey!", "Interesting", "OK");
+		$db->insertRow('hitch_chatmessages', array($chat_id, $otheruser->userID, date('Y-m-d H:i:s', time() + 5), $messages[rand(0,2)]));
+	}
+
 	//Output
 	echo '{}';
 ?>

@@ -109,10 +109,10 @@ public class API {
     public void createChatbox(int userID1, int userID2, Callable<Void> callback) {
         String[] params = new String[5];
         params[0] = "func=" + FUNCTIONS[CREATE_CHATBOX];
-        params[1] = "userID1=" + Integer.toString(userID1);
-        params[2] = "userID2=" + Integer.toString(userID2);
-        params[3] = "startpoint=";
-        params[4] = "endpoint=";
+        params[1] = "user1ID=" + Integer.toString(userID1);
+        params[2] = "user2ID=" + Integer.toString(userID2);
+        params[3] = "startPoint=";
+        params[4] = "endPoint=";
 
         commit(params, callback);
     }

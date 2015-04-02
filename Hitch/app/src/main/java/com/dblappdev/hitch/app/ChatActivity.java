@@ -45,7 +45,7 @@ public class ChatActivity extends Activity {
     Handler mHandler = new Handler();
     ChatThread mThread;
 
-    private final static int CHAT_ID = 1;
+    private int CHAT_ID = 1;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,10 @@ public class ChatActivity extends Activity {
         setContentView(R.layout.activity_chat);
 
         prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
+
+        //get the chat ID
+        CHAT_ID = getIntent().getExtras().getInt("CHAT_ID");
+        Log.d("chatID", "cID: "+CHAT_ID);
 
         messageText = (EditText) findViewById(R.id.message);
         sendMessageButton = (Button) findViewById(R.id.sendMessageButton);
