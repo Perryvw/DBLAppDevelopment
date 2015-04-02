@@ -1,5 +1,7 @@
 package com.dblappdev.hitch.app;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
@@ -22,7 +24,7 @@ import java.util.concurrent.Callable;
 /**
  * Created by s128232 on 10-3-2015.
  */
-public class DriverRouteFragment extends Fragment {
+public class DriverRouteFragment extends Fragment implements View.OnClickListener {
 
     private Spinner spinner;
     private Button btnOK, btnCancel, btnNow;
@@ -35,22 +37,36 @@ public class DriverRouteFragment extends Fragment {
     private SharedPreferences prefs;
     private int userID;
 
+    // Variables for Time and Date fields
+    private EditText travelDate, travelTime;
+
+    // Variable for storing current date and time
+    private int mYear, mMonth, mDay, mHour, mMinute;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_driver_route, container, false);
 
         prefs = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
-        start = (EditText) rootView.findViewById(R.id.startPoint);
-        destination = (EditText) rootView.findViewById(R.id.destinationPoint);
-        spinner = (Spinner) rootView.findViewById(R.id.routes_spinner);
-        timePicker = (TimePicker) rootView.findViewById(R.id.driverRouteTimePicker);
+        getItems(rootView);
 
+        travelDate.setOnClickListener(this);
+        travelTime.setOnClickListener(this);
+        getCurrentTime ();
         buildSpinnerList();
         addItemsToSpinner(rootView);
         addListenerOnButtons(rootView);
         addSpinnerListener();
         return rootView;
+    }
+
+    public void getItems(View rootView) {
+        start = (EditText) rootView.findViewById(R.id.startPoint);
+        destination = (EditText) rootView.findViewById(R.id.destinationPoint);
+        spinner = (Spinner) rootView.findViewById(R.id.routes_spinner);
+        travelDate = (EditText) rootView.findViewById(R.id.travelDate);
+        travelTime = (EditText) rootView.findViewById(R.id.travelTime);
     }
 
     public void addItemsToSpinner(View rootView) {
@@ -112,8 +128,8 @@ public class DriverRouteFragment extends Fragment {
             public void onClick(View v) {
                 startValue = start.getText().toString();
                 destinationValue = destination.getText().toString();
-                strDateTime = /*dp.getYear() + "-" + (dp.getMonth() + 1) + "-" +
-                        dp.getDayOfMonth() + " "+ */timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
+                //strDateTime = /*dp.getYear() + "-" + (dp.getMonth() + 1) + "-" +
+                   //     dp.getDayOfMonth() + " "+ */timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
 
                 if  (String.valueOf(spinner.getSelectedItem()) == "Choose an existing route") {
                     Toast.makeText(getActivity().getBaseContext(),
@@ -136,9 +152,8 @@ public class DriverRouteFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                Calendar c = Calendar.getInstance();
-                timePicker.setCurrentHour(c.get(Calendar.HOUR));
-                timePicker.setCurrentMinute(c.get(Calendar.MINUTE));
+                setTimeText(mHour, mMinute);
+                setDateText(mYear, mMonth, mDay);
             }
 
         });
@@ -170,5 +185,66 @@ public class DriverRouteFragment extends Fragment {
             }
 
         });
+    }
+
+    public void getCurrentTime () {
+        // Process to get Current Date
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+    }
+
+    public void setTimeText (int hour, int minute) {
+        if (minute < 10) {
+            travelTime.setText(hour + ":0" + minute);
+        }
+        else {
+            travelTime.setText(hour + ":" + minute);
+        }
+    }
+
+    public void setDateText (int year, int month, int day) {
+        String monthString = Integer.toString(month+1);
+        String dayString = Integer.toString(day);
+        if (month < 10) {
+            monthString = "0" + monthString;
+        }
+        if (day < 10) {
+            dayString = "0" + dayString;
+        }
+        travelDate.setText(year + "-" + (monthString) + "-" + dayString);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == travelDate) {
+            // Launch Date Picker Dialog
+            DatePickerDialog dpd = new DatePickerDialog(getActivity(),
+                    new DatePickerDialog.OnDateSetListener() {
+
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                            setDateText(year, monthOfYear, dayOfMonth);
+                        }
+
+                    }, mYear, mMonth, mDay);
+            dpd.show();
+        }
+
+        if (v == travelTime) {
+
+            // Launch Time Picker Dialog
+            TimePickerDialog tpd = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                   setTimeText(hourOfDay, minute);
+                }
+            }, mHour, mMinute, false);
+            tpd.show();
+        }
     }
 }

@@ -6,7 +6,7 @@
                 tools:context=".DriverFragment"
                 android:orientation="vertical"
                 android:background="@color/GhostWhite"
-                android:id="@+id/fragment_driver_route">
+                android:id="@+id/fragment_driver_route" android:paddingLeft="15dp" android:paddingRight="15dp">
 
     <TextView
             android:layout_width="wrap_content"
@@ -15,20 +15,20 @@
             android:text="Choose an existing route"
             android:id="@+id/textView12"
             android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-            android:layout_marginLeft="15dp"/>
+            />
     <Spinner
             android:id="@+id/routes_spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView12"
-            android:layout_marginLeft="15dp" android:layout_marginRight="15dp"/>
+            />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Or create a new one"
             android:id="@+id/textView5" android:layout_below="@+id/routes_spinner"
-            android:layout_centerHorizontal="true" android:layout_marginLeft="15dp"/>
+            android:layout_centerHorizontal="true"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,68 +36,75 @@
             android:text="Starting point: "
             android:id="@+id/textView8"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_marginLeft="15dp"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/textView5"/>
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/startPoint"
-            android:layout_below="@+id/textView8"
             android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true" android:layout_alignParentStart="true"
-            android:layout_marginLeft="15dp" android:layout_marginRight="15dp"/>
+            />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Destination point"
             android:id="@+id/textView9" android:layout_below="@+id/startPoint" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_marginLeft="15dp"/>
+            android:layout_alignParentStart="true"/>
     <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/destinationPoint" android:layout_below="@+id/textView9" android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" android:layout_marginLeft="15dp"
+            android:id="@+id/destinationPoint" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-            android:layout_marginRight="15dp"/>
-    <LinearLayout
+            />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="I&apos;m driving Now!"
+            android:id="@+id/buttonNow"
+            android:layout_gravity="center_vertical"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Date of travel"
+            android:id="@+id/textView15"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/travelDate"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Time of travel"
+            android:id="@+id/textView16"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/travelTime"/>
+    <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
-        <TimePicker
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/driverRouteTimePicker"
-                android:layout_below="@+id/destinationPoint" android:layout_alignLeft="@+id/destinationPoint"
-                android:layout_alignStart="@+id/destinationPoint" android:layout_marginLeft="15dp"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Now"
-                android:id="@+id/buttonNow"
-                android:layout_toEndOf="@+id/driverRouteTimePicker" android:layout_toRightOf="@+id/driverRouteTimePicker"
-                android:layout_gravity="center_vertical"/>
-    </LinearLayout>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal">>
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
                 android:onClick="goDriverHome"
                 android:id="@+id/buttonCancel"
-                android:layout_marginLeft="15dp"
-                />
+                android:layout_alignParentStart="true"/>
         <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="OK"
-                android:id="@+id/buttonOK"
-                android:layout_marginRight="15dp"
-                />
-    </LinearLayout>
-
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OK"
+                    android:id="@+id/buttonOK"
+                    android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
 </LinearLayout>
