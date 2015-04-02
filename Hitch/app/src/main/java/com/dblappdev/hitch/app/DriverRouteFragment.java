@@ -135,12 +135,12 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 }
                 dateTime = toTimestamp(mYear, mMonth, mDay, mHour, mMinute);
 
-                api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        return null;
-                    }
-                });
+                api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
+
+                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.driver_fragment, new DriverFragment());
+                ft.addToBackStack(null);
+                ft.commit();
             }
         });
 
