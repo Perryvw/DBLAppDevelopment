@@ -14,7 +14,6 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
 
     // Variables for EditText fields
     private EditText startPoint, endPoint;
-    private TextView currentLocation;
     private Switch currentLocationSwitch;
 
     // Variable for storing current date and time
@@ -34,7 +33,6 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
     public void getItems(View rootView) {
         startPoint = (EditText) rootView.findViewById(R.id.startPoint);
         endPoint = (EditText) rootView.findViewById(R.id.endPoint);
-        currentLocation = (TextView) rootView.findViewById(R.id.currentLocation);
         currentLocationSwitch = (Switch) rootView.findViewById(R.id.currentLocationSwitch);
     }
 
