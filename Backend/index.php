@@ -26,6 +26,7 @@
 		"GetMatchingDrivers" => "getmatchingdrivers.php",
 		"GetRouteData" => "getroutedata.php",
 		"GetUserRating" => "getuserrating.php",
+		"GetUserRatings" => "getuserratings.php",
 		"GetUserRatingByUser" => "getuserratingbyuser.php",
 		"GetUserRoutes" => "getuserroutes.php",
 		"GiveUserRating" => "giveuserrating.php",
