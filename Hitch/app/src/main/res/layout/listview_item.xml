@@ -49,22 +49,28 @@
                       android:layout_height="wrap_content"
                       android:textAppearance="@android:style/TextAppearance.Small" />
 
-            <ImageView android:id="@+id/ivStars"
-                      android:layout_below="@id/tvName"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:contentDescription="@string/stars_content_description"
-                      android:textAppearance="@android:style/TextAppearance.Small"
-                      android:layout_marginLeft="40dp"
-                      android:layout_marginTop="3dp"/>
+
         </RelativeLayout>
+
+
 
         <ImageView android:id="@+id/ivArrow"
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:contentDescription="@string/arrow_content_description"
-                   android:textAppearance="@android:style/TextAppearance.Small" android:layout_alignParentEnd="true"
+                   android:textAppearance="@android:style/TextAppearance.Small"
+                   android:layout_alignParentEnd="true"
                    android:layout_marginRight="20dp" android:layout_marginTop="30dp"/>
+
+        <ImageView android:id="@+id/ivStars"
+                   android:layout_toLeftOf="@+id/ivArrow"
+                   android:layout_alignBottom="@+id/ivArrow"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:contentDescription="@string/stars_content_description"
+                   android:textAppearance="@android:style/TextAppearance.Small"
+                   android:layout_marginLeft="40dp"
+                   android:layout_marginTop="3dp"/>
     </RelativeLayout>
 
 </RelativeLayout>
