@@ -44,13 +44,22 @@
 		throwError('User 2 was not found.');
 	}
 
-	//Make chatbox in database (returns chat id)
-	$chat_id = $db->insertRow('hitch_chatboxes', array(null, null, $start_point, $end_point));
+	//Check if there is already an existing chat
+	$existingChat = $db->getRow("SELECT a.chatID FROM hitch_chatusers a, hitch_chatusers b 
+		WHERE a.chatID=b.chatID AND ((a.userID=? AND b.userID=?) OR (b.userID=? AND a.userID=?))", array($user1_id, $user2_id, $user1_id, $user2_id));
 
-	//Add users to the chatbox in db
-	$db->insertRow('hitch_chatusers', array($chat_id, $user1_id));
-	$db->insertRow('hitch_chatusers', array($chat_id, $user2_id));
-	
-	//Output
-	echo '{ "chatID" : '.$chat_id.' }';
+	if ($existingChat != false) {
+		//if a chat already exists return its ID.
+		echo '{ "chatID" : '.$existingChat->chatID.' }';;
+	} else {
+		//Make chatbox in database (returns chat id)
+		$chat_id = $db->insertRow('hitch_chatboxes', array(null, null, $start_point, $end_point));
+
+		//Add users to the chatbox in db
+		$db->insertRow('hitch_chatusers', array($chat_id, $user1_id));
+		$db->insertRow('hitch_chatusers', array($chat_id, $user2_id));
+		
+		//Output
+		echo '{ "chatID" : '.$chat_id.' }';
+	}
 ?>

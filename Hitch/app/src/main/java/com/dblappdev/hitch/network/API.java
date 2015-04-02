@@ -17,7 +17,7 @@ public class API {
             "GetUserRatingByUser", "GetUserRoutes", "AddUserRoute", "DeleteUserRoute", "UpdateUserRoute",
             "GetHitchhikeData", "GetUserHitchhikeData", "AddUserHitchhikeData", "RemoveUserHitchhikeData",
             "AddUserToChat", "RemoveUserFromChat", "CreateChatbox", "GetChatMessages", "GetChatBoxes",
-            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser", "InsertChatMessage", "GetRouteData"};
+            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser", "InsertChatMessage", "GetRouteData", "GetUserRatings"};
     public static final int GET_USER_DATA = 0;
     public static final int REGISTER_USER = 1;
     public static final int UPDATE_USER_DATA = 2;
@@ -41,6 +41,7 @@ public class API {
     public static final int LOGIN_USER = 20;
     public static final int INSERT_CHAT_MESSAGE = 21;
     public static final int GET_ROUTE_DATA = 22;
+    public static final int GET_USER_RATINGS = 23;
 
     private JSONObject RESPONSE;
 
@@ -66,6 +67,14 @@ public class API {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getUserRatings(int userID, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_USER_RATINGS];
+        params[1] = "userID=" + Integer.toString(userID);
+
+        commit(params, callback);
     }
 
     public void getChatMessages(int chatID, int limit, String since, Callable<Void> callback) {
