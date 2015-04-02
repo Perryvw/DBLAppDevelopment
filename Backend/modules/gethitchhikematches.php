@@ -15,6 +15,7 @@
 		Output parameters:
 			matches: An array of objects representing drivers, each containing the following fields:
 				userID: The hitchhiker’s user ID.
+				userName: THe hitchhiker's name.
 				routeID: The routeID matched to the hitchhiker
 				relevance: The internal score assigned to the match.
 				timestamp: A timestamp of when the match was made.
@@ -39,7 +40,7 @@
 	$since = date('Y-m-d H:i:s', $since);
 
 	//Get data from database
-	$result = $db->getResult("SELECT routeID, hitchhikerID as 'userID', timestamp, relevance FROM hitch_matches WHERE routeID=? AND timestamp > ?", array($route_id, $since));
+	$result = $db->getResult("SELECT a.routeID, a.hitchhikerID as 'userID', (SELECT b.name FROM hitch_users b WHERE b.userID=a.hitchhikerID) as 'userName', a.timestamp, a.relevance FROM hitch_matches a WHERE a.routeID=? AND a.timestamp > ?", array($route_id, $since));
 	
 	//Check result. If empty - error, else return result.
 	echo '{ "matches" : '.json_encode($result).' }';	

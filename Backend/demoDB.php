@@ -48,7 +48,7 @@
 		//generate some routes for the user
 		$numRoutes = rand(1,5);
 		for ($j=0; $j < $numRoutes; $j++) {
-			$route_id = $db->insertRow('hitch_userroutes', array(null, $user_id, date('Y-m-d H:i:s',time() - rand(0, 3600*24*7)), randomLocation(), randomLocation()));
+			$route_id = $db->insertRow('hitch_userroutes', array(null, $user_id, date('Y-m-d H:i:s',time() -12*3600 + rand(0, 3600*24)), randomLocation(), randomLocation()));
 		}
 	}
 

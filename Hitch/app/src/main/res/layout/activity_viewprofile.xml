@@ -86,6 +86,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/userInfo"
         android:divider="#b5b5b5"
-        android:dividerHeight="1dp">
+        android:dividerHeight="1dp" android:layout_marginTop="20dp">
     </ListView>
 </LinearLayout>
