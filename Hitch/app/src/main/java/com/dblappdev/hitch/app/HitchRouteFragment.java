@@ -2,6 +2,10 @@ package com.dblappdev.hitch.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,9 +29,11 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
     private Switch currentLocationSwitch;
     private Button submitButton;
     private SharedPreferences prefs;
+    private Double lng, lat;
 
     // Variable for storing current date and time
     //private int mYear, mMonth, mDay, mHour, mMinute;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +42,11 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
         prefs = getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
         getItems(rootView);
+
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new MyLocationListener();
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
 
         currentLocationSwitch.setOnCheckedChangeListener(this);
         submitButton.setOnClickListener(this);
@@ -53,7 +64,8 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            startPoint.setVisibility(View.INVISIBLE);
+
+            startPoint.setText(lng + " " + lat);
         } else {
             startPoint.setVisibility(View.VISIBLE);
         }
@@ -76,5 +88,24 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
         ft.addToBackStack(null);
         ft.commit();
         HitchFragment.LOAD = true;
+    }
+
+    /*---------- Listener class to get coordinates ------------- */
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location loc) {
+            lng = loc.getLongitude();
+            lat = loc.getLatitude();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
     }
 }
