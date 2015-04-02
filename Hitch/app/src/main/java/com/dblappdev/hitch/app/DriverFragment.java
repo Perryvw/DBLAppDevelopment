@@ -58,15 +58,20 @@ public class DriverFragment extends Fragment {
                                         int groupPosition, int childPosition, long id) {
                 final String selected = (String) expListAdapter.getChild(
                         groupPosition, childPosition);
-                Toast.makeText(getActivity().getBaseContext(), selected, Toast.LENGTH_LONG)
-                        .show();
-                userID = prefs.getInt(MainActivity.USER_KEY, -1);
+                int clickedID = Integer.parseInt(selected);
+                if (clickedID == -1) {
+                    return false;
+                }
+                ((TabViewActivity)getActivity()).viewProfile(clickedID);
+                //Toast.makeText(getActivity().getBaseContext(), selected, Toast.LENGTH_LONG)
+                        //.show();
                 return true;
             }
         });
         updateAdapter();
         return rootView;
     }
+
 
     private void createGroupList() {
         routeCollection = new LinkedHashMap<String, List<String>>();

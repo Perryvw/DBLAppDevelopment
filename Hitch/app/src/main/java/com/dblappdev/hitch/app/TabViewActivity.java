@@ -40,7 +40,6 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
 
         setContentView(R.layout.activity_main);
 
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
         int state = prefs.getInt(MainActivity.STATE_KEY, 0);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -181,6 +180,12 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         HitchFragment hf = (HitchFragment)getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.pager + ":" + viewPager.getCurrentItem());
         //tell the fragment to load the matches
         hf.loadDriverMatches();
+    }
+
+    public void viewProfile(int userID) {
+        Intent intent = new Intent(this, ViewProfileActivity.class);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
     }
 
     /**
