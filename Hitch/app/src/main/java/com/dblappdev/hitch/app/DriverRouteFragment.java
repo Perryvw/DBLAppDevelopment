@@ -152,6 +152,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                     alert.show();
                 }
                 else {
+                    checkTimeConstraint(userID,dateTime+"");
                     api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
                 }
 
@@ -208,8 +209,8 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
 
                 for (Long l : timeStamps) {
                     Log.d("l",l+"");
-                    Log.d("(l - timeStampUser)",(l - timeStampUser) + "");
-                    if (Math.abs(l - timeStampUser) <= 1800000) {
+                    Log.d("(l - timeStampUser)",(l.longValue() - timeStampUser) + "");
+                    if ((timeStampUser-l.longValue()) <= 1800000 ) {
                         legal = false;
                     }
                 }
