@@ -42,8 +42,14 @@
                 android:layout_alignLeft="@+id/editName"
                 android:layout_alignStart="@+id/editName"
                 android:textSize="23dp"/>
-
-
+        <Button
+                android:onClick="saveProfile"
+                android:background="@drawable/orange_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:id="@+id/button7" android:layout_below="@+id/editDate" android:layout_centerHorizontal="true"
+                android:layout_marginTop="56dp"/>
 
     </RelativeLayout>
 </LinearLayout>
