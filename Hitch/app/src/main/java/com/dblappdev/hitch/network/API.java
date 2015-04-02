@@ -168,7 +168,7 @@ public class API {
      *
      *
      */
-    public void addUserRoute(int userID, String startpoint, String endpoint, String timestamp, Callable<Void> callback) {
+    public void addUserRoute(int userID, String startpoint, String endpoint, int timestamp, Callable<Void> callback) {
         String[] params = new String[5];
         params[0] = "func=" + FUNCTIONS[ADD_USER_ROUTE];
         params[1] = "userID=" + userID;

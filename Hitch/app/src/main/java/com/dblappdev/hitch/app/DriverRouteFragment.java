@@ -32,8 +32,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
     private String startValue, destinationValue;
     List<String> spinnerList;
     private TimePicker timePicker;
-    private String strDateTime;
-    private API api;
+    private int dateTime;
     private SharedPreferences prefs;
     private int userID;
 
@@ -53,11 +52,11 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
 
         travelDate.setOnClickListener(this);
         travelTime.setOnClickListener(this);
-        getCurrentTime ();
         buildSpinnerList();
         addItemsToSpinner(rootView);
         addListenerOnButtons(rootView);
         addSpinnerListener();
+        getCurrentTime();
         return rootView;
     }
 
@@ -117,41 +116,31 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
 
     // get the selected dropdown list value
     public void addListenerOnButtons(View rootView) {
-
         btnOK = (Button) rootView.findViewById(R.id.buttonOK);
-        btnCancel = (Button) rootView.findViewById(R.id.buttonCancel);
         btnNow = (Button) rootView.findViewById(R.id.buttonNow);
 
         btnOK.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startValue = start.getText().toString();
-                destinationValue = destination.getText().toString();
-                //strDateTime = /*dp.getYear() + "-" + (dp.getMonth() + 1) + "-" +
-                   //     dp.getDayOfMonth() + " "+ */timePicker.getCurrentHour() + ":" + timePicker.getCurrentMinute();
-
-                if  (String.valueOf(spinner.getSelectedItem()) == "Choose an existing route") {
-                    Toast.makeText(getActivity().getBaseContext(),
-                            "Selected route : " + startValue + " -> " + destinationValue + " at" + strDateTime,
-                            Toast.LENGTH_SHORT).show();
-                    api.addUserRoute(userID, startValue, destinationValue, strDateTime, new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            return null;
-                        }
-                    });
-
-                }
-
+                final API api = new API();
+                startValue = start.getText().toString().trim();
+                destinationValue = destination.getText().toString().trim();
+                dateTime = toTimestamp(mYear, mMonth, mDay, mHour, mMinute);
+                api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        return null;
+                    }
+                });
             }
-
         });
 
         btnNow.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                getCurrentTime();
                 setTimeText(mHour, mMinute);
                 setDateText(mYear, mMonth, mDay);
             }
@@ -228,6 +217,9 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                             setDateText(year, monthOfYear, dayOfMonth);
+                            mYear = year;
+                            mMonth = monthOfYear;
+                            mDay = dayOfMonth;
                         }
 
                     }, mYear, mMonth, mDay);
@@ -242,9 +234,25 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 @Override
                 public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                    setTimeText(hourOfDay, minute);
+                   mHour = hourOfDay;
+                   mMinute = minute;
                 }
             }, mHour, mMinute, false);
             tpd.show();
         }
+    }
+
+    int toTimestamp(int year, int month, int day, int hour, int minute) {
+
+        final Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return (int) (c.getTimeInMillis() / 1000L);
     }
 }
