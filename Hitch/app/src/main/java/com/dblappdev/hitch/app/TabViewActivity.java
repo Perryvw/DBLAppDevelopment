@@ -182,6 +182,12 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
         hf.loadDriverMatches();
     }
 
+    public void viewProfile(int userID) {
+        Intent intent = new Intent(this, ViewProfileActivity.class);
+        intent.putExtra("userID", userID);
+        startActivity(intent);
+    }
+
     /**
      * Go to add a route for configuring driver routes.
      */
