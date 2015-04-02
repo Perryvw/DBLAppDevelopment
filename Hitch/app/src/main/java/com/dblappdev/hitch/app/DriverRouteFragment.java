@@ -136,7 +136,10 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 catch (Exception e) {
 
                 }
-                dateTime = toTimestamp(mYear, mMonth, mDay, mHour, mMinute);
+                getCurrentTime();
+                dateTime = (int) toTimestamp(mYear, mMonth, mDay, mHour, mMinute,mSeconds);
+
+                Log.d("dateTime",dateTime+"");
 
                 if (startValue.isEmpty() || destinationValue.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -152,8 +155,14 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                     alert.show();
                 }
                 else {
-                    checkTimeConstraint(userID,dateTime+"");
-                    api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
+                    checkTimeConstraint(userID,dateTime+"",new Callable<Void>(){
+                        @Override
+                        public Void call() {
+                            api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
+                            return null;
+                        }
+                    });
+
                 }
 
                 android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
@@ -176,12 +185,14 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
     }
 
 
-    private void checkTimeConstraint(int userID, String strDateTime) {
+    private void checkTimeConstraint(int userID, String strDateTime, Callable<Void> c) {
 
         final API api = new API();
         final ArrayList<Long> timeStamps = new ArrayList<Long>();
-        final long timeStampUser = toTimestamp(mYear, mMonth, mDay, mHour, mMinute, mSeconds);
+        final long timeStampUser = toTimestamp(mYear, mMonth+1, mDay, mHour, mMinute, mSeconds);
         Log.d("timeStampUser",timeStampUser+"");
+
+        final Callable<Void> cc = c;
 
         api.getUserRoutes(userID, new Callable<Void>() {
             @Override
@@ -197,8 +208,16 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                         String[] splitStamp = timeStamp.split("\\s+");
                         String[] daySplit = splitStamp[0].split("-");
                         String[] timeSplit = splitStamp[1].split(":");
-                        timeStamps.add(toTimestamp(daySplit[0],daySplit[1],daySplit[2]
-                                ,timeSplit[0],timeSplit[1],timeSplit[2]));
+
+                        Log.d("daysplit timesplit:", daySplit[0] + "." +
+                                daySplit[1] + "." +daySplit[2] + "." +
+                                        timeSplit[0] + "." +
+                                        timeSplit[1] + "." +
+                                        timeSplit[2]
+                        );
+
+                        timeStamps.add(toTimestamp(daySplit[0], daySplit[1], daySplit[2]
+                                , timeSplit[0], timeSplit[1],timeSplit[2]));
                     }
 
                 } catch (JSONException e) {
@@ -210,12 +229,19 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 for (Long l : timeStamps) {
                     Log.d("l",l+"");
                     Log.d("(l - timeStampUser)",(l.longValue() - timeStampUser) + "");
-                    if ((timeStampUser-l.longValue()) <= 1800000 ) {
+                    if (Math.abs(timeStampUser-l.longValue()) <= 1800000 ) {
                         legal = false;
                     }
                 }
 
                 Log.d("legal route time: ", legal + "");
+
+                if (legal) {
+                    cc.call();
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(),"Check route times",
+                            Toast.LENGTH_SHORT).show();
+                }
 
                 return null;
             }
@@ -253,7 +279,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
         // Process to get Current Date
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
+        mMonth = c.get(Calendar.MONTH)+1;
         mDay = c.get(Calendar.DAY_OF_MONTH);
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
