@@ -126,7 +126,15 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 final API api = new API();
                 startValue = start.getText().toString().trim();
                 destinationValue = destination.getText().toString().trim();
+                try {
+                    startValue = java.net.URLEncoder.encode(startValue, "UTF-8").replace("+", "%20");
+                    destinationValue = java.net.URLEncoder.encode(destinationValue, "UTF-8").replace("+", "%20");
+                }
+                catch (Exception e) {
+
+                }
                 dateTime = toTimestamp(mYear, mMonth, mDay, mHour, mMinute);
+
                 api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
