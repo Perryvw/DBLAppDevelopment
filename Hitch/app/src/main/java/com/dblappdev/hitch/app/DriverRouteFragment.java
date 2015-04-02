@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +41,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
     private EditText travelDate, travelTime;
 
     // Variable for storing current date and time
-    private int mYear, mMonth, mDay, mHour, mMinute;
+    private int mYear, mMonth, mDay, mHour, mMinute, mSeconds;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                         spinnerList.add(routeName);
                     }
 
-                } catch(JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                     spinnerList.add("exception");
                 }
@@ -127,6 +128,9 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 startValue = start.getText().toString().trim();
                 destinationValue = destination.getText().toString().trim();
                 dateTime = toTimestamp(mYear, mMonth, mDay, mHour, mMinute);
+
+                //checkTimeConstraint(userID,dateTime+"");
+
                 api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
                     @Override
                     public Void call() throws Exception {
@@ -148,6 +152,53 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
         });
     }
 
+
+    private void checkTimeConstraint(int userID, String strDateTime) {
+
+        final API api = new API();
+        final ArrayList<Long> timeStamps = new ArrayList<Long>();
+        final long timeStampUser = toTimestamp(mYear, mMonth, mDay, mHour, mMinute, mSeconds);
+        Log.d("timeStampUser",timeStampUser+"");
+
+        api.getUserRoutes(userID, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+
+                JSONObject response = api.getResponse();
+
+                try {
+                    JSONArray arr = response.getJSONArray("routes");
+                    for (int i = 0; i < arr.length(); i++) {
+                        JSONObject route = arr.getJSONObject(i);
+                        String timeStamp = route.getString("timestamp");
+                        String[] splitStamp = timeStamp.split("\\s+");
+                        String[] daySplit = splitStamp[0].split("-");
+                        String[] timeSplit = splitStamp[1].split(":");
+                        timeStamps.add(toTimestamp(daySplit[0],daySplit[1],daySplit[2]
+                                ,timeSplit[0],timeSplit[1],timeSplit[2]));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                boolean legal = true;
+
+                for (Long l : timeStamps) {
+                    Log.d("l",l+"");
+                    Log.d("(l - timeStampUser)",(l - timeStampUser) + "");
+                    if (Math.abs(l - timeStampUser) <= 1800000) {
+                        legal = false;
+                    }
+                }
+
+                Log.d("legal route time: ", legal + "");
+
+                return null;
+            }
+        });
+    }
+
     public void addSpinnerListener () {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -158,8 +209,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                     destination.setText("");
                     start.setEnabled(true);
                     destination.setEnabled(true);
-                }
-                else {
+                } else {
                     start.setText(selected.split("->")[0]);
                     destination.setText(selected.split("->")[1]);
                     start.setEnabled(false);
@@ -184,6 +234,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
         mDay = c.get(Calendar.DAY_OF_MONTH);
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
+        mSeconds = c.get(Calendar.SECOND);
     }
 
     public void setTimeText (int hour, int minute) {
@@ -254,5 +305,33 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
         c.set(Calendar.MILLISECOND, 0);
 
         return (int) (c.getTimeInMillis() / 1000L);
+    }
+
+    long toTimestamp(int year, int month, int day, int hour, int minute, int seconds) {
+
+        final Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        c.set(Calendar.HOUR, hour);
+        c.set(Calendar.MINUTE, minute);
+        c.set(Calendar.SECOND, seconds);
+        c.set(Calendar.MILLISECOND, 0);
+
+        return (c.getTimeInMillis() / 1000L);
+    }
+
+    long toTimestamp(String year, String month, String day, String hour, String minute, String seconds) {
+
+        final Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, Integer.parseInt(year));
+        c.set(Calendar.MONTH, Integer.parseInt(month));
+        c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
+        c.set(Calendar.HOUR, Integer.parseInt(hour));
+        c.set(Calendar.MINUTE, Integer.parseInt(minute));
+        c.set(Calendar.SECOND, Integer.parseInt(seconds));
+        c.set(Calendar.MILLISECOND, 0);
+
+        return (c.getTimeInMillis() / 1000L);
     }
 }
