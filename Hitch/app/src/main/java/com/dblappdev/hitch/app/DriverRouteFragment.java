@@ -138,13 +138,6 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 }
                 dateTime = toTimestamp(mYear, mMonth, mDay, mHour, mMinute);
 
-                api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        return null;
-                    }
-                });
-
                 if (startValue.isEmpty() || destinationValue.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setMessage("Please fill all the fields");
