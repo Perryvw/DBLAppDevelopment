@@ -53,7 +53,6 @@ public class ChatArrayAdapter extends ArrayAdapter {
         } else {
             message.setPadding(10,30,10,10);
         }
-        messageBox = (LinearLayout) row.findViewById(R.id.singleMessageBubble);
 
         singleMessageContainer.setGravity(chatMessageObj.left ? Gravity.LEFT : Gravity.RIGHT);
         return row;
