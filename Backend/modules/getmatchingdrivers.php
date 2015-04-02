@@ -20,7 +20,7 @@
 	*/
 
 	//Algorithm parameters
-	$MAX_PERC_DEVIATION = 0.15; //The maximum percentage the algorithm can deviate from the original route length
+	$MAX_PERC_DEVIATION = 0.2; //The maximum percentage the algorithm can deviate from the original route length
 
 	//Request a distance between two places from the google API
 	function getDistance($start, $end, $db) {

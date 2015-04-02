@@ -157,6 +157,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                     alert.show();
                 }
                 else {
+                    checkTimeConstraint(userID,dateTime+"");
                     api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
                     android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.replace(R.id.driver_fragment, new DriverFragment());
@@ -216,6 +217,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                     Log.d("l", l + "");
                     Log.d("(l - timeStampUser)", (l - timeStampUser) + "");
                     if (Math.abs(l - timeStampUser) <= 1800000) {
+
                         legal = false;
                     }
                 }
