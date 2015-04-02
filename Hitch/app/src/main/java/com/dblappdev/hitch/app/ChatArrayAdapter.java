@@ -19,7 +19,6 @@ public class ChatArrayAdapter extends ArrayAdapter {
     private TextView message;
     private List<ChatMessage> chatMessageList = new ArrayList<ChatMessage>();
     private LinearLayout singleMessageContainer;
-    private LinearLayout messageBox;
 
     public void add(ChatMessage object) {
         chatMessageList.add(object);
@@ -55,7 +54,6 @@ public class ChatArrayAdapter extends ArrayAdapter {
             message.setPadding(10,30,10,10);
         }
         messageBox = (LinearLayout) row.findViewById(R.id.singleMessageBubble);
-        messageBox.setBackgroundResource(chatMessageObj.left ? R.drawable.bubble_a : R.drawable.bubble_b);
 
         singleMessageContainer.setGravity(chatMessageObj.left ? Gravity.LEFT : Gravity.RIGHT);
         return row;
