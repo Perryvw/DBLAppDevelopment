@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- the parent view - provides the gray listfragment background color -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical"
+                android:background="@color/frame_background"
+                android:padding="5dp" >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/WhiteSmoke">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <!-- Name and name label -->
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView android:id="@+id/nameLabelText"
+                          android:text="@string/name"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginLeft="20dp"/>
+                <TextView android:id="@+id/nameLabel"
+                          android:text="Guus"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textAppearance="@android:style/TextAppearance.Large"
+                          android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+            <!-- Ratings -->
+            <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ratingBar"
+                    android:isIndicator="true"
+                    android:numStars="5"/>
+        </LinearLayout>
+
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="This is a comment."
+                android:padding="15dp"
+                android:paddingLeft="40dp"
+                android:id="@+id/commentLabel"/>
+    </LinearLayout>
+</RelativeLayout>

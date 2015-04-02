@@ -1,5 +1,6 @@
 package com.dblappdev.hitch.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.dblappdev.hitch.model.User;
+import com.dblappdev.hitch.network.API;
 import com.dblappdev.hitch.route.GMapV2Direction;
 import com.dblappdev.hitch.route.GetRouteDirectionsTask;
 import com.dblappdev.hitch.route.Route;
@@ -21,6 +23,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.*;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
@@ -33,12 +37,14 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
     private User user;
     private TextView nameView, birthdateView, registeredView, routeNameView, depTimeView, etaView;
     private Button endHitchButton,openChatButton;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
         mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         route = (Route) bundle.get("ROUTE");
@@ -68,10 +74,8 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
         endHitchButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN ) {
-                    endHitchButton.setBackgroundColor(darker(Color.RED,0.7f));
-
-
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    endHitchButton.setBackgroundColor(darker(Color.RED, 0.7f));
 
 
                     return true;
@@ -110,6 +114,7 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
     }
 
     private void initStartChatButton() {
+        final Activity thisAct = this;
         openChatButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -124,6 +129,21 @@ public class RouteActivity extends FragmentActivity implements OnMapReadyCallbac
                     openChatButton.setBackgroundColor(Color.BLUE);
 
                     //TODO OPEN CHAT BUTTON FUNCTIONALITY HERE
+                    int userID = prefs.getInt(MainActivity.USER_KEY, -1);
+                    final API api = new API();
+                    api.createChatbox(userID, route.getOwnerID(), new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            //get the chat id from the response
+                            JSONObject response = api.getResponse();
+                            int chatID = response.getInt("chatID");
+
+                            Intent intent = new Intent(thisAct, ChatActivity.class);
+                            intent.putExtra("CHAT_ID", chatID);
+                            startActivity(intent);
+                            return null;
+                        }
+                    });
                 }
 
                 return false;

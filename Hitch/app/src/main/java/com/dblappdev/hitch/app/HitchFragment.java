@@ -125,7 +125,7 @@ public class HitchFragment extends ListFragment {
                         resources.getDrawable(R.drawable.arrow_right)));
             }
 
-            // ListAdapter0
+            // ListAdapter
             ListAdapter listAdapter = new ListAdapter(getActivity(), mItems);
 
             // initialize and set the list adapter

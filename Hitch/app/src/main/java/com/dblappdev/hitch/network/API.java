@@ -17,7 +17,7 @@ public class API {
             "GetUserRatingByUser", "GetUserRoutes", "AddUserRoute", "DeleteUserRoute", "UpdateUserRoute",
             "GetHitchhikeData", "GetUserHitchhikeData", "AddUserHitchhikeData", "RemoveUserHitchhikeData",
             "AddUserToChat", "RemoveUserFromChat", "CreateChatbox", "GetChatMessages", "GetChatBoxes",
-            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser", "InsertChatMessage", "GetRouteData"};
+            "GetMatchingDrivers", "GetHitchhikeMatches", "LoginUser", "InsertChatMessage", "GetRouteData", "GetUserRatings"};
     public static final int GET_USER_DATA = 0;
     public static final int REGISTER_USER = 1;
     public static final int UPDATE_USER_DATA = 2;
@@ -41,6 +41,7 @@ public class API {
     public static final int LOGIN_USER = 20;
     public static final int INSERT_CHAT_MESSAGE = 21;
     public static final int GET_ROUTE_DATA = 22;
+    public static final int GET_USER_RATINGS = 23;
 
     private JSONObject RESPONSE;
 
@@ -79,6 +80,14 @@ public class API {
         commit(params, null);
     }
 
+    public void getUserRatings(int userID, Callable<Void> callback) {
+        String[] params = new String[2];
+        params[0] = "func=" + FUNCTIONS[GET_USER_RATINGS];
+        params[1] = "userID=" + Integer.toString(userID);
+
+        commit(params, callback);
+    }
+
     public void getChatMessages(int chatID, int limit, String since, Callable<Void> callback) {
         String[] params = new String[4];
         params[0] = "func=" + FUNCTIONS[GET_CHAT_MESSAGES];
@@ -111,10 +120,10 @@ public class API {
     public void createChatbox(int userID1, int userID2, Callable<Void> callback) {
         String[] params = new String[5];
         params[0] = "func=" + FUNCTIONS[CREATE_CHATBOX];
-        params[1] = "userID1=" + Integer.toString(userID1);
-        params[2] = "userID2=" + Integer.toString(userID2);
-        params[3] = "startpoint=";
-        params[4] = "endpoint=";
+        params[1] = "user1ID=" + Integer.toString(userID1);
+        params[2] = "user2ID=" + Integer.toString(userID2);
+        params[3] = "startPoint=";
+        params[4] = "endPoint=";
 
         commit(params, callback);
     }
@@ -170,7 +179,7 @@ public class API {
      *
      *
      */
-    public void addUserRoute(int userID, String startpoint, String endpoint, String timestamp, Callable<Void> callback) {
+    public void addUserRoute(int userID, String startpoint, String endpoint, int timestamp, Callable<Void> callback) {
         String[] params = new String[5];
         params[0] = "func=" + FUNCTIONS[ADD_USER_ROUTE];
         params[1] = "userID=" + userID;

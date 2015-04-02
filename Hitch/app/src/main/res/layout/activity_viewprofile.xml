@@ -6,7 +6,8 @@
 
     <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:id="@+id/userInfo">
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,6 +79,13 @@
                 android:layout_marginLeft="41dp"
                 android:layout_marginStart="41dp"
                 android:layout_alignBottom="@+id/registeredLabel"/>
-
     </RelativeLayout>
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/userInfo"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp">
+    </ListView>
 </LinearLayout>

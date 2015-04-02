@@ -64,10 +64,9 @@ public class DriverFragment extends Fragment {
                 return true;
             }
         });
-
+        updateAdapter();
         return rootView;
     }
-
 
     private void createGroupList() {
         routeCollection = new LinkedHashMap<String, List<String>>();
@@ -153,7 +152,7 @@ public class DriverFragment extends Fragment {
                 children.add(userID+"");
             }
 
-            //if there are no childen add a dummy entry
+            //if there are no children add a dummy entry
             if (children.isEmpty()) {
                 children.add("No hitchhikers");
             }
