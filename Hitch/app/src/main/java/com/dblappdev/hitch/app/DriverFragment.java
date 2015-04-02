@@ -12,10 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 import com.dblappdev.hitch.adapter.ExpandableListAdapter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
 import com.dblappdev.hitch.app.R;
 import com.dblappdev.hitch.model.User;
 import com.dblappdev.hitch.network.API;
@@ -23,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
 import java.util.concurrent.Callable;
 
 /**
@@ -38,6 +36,7 @@ public class DriverFragment extends Fragment {
     private SharedPreferences prefs;
     private int userID;
     ExpandableListAdapter expListAdapter;
+    HashMap<String, Integer> nameToID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class DriverFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_driver, container, false);
 
         prefs = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-
+        nameToID = new HashMap<String, Integer>();
         createGroupList();
 
         ExpandableListView expListView = (ExpandableListView) rootView.findViewById(R.id.route_list);
@@ -59,15 +58,11 @@ public class DriverFragment extends Fragment {
                 final String selected = (String) expListAdapter.getChild(
                         groupPosition, childPosition);
 
-                int clickedID = -1;
-                try {
-                    clickedID = Integer.parseInt(selected);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (clickedID == -1) {
+                if (nameToID.get(selected) == null) {
                     return false;
                 }
+                int clickedID = nameToID.get(selected);
+
                 ((TabViewActivity)getActivity()).viewProfile(clickedID);
                 //Toast.makeText(getActivity().getBaseContext(), selected, Toast.LENGTH_LONG)
                         //.show();
@@ -156,11 +151,12 @@ public class DriverFragment extends Fragment {
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject route = arr.getJSONObject(i);
                 int userID = route.getInt("userID");
+                String userName = route.getString("userName");
                 int relevance = route.getInt("relevance");
                 String timestamp = route.getString("timestamp");
-
+                nameToID.put(userName, userID);
                 //add to children
-                children.add(userID+"");
+                children.add(userName);
             }
 
             //if there are no children add a dummy entry
