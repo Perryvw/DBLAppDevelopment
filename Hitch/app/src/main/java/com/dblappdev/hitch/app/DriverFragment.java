@@ -58,7 +58,13 @@ public class DriverFragment extends Fragment {
                                         int groupPosition, int childPosition, long id) {
                 final String selected = (String) expListAdapter.getChild(
                         groupPosition, childPosition);
-                int clickedID = Integer.parseInt(selected);
+
+                int clickedID = -1;
+                try {
+                    clickedID = Integer.parseInt(selected);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (clickedID == -1) {
                     return false;
                 }
