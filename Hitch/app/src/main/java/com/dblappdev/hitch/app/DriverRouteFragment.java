@@ -159,14 +159,8 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                     alert.show();
                 }
                 else {
-                    api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            return null;
-                        }
-                    });
+                    api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
                 }
-                api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
 
                 android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.driver_fragment, new DriverFragment());
