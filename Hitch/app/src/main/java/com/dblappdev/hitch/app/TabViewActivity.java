@@ -40,7 +40,6 @@ public class TabViewActivity extends FragmentActivity implements TabListener {
 
         setContentView(R.layout.activity_main);
 
-        SharedPreferences prefs = this.getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
         int state = prefs.getInt(MainActivity.STATE_KEY, 0);
 
         viewPager = (ViewPager) findViewById(R.id.pager);

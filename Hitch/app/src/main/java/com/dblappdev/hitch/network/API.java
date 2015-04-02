@@ -68,6 +68,17 @@ public class API {
         }
     }
 
+    public void addUserHitchhikeData(int userID, String location, String destination, long timestamp) {
+        String[] params = new String[5];
+        params[0] = "func=" + FUNCTIONS[ADD_USER_HITCHHIKE_DATA];
+        params[1] = "userID=" + Integer.toString(userID);
+        params[2] = "location=" + location;
+        params[3] = "destination=" + destination;
+        params[4] = "timestamp=" + Long.toString(timestamp);
+
+        commit(params, null);
+    }
+
     public void getChatMessages(int chatID, int limit, String since, Callable<Void> callback) {
         String[] params = new String[4];
         params[0] = "func=" + FUNCTIONS[GET_CHAT_MESSAGES];

@@ -35,6 +35,8 @@ public class HitchFragment extends ListFragment {
     private SharedPreferences prefs;
     Resources resources;
 
+    public static boolean LOAD = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -48,6 +50,11 @@ public class HitchFragment extends ListFragment {
         Drawable avatar = resources.getDrawable(R.drawable.ic_launcher);
         Drawable stars = resources.getDrawable(R.drawable.stars);
         Drawable arrow = resources.getDrawable(R.drawable.arrow_right);
+
+        if (LOAD) {
+            LOAD = false;
+            loadDriverMatches();
+        }
         return view;
     }
 
@@ -101,6 +108,11 @@ public class HitchFragment extends ListFragment {
         try {
             JSONArray array = json.getJSONArray("routes");
             mItems = new ArrayList<ListViewItem>();
+            if (array.length() == 0) {
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "No matching drivers", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
             for (int i = 0; i < array.length(); i++) {
                 JSONObject match = array.getJSONObject(i);
                 int driverID = match.getInt("userID");
