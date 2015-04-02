@@ -141,11 +141,11 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                     builder.setMessage("Please fill all the fields");
                     builder.setCancelable(true);
                     builder.setPositiveButton("Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
