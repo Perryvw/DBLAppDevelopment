@@ -166,7 +166,6 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 ft.replace(R.id.driver_fragment, new DriverFragment());
                 ft.addToBackStack(null);
                 ft.commit();
->>>>>>> origin/master
             }
         });
 
