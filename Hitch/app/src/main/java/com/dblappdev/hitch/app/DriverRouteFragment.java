@@ -6,6 +6,9 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +41,7 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
     private int dateTime;
     private SharedPreferences prefs;
     private int userID;
+    Location loc;
 
     // Variables for Time and Date fields
     private EditText travelDate, travelTime;
@@ -51,8 +55,9 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
 
         prefs = this.getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
 
-        getItems(rootView);
 
+
+        getItems(rootView);
         travelDate.setOnClickListener(this);
         travelTime.setOnClickListener(this);
         buildSpinnerList();
@@ -153,12 +158,13 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 }
                 else {
                     api.addUserRoute(userID, startValue, destinationValue, dateTime, null);
+                    android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.driver_fragment, new DriverFragment());
+                    ft.addToBackStack(null);
+                    ft.commit();
                 }
 
-                android.support.v4.app.FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.driver_fragment, new DriverFragment());
-                ft.addToBackStack(null);
-                ft.commit();
+
             }
         });
 
@@ -196,8 +202,8 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                         String[] splitStamp = timeStamp.split("\\s+");
                         String[] daySplit = splitStamp[0].split("-");
                         String[] timeSplit = splitStamp[1].split(":");
-                        timeStamps.add(toTimestamp(daySplit[0],daySplit[1],daySplit[2]
-                                ,timeSplit[0],timeSplit[1],timeSplit[2]));
+                        timeStamps.add(toTimestamp(daySplit[0], daySplit[1], daySplit[2]
+                                , timeSplit[0], timeSplit[1], timeSplit[2]));
                     }
 
                 } catch (JSONException e) {
@@ -207,8 +213,8 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
                 boolean legal = true;
 
                 for (Long l : timeStamps) {
-                    Log.d("l",l+"");
-                    Log.d("(l - timeStampUser)",(l - timeStampUser) + "");
+                    Log.d("l", l + "");
+                    Log.d("(l - timeStampUser)", (l - timeStampUser) + "");
                     if (Math.abs(l - timeStampUser) <= 1800000) {
                         legal = false;
                     }
