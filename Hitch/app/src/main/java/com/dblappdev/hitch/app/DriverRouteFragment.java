@@ -1,8 +1,10 @@
 package com.dblappdev.hitch.app;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -134,13 +136,28 @@ public class DriverRouteFragment extends Fragment implements View.OnClickListene
 
                 }
                 dateTime = toTimestamp(mYear, mMonth, mDay, mHour, mMinute);
+                if (startValue.isEmpty() || destinationValue.isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Please fill all the fields");
+                    builder.setCancelable(true);
+                    builder.setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+                else {
+                    api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            return null;
+                        }
+                    });
+                }
 
-                api.addUserRoute(userID, startValue, destinationValue, dateTime, new Callable<Void>() {
-                    @Override
-                    public Void call() throws Exception {
-                        return null;
-                    }
-                });
             }
         });
 

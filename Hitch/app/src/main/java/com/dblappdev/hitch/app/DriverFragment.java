@@ -68,6 +68,7 @@ public class DriverFragment extends Fragment {
         return rootView;
     }
 
+
     private void createGroupList() {
         routeCollection = new LinkedHashMap<String, List<String>>();
         groupList = new ArrayList<String>();
