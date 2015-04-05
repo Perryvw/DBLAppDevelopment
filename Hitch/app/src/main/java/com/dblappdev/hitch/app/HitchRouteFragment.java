@@ -46,24 +46,11 @@ public class HitchRouteFragment extends Fragment
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         bestProvider = locationManager.getBestProvider(new Criteria(), false);
-        //locationManager.requestLocationUpdates(bestProvider, 5000, 10, this);
+        locationManager.requestLocationUpdates(bestProvider, 5000, 10, this);
 
         currentLocationSwitch.setOnCheckedChangeListener(this);
         submitButton.setOnClickListener(this);
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        locationManager.requestLocationUpdates(bestProvider, 20000, 1, this);
-    }
-
-    /** Stop the updates when Activity is paused */
-    @Override
-    public void onPause() {
-        super.onPause();
-        locationManager.removeUpdates(this);
     }
 
     // get the selected dropdown list value
