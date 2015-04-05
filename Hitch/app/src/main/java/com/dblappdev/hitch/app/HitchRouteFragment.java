@@ -2,10 +2,7 @@ package com.dblappdev.hitch.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.location.*;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,14 +12,17 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.dblappdev.hitch.network.API;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by s128232 on 10-3-2015.
  */
-public class HitchRouteFragment extends Fragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class HitchRouteFragment extends Fragment
+        implements CompoundButton.OnCheckedChangeListener, View.OnClickListener, LocationListener {
 
     // Variables for EditText fields
     private EditText startPoint, endPoint;
@@ -30,27 +30,40 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
     private Button submitButton;
     private SharedPreferences prefs;
     private Double lng, lat;
-
-    // Variable for storing current date and time
-    //private int mYear, mMonth, mDay, mHour, mMinute;
-
+    private Geocoder geoCoder;
+    private LocationManager locationManager;
+    private String bestProvider;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_hitch_route, container, false);
 
         prefs = getActivity().getSharedPreferences(MainActivity.SHARED_PREF, Context.MODE_PRIVATE);
-
         getItems(rootView);
 
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationListener locationListener = new MyLocationListener();
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+        geoCoder = new Geocoder(getActivity().getApplicationContext());
+
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        bestProvider = locationManager.getBestProvider(new Criteria(), false);
+        //locationManager.requestLocationUpdates(bestProvider, 5000, 10, this);
 
         currentLocationSwitch.setOnCheckedChangeListener(this);
         submitButton.setOnClickListener(this);
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        locationManager.requestLocationUpdates(bestProvider, 20000, 1, this);
+    }
+
+    /** Stop the updates when Activity is paused */
+    @Override
+    public void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(this);
     }
 
     // get the selected dropdown list value
@@ -64,10 +77,26 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-
-            startPoint.setText(lng + " " + lat);
+            try {
+                startPoint.setEnabled(false);
+                if (! geoCoder.isPresent()) {
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "GeoCoder is not present", Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
+                List<Address> addresses = geoCoder.getFromLocation(lat, lng, 1);
+                if (addresses.size() == 0) {
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Could not find current city", Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
+                startPoint.setText(addresses.get(0).getLocality()); //size > 0 & maxResults := 1 ==> size == 1
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
         } else {
-            startPoint.setVisibility(View.VISIBLE);
+            startPoint.setText("");
+            startPoint.setEnabled(true);
         }
     }
 
@@ -90,22 +119,18 @@ public class HitchRouteFragment extends Fragment implements CompoundButton.OnChe
         HitchFragment.LOAD = true;
     }
 
-    /*---------- Listener class to get coordinates ------------- */
-    private class MyLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location loc) {
-            lng = loc.getLongitude();
-            lat = loc.getLatitude();
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {}
-
-        @Override
-        public void onProviderEnabled(String provider) {}
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {}
+    @Override
+    public void onLocationChanged(Location loc) {
+        lng = loc.getLongitude();
+        lat = loc.getLatitude();
     }
+
+    @Override
+    public void onProviderDisabled(String provider) {}
+
+    @Override
+    public void onProviderEnabled(String provider) {}
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
 }
