@@ -14,6 +14,7 @@ import com.dblappdev.hitch.network.API;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -64,23 +65,24 @@ public class HitchRouteFragment extends Fragment
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            try {
-                startPoint.setEnabled(false);
-                if (! geoCoder.isPresent()) {
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "GeoCoder is not present", Toast.LENGTH_SHORT);
-                    toast.show();
-                    return;
-                }
-                List<Address> addresses = geoCoder.getFromLocation(lat, lng, 1);
-                if (addresses.size() == 0) {
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Could not find current city", Toast.LENGTH_SHORT);
-                    toast.show();
-                    return;
-                }
-                startPoint.setText(addresses.get(0).getLocality()); //size > 0 & maxResults := 1 ==> size == 1
-            } catch(IOException e) {
-                e.printStackTrace();
+            DecimalFormat f = new DecimalFormat("#0.00");
+            startPoint.setText("lng lat: " + f.format(lng) + " " + f.format(lat));
+
+            startPoint.setEnabled(false);
+            /**
+            if (! geoCoder.isPresent()) {
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "GeoCoder is not present", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
             }
+            List<Address> addresses = geoCoder.getFromLocation(lat, lng, 1);
+            if (addresses.size() == 0) {
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Could not find current city", Toast.LENGTH_SHORT);
+                toast.show();
+                return;
+            }
+            startPoint.setText(addresses.get(0).getLocality()); //size > 0 & maxResults := 1 ==> size == 1
+             */
         } else {
             startPoint.setText("");
             startPoint.setEnabled(true);
