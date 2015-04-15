@@ -8,3 +8,5 @@ Design document high-level gDocs: https://docs.google.com/document/d/1JVkOjupKbz
 Acceptance test plan: https://www.overleaf.com/2452265ftxjvp#/6390122/
 
 User manual: https://www.overleaf.com/2452194hsrxwy#/6389899/
+
+Some presentaion slides (tomas) : https://docs.google.com/presentation/d/1YAS3922ABj1hU37VY6kHgVwEkkE1mNRg9HnLPW4azJQ/
